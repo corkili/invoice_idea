@@ -7,6 +7,12 @@
         <element id="directory" name="classes">
           <element id="module-output" name="invoice" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="application" name="commons-commons" />
+          <element id="library" level="application" name="jstl-1.2.1" />
+          <element id="library" level="application" name="spring-4.3.7" />
+          <element id="library" level="application" name="hibernate-validator-5.4.1" />
+        </element>
       </element>
     </root>
   </artifact>

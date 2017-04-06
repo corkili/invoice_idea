@@ -11,6 +11,13 @@
         </webroots>
       </configuration>
     </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/web/WEB-INF/config/springmvc-config.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
@@ -19,5 +26,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="commons-commons" level="application" />
+    <orderEntry type="library" exported="" name="jstl-1.2.1" level="application" />
+    <orderEntry type="library" exported="" name="spring-4.3.7" level="application" />
+    <orderEntry type="library" exported="" name="hibernate-validator-5.4.1" level="application" />
+    <orderEntry type="library" exported="" name="tomcat8.0.42" level="application" />
   </component>
 </module>
