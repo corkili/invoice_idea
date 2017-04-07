@@ -1,5 +1,6 @@
 package org.invoice.service;
 
+import org.invoice.domain.Authority;
 import org.invoice.domain.User;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public interface UserService {
 
     public List<User> getAllUsers();
 
-    public void giveUserAuthority(User user);
+    public void addAuthorityOfUser(Authority authority, User user);
 
+    public void removeAuthoriyOfUser(Authority authority, User user);
 }
