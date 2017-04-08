@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private final Log log = LogFactory.getLog(UserController.class);
+    private static final Log logger = LogFactory.getLog(UserController.class);
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String inputLoginInformation(Model model){
@@ -37,7 +37,7 @@ public class UserController {
         loginValidator.validate(user, bindingResult);
         if(bindingResult.hasErrors()) {
             FieldError fieldError = bindingResult.getFieldError();
-            log.info("Code: " + fieldError.getCode() + ", field: " + fieldError.getField());
+            logger.info("Code: " + fieldError.getCode() + ", field: " + fieldError.getField());
             return "loginForm";
         }
         if(userService.validateUserLoginInformation(user)) {

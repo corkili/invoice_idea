@@ -14,26 +14,26 @@ import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private List<User> allUsers;
+    private List<User> allUsers = new ArrayList<>();
 
     public UserServiceImpl() {
-        allUsers = new ArrayList<>();
+
     }
 
     @Override
     public User findUserById(String id) {
-        for(int i = 0; i < allUsers.size(); i++) {
-            if(allUsers.get(i).getId().equals(id))
-                return allUsers.get(i);
+        for (User allUser : allUsers) {
+            if (allUser.getId().equals(id))
+                return allUser;
         }
         return null;
     }
 
     @Override
     public User findUserByUserName(String userName) {
-        for(int i = 0; i < allUsers.size(); i++) {
-            if(allUsers.get(i).getUsername().equals(userName))
-                return allUsers.get(i);
+        for (User allUser : allUsers) {
+            if (allUser.getUsername().equals(userName))
+                return allUser;
         }
         return null;
     }
