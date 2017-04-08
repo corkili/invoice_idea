@@ -17,5 +17,11 @@ public interface UserService {
 
     public void addAuthorityOfUser(Authority authority, User user);
 
-    public void removeAuthoriyOfUser(Authority authority, User user);
+    public void addAuthorityOfUser(int authority, User user);
+
+    public void removeAuthorityOfUser(Authority authority, User user);
+
+    public void removeAuthorityOfUser(int authority, User user);
+
+    public boolean validateUserLoginInformation(User user);
 }

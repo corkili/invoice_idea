@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class User implements Serializable {
     private static final long serialVersionUID = 3692706551391721360L;
     private String id;
-    private String userName;
+    private String username;
     private String password;
     private Authority authority;
 
@@ -18,13 +18,13 @@ public class User implements Serializable {
 
     public User(String id, String userName, String password) {
         this.id = id;
-        this.userName = userName;
+        this.username = userName;
         this.password = password;
     }
 
     public User(String id, String userName, String password, Authority authority) {
         this.id = id;
-        this.userName = userName;
+        this.username = userName;
         this.password = password;
         this.authority = authority;
     }
@@ -37,12 +37,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -64,4 +64,13 @@ public class User implements Serializable {
     public void setAuthority(int authority) {
         this.authority.setAuthority(authority);
     }
+
+    public void removeAuthority(Authority authority) {
+        this.authority.removeAuthority(authority.getAuthority());
+    }
+
+    public void removeAuthority(int authority) {
+        this.authority.setAuthority(authority);
+    }
+
 }
