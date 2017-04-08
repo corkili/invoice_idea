@@ -17,7 +17,7 @@ public class LoginValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         User user = (User) target;
-        ValidationUtils.rejectIfEmpty(errors, "nameName", "username.required");
+        ValidationUtils.rejectIfEmpty(errors, "username", "username.required");
         ValidationUtils.rejectIfEmpty(errors, "password", "password.required");
     }
 }

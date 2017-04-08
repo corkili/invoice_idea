@@ -16,22 +16,22 @@
 </head>
 <body>
 <form:form commandName="user" action="login_validate" method="post">
-    <form:hidden path="id" value="0" id="id" name="id"/>
-    <form:hidden path="authority" value="0" id="authority" name="authority" />
     <fieldset>
         <legend><spring:message code="login.form.title" /></legend>
+        <form:hidden path="id" value="0" id="id" name="id"/>
+        <%--<form:hidden path="authority" value="0" id="authority" name="authority" />--%>
         <p>
             <label for="username"><spring:message code="label.username" /></label>
-            <form:input path="username" id="username" cssErrorClass="error" />
+            <form:input path="username" id="username" name="username" cssErrorClass="error" />
             <form:errors path="username" />
         </p>
         <p>
             <label for="password"><spring:message code="label.password" /></label>
-            <form:input path="password" id="password" cssErrorClass="error" />
+            <form:input path="password" id="password" name="password" cssErrorClass="error" />
             <form:errors path="password" />
         </p>
         <p>
-            <input id="submit" type="submit" value="<spring:message code="button.login" /> ">
+            <input id="submit" type="submit" value="<spring:message code="button.login" /> " tabindex="3">
         </p>
     </fieldset>
 </form:form>

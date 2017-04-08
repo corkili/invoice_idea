@@ -14,10 +14,10 @@ import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private List<User> allUsers = new ArrayList<>();
+    private List<User> allUsers;
 
     public UserServiceImpl() {
-
+        allUsers = new ArrayList<>();
     }
 
     @Override
