@@ -3,14 +3,12 @@ package org.invoice.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import static org.invoice.model.Authority.*;
 /**
  * Created by ran on 06/04/17.
  */
 @Entity
-@Table(name = "table_user")
 public class User implements Serializable {
     private static final long serialVersionUID = 3692706551391721360L;
     private int userId;
