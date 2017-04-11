@@ -12,12 +12,11 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="org.invoice.controller"/>
+    <context:component-scan base-package="org.invoice.action"/>
     <context:component-scan base-package="org.invoice.service"/>
 
 
     <mvc:annotation-driven/>
-
     <mvc:resources mapping="/css/**" location="/css/"/>
     <mvc:resources mapping="/*.html" location="/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
@@ -31,14 +30,31 @@
           class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename" value="messages"/>
     </bean>
+    <!-- 获取配置文件 -->
+    <bean id="jdbcConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
 
-    <!--<bean id="conversionService"-->
-          <!--class="org.springframework.format.support.FormattingConversionServiceFactoryBean">-->
-        <!--<property name="formatters">-->
-            <!--<set>-->
+    <bean id="databaseSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="initialSize" value="${jdbc.initialSize}"/>
+        <property name="maxIdle" value="${jdbc.maxIdle}"/>
+        <property name="minIdle" value="${jdbc.minIdle}"/>
+        <property name="timeBetweenEvictionRunsMillis"     value="${jdbc.timeBetweenEvictionRunsMillis}"/>
+        <property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}"/>
+        <property name="testOnBorrow" value="${jdbc.testOnBorrow}"/>
+        <property name="validationQuery" value="${jdbc.validationQuery}"/>
+    </bean>
 
-            <!--</set>-->
-        <!--</property>-->
-    <!--</bean>-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="databaseSource"/>
+    </bean>
 
 </beans>

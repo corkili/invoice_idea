@@ -26,10 +26,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="commons" level="application" />
     <orderEntry type="library" exported="" name="hibernate-5.4.1" level="application" />
     <orderEntry type="library" exported="" name="jsp.jstl-1.2.1" level="application" />
     <orderEntry type="library" exported="" name="spring-4.3.7" level="application" />
     <orderEntry type="library" exported="" name="tomcat-8.0.32" level="application" />
+    <orderEntry type="library" exported="" name="commons" level="application" />
   </component>
 </module>

@@ -1,17 +1,16 @@
 package org.invoice.service;
 
-import org.invoice.domain.Authority;
-import org.invoice.domain.User;
+import org.invoice.model.Authority;
+import org.invoice.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by 李浩然 on 2017/4/8.
  */
-@Service
+@Service("UserService")
 public class UserServiceImpl implements UserService {
 
     private List<User> allUsers;
@@ -21,9 +20,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserById(String id) {
+    public User findUserById(int userId) {
         for (User allUser : allUsers) {
-            if (allUser.getId().equals(id))
+            if (allUser.getUserId() == userId)
                 return allUser;
         }
         return null;
@@ -44,18 +43,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addAuthorityOfUser(Authority authority, User user) {
-        user.setAuthority(authority);
-    }
-
-    @Override
     public void addAuthorityOfUser(int authority, User user) {
         user.setAuthority(authority);
-    }
-
-    @Override
-    public void removeAuthorityOfUser(Authority authority, User user) {
-        user.removeAuthority(authority);
     }
 
     @Override
@@ -72,15 +61,8 @@ public class UserServiceImpl implements UserService {
         String username = user.getUsername();
         String password = user.getPassword();
         if(isLoginInformationCorrect(username, password)) {
-            Authority authority = new Authority(Authority.AUTHORITY_QUERY_INVOICE_RECORD |
-                    Authority.AUTHORITY_MODIFY_INVOICE_RECORD |
-                    Authority.AUTHORITY_ADD_INVOICE_RECORD |
-                    Authority.AUTHORITY_REMOVE_INVOICE_RECORE |
-                    Authority.AUTHORITY_QUERY_INVOICE_ANALYSIS_RESULT |
-                    Authority.AUTHORITY_MANAGE_USER |
-                    Authority.AUTHORITY_QUERY_SYSTEM_LOG);
-            user.setAuthority(authority);
-            user.setId("0000");
+            user.setAuthority(Authority.getAllAuthority());
+            user.setUserId(0);
             return true;
         }
         return false;

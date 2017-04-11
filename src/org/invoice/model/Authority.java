@@ -1,12 +1,9 @@
-package org.invoice.domain;
-
-import java.io.Serializable;
+package org.invoice.model;
 
 /**
  * Created by ran on 06/04/17.
  */
-public class Authority implements Serializable {
-    private static final long serialVersionUID = -773223068322495755L;
+public abstract class Authority{
     /**
      * 查询发票记录的权限，拥有该权限可以查看系统中存储的发票记录
      */
@@ -41,44 +38,7 @@ public class Authority implements Serializable {
      */
     public static final int AUTHORITY_QUERY_SYSTEM_LOG              = 0x0040;
 
-    private int authority;
-
-    public Authority() {
-
-    }
-
-    public Authority(int authority) {
-        setAuthorityIfLegal(authority);
-    }
-
-    public int getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(int authority) {
-        setAuthorityIfLegal(authority);
-    }
-
-    public void addAuthority(int authority) {
-        addAuthorityIfLegal(authority);
-    }
-
-    public void removeAuthority(int authority) {
-        removeAuthorityIfLegal(authority);
-    }
-
-    private void setAuthorityIfLegal(int authority) {
-        if (isLegalAuthority(authority))
-            this.authority = authority;
-    }
-
-    private boolean isLegalAuthority(int authority) {
-        if (authority <= getAllAuthority())
-            return true;
-        return false;
-    }
-
-    private int getAllAuthority() {
+    public static final int getAllAuthority() {
         return AUTHORITY_QUERY_INVOICE_RECORD
                 | AUTHORITY_MODIFY_INVOICE_RECORD
                 | AUTHORITY_ADD_INVOICE_RECORD
@@ -87,15 +47,4 @@ public class Authority implements Serializable {
                 | AUTHORITY_MANAGE_USER
                 | AUTHORITY_QUERY_SYSTEM_LOG;
     }
-
-    private void addAuthorityIfLegal(int authority) {
-        if (isLegalAuthority(authority))
-            this.authority |= authority;
-    }
-
-    private void removeAuthorityIfLegal(int authority) {
-        if (isLegalAuthority(authority))
-            this.authority &= ~authority;
-    }
-
 }

@@ -1,8 +1,7 @@
-package org.invoice.controller;
+package org.invoice.action;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.invoice.domain.User;
+import org.apache.log4j.Logger;
+import org.invoice.model.User;
 import org.invoice.service.UserService;
 import org.invoice.validator.LoginValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +22,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private static final Log logger = LogFactory.getLog(UserController.class);
+    private static final Logger logger = Logger.getLogger(UserController.class);
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String inputLoginInformation(Model model){
-        System.out.println("input Login Information");
+        logger.info("input Login Information");
         model.addAttribute("user", new User());
         return "loginForm";
     }
@@ -36,12 +35,12 @@ public class UserController {
     public String validateLoginInformation(@ModelAttribute User user,
                                            BindingResult bindingResult, Model model,
                                            RedirectAttributes redirectAttributes) {
-        System.out.println("validate Login Information");
+        logger.info("validate Login Information");
         LoginValidator loginValidator = new LoginValidator();
         loginValidator.validate(user, bindingResult);
         if(bindingResult.hasErrors()) {
             FieldError fieldError = bindingResult.getFieldError();
-            System.out.println("Code: " + fieldError.getCode() + ", field: " + fieldError.getField());
+            logger.info("Code: " + fieldError.getCode() + ", field: " + fieldError.getField());
 
             return "redirect:/login/loginForm";
         }
@@ -51,7 +50,7 @@ public class UserController {
             return "redirect:/main";
         } else {
             redirectAttributes.addFlashAttribute("message", "Information not match!");
-            return "redirect:/loginForm";
+            return "redirect:/login";
         }
     }
 
