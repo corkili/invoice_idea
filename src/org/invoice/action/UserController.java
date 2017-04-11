@@ -6,15 +6,17 @@ import org.invoice.service.UserService;
 import org.invoice.validator.LoginValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 /**
+ * 用户控制器
  * Created by 李浩然 on 2017/4/8.
  */
 @Controller
@@ -24,16 +26,21 @@ public class UserController {
 
     private static final Logger logger = Logger.getLogger(UserController.class);
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String inputLoginInformation(Model model){
+    @RequestMapping(value = "/login", name = "登录", method = RequestMethod.GET)
+    public ModelAndView inputLoginInformation(@ModelAttribute("user") User user){
         logger.info("input Login Information");
-        model.addAttribute("user", new User());
-        return "loginForm";
+        ModelAndView modelAndView = new ModelAndView("loginForm");
+        if (user == null) {
+            modelAndView.addObject("user", new User());
+        } else {
+            modelAndView.addObject("user", user);
+        }
+        return modelAndView;
     }
 
-    @RequestMapping(value = "/login_validate", method = RequestMethod.POST)
-    public String validateLoginInformation(@ModelAttribute User user,
-                                           BindingResult bindingResult, Model model,
+    @RequestMapping(value = "/login", name = "登录", method = RequestMethod.POST)
+    public String validateLoginInformation(@ModelAttribute("user") User user,
+                                           BindingResult bindingResult,
                                            RedirectAttributes redirectAttributes) {
         logger.info("validate Login Information");
         LoginValidator loginValidator = new LoginValidator(userService);
@@ -42,15 +49,17 @@ public class UserController {
             FieldError fieldError = bindingResult.getFieldError();
             logger.info("Code:" + fieldError.getCode() + ", field" + fieldError.getField());
             return "loginForm";
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Login successful!");
+            redirectAttributes.addFlashAttribute("user", userService.findUserByUserNameAndPasswordFromDB(
+                    user.getUsername(), user.getPassword()));
+            return "redirect:/main";
         }
-        redirectAttributes.addFlashAttribute("message", "Login successful!");
-        model.addAttribute("user", userService.findUserByUserNameAndPasswordFromDB(
-                user.getUsername(), user.getPassword()));
-        return "redirect:/main";
+
     }
 
-    @RequestMapping(value = "/main")
-    public String loginSuccessfulAndTurnToMainPage() {
-        return "main";
+    @RequestMapping(value = "/main", name = "主页")
+    public ModelAndView loginSuccessfulAndTurnToMainPage(@ModelAttribute("user") User user) {
+        return new ModelAndView("main").addObject("user", user);
     }
 }

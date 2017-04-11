@@ -11,6 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 /**
+ * 登录验证器
  * Created by 李浩然 on 2017/4/8.
  */
 public class LoginValidator implements Validator {

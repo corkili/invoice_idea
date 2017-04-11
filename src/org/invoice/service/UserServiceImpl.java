@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 提供用户相关服务的实体类
  * Created by 李浩然 on 2017/4/8.
  */
 @Service

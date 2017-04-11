@@ -15,7 +15,7 @@
     <title>Login</title>
 </head>
 <body>
-<form:form commandName="user" action="login_validate" method="post">
+<form:form commandName="user" action="login" method="post">
     <fieldset>
         <legend><spring:message code="login.form.title" /></legend>
         <form:hidden path="userId" value="0" userId="userId" name="userId"/>
@@ -23,7 +23,7 @@
         <p>
             <label for="username"><spring:message code="label.username" /></label>
             <form:input path="username" userId="username" name="username" cssErrorClass="error" />
-            <form:errors path="username" />
+            <form:errors path="username"/>
         </p>
         <p>
             <label for="password"><spring:message code="label.password" /></label>
@@ -31,7 +31,7 @@
             <form:errors path="password" />
         </p>
         <p>
-            <input userId="submit" type="submit" value="<spring:message code="button.login" /> " tabindex="3">
+            <input id="submit" type="submit" value="<spring:message code="button.login" /> " tabindex="3">
         </p>
     </fieldset>
 </form:form>
