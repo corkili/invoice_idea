@@ -1,7 +1,10 @@
 package org.invoice.service;
 
+import org.invoice.dao.UserDao;
 import org.invoice.model.Authority;
 import org.invoice.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,8 +13,11 @@ import java.util.List;
 /**
  * Created by 李浩然 on 2017/4/8.
  */
-@Service("UserService")
+@Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserDao userDao;
 
     private List<User> allUsers;
 
@@ -29,12 +35,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByUserName(String userName) {
+    public User findUserByUserName(String username) {
         for (User allUser : allUsers) {
-            if (allUser.getUsername().equals(userName))
+            if (allUser.getUsername().equals(username))
                 return allUser;
         }
         return null;
+    }
+
+    @Override
+    public User findUserByUserNameFromDB(String username) {
+        return userDao.findUserByUserName(username);
+    }
+
+    @Override
+    public User findUserByUserNameAndPasswordFromDB(String username, String password) {
+        return userDao.findUserByUsernameAndPassword(username, password);
     }
 
     @Override

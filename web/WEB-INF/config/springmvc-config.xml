@@ -14,7 +14,8 @@
 
     <context:component-scan base-package="org.invoice.action"/>
     <context:component-scan base-package="org.invoice.service"/>
-
+    <context:component-scan base-package="org.invoice.dao" />
+    <context:component-scan base-package="org.invoice.validator" />
 
     <mvc:annotation-driven/>
     <mvc:resources mapping="/css/**" location="/css/"/>
@@ -47,7 +48,7 @@
         <property name="initialSize" value="${jdbc.initialSize}"/>
         <property name="maxIdle" value="${jdbc.maxIdle}"/>
         <property name="minIdle" value="${jdbc.minIdle}"/>
-        <property name="timeBetweenEvictionRunsMillis"     value="${jdbc.timeBetweenEvictionRunsMillis}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}"/>
         <property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}"/>
         <property name="testOnBorrow" value="${jdbc.testOnBorrow}"/>
         <property name="validationQuery" value="${jdbc.validationQuery}"/>

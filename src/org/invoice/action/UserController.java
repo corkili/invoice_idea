@@ -36,22 +36,17 @@ public class UserController {
                                            BindingResult bindingResult, Model model,
                                            RedirectAttributes redirectAttributes) {
         logger.info("validate Login Information");
-        LoginValidator loginValidator = new LoginValidator();
+        LoginValidator loginValidator = new LoginValidator(userService);
         loginValidator.validate(user, bindingResult);
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             FieldError fieldError = bindingResult.getFieldError();
-            logger.info("Code: " + fieldError.getCode() + ", field: " + fieldError.getField());
-
-            return "redirect:/login/loginForm";
+            logger.info("Code:" + fieldError.getCode() + ", field" + fieldError.getField());
+            return "loginForm";
         }
-        if(userService.validateUserLoginInformation(user)) {
-            model.addAttribute("user", user);
-            redirectAttributes.addFlashAttribute("message", "Login successful!");
-            return "redirect:/main";
-        } else {
-            redirectAttributes.addFlashAttribute("message", "Information not match!");
-            return "redirect:/login";
-        }
+        redirectAttributes.addFlashAttribute("message", "Login successful!");
+        model.addAttribute("user", userService.findUserByUserNameAndPasswordFromDB(
+                user.getUsername(), user.getPassword()));
+        return "redirect:/main";
     }
 
     @RequestMapping(value = "/main")
