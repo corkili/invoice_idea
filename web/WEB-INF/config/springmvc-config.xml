@@ -16,6 +16,7 @@
     <context:component-scan base-package="org.invoice.service"/>
     <context:component-scan base-package="org.invoice.dao" />
     <context:component-scan base-package="org.invoice.validator" />
+    <context:property-placeholder location="classpath:*.properties" file-encoding="UTF-8" />
 
     <mvc:annotation-driven/>
     <mvc:resources mapping="/css/**" location="/css/"/>

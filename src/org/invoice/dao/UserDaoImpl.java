@@ -5,7 +5,6 @@ import org.invoice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -40,11 +39,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByUsernameAndPassword(String username, String password) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("select ").append(COL_USER_ID).append(',').append(COL_USERNAME).append(',')
-                .append(COL_PASSWORD).append(',').append(COL_AUTHORITY).append(" from ").append(TABLE_USER)
-                .append(" where ").append(COL_USERNAME).append("=?").append(" and ").append(COL_PASSWORD).append("=?");
-        String sql = stringBuilder.toString();
+        String sql = "select " + COL_USER_ID + ',' + COL_USERNAME + ',' +
+                COL_PASSWORD + ',' + COL_AUTHORITY + " from " + TABLE_USER +
+                " where " + COL_USERNAME + "=?" + " and " + COL_PASSWORD + "=?";
         logger.info("sql: " + sql);
         User user = null;
         try {
@@ -55,5 +52,30 @@ public class UserDaoImpl implements UserDao {
         }
         return user;
     }
+
+    @Override
+    public void addUser(User user) {
+        String sql = "insert into " + TABLE_USER + " (" + COL_USERNAME + "," + COL_PASSWORD + ","
+                + COL_AUTHORITY + ") values(?,?,?)";
+        logger.info("sql: " + sql);
+        try {
+            jdbcTemplate.update(sql, new Object[]{user.getUsername(), user.getPassword(), user.getAuthority()});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateUser(User user) {
+        String sql = "update " + TABLE_USER + " set " + COL_USERNAME + "=?," + COL_PASSWORD + "=?,"
+                + COL_AUTHORITY + "=? where " + COL_USER_ID + "=?";
+        logger.info("sql: " + sql);
+        try {
+            jdbcTemplate.update(sql, new Object[]{user.getUsername(), user.getPassword(), user.getAuthority(),user.getUserId()});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

@@ -10,6 +10,6 @@ import java.util.Map;
  */
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
-    private Map<String, Invoice> outcomeInvoices;   // 出项发票列表
+    private Map<String, Invoice> outputInvoices;   // 出项发票列表
     private Map<String, Invoice> incomeInvoices;    // 进项发票列表
 }
