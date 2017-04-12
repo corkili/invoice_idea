@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +25,7 @@
                 <c:when test="${not empty invoice}">
                     <p>发票号码: ${invoice.invoiceId}</p>
                     <p>发票编码: ${invoice.invoiceCode}</p>
-                    <p>开票日期: ${invoice.invoiceDate}</p>
+                    <p>开票日期: <fmt:formatDate value="${invoice.invoiceDate}" pattern="yyyy-MM-dd"/> </p>
                     <p>买方名称: ${invoice.buyerName}</p>
                     <p>买方纳税人识别号: ${invoice.buyerId}</p>
                     <p>卖方名称: ${invoice.sellerName}</p>

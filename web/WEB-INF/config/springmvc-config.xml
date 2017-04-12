@@ -16,9 +16,10 @@
     <context:component-scan base-package="org.invoice.service"/>
     <context:component-scan base-package="org.invoice.dao" />
     <context:component-scan base-package="org.invoice.validator" />
+    <context:component-scan base-package="org.invoice.formatter" />
     <context:property-placeholder location="classpath:*.properties" file-encoding="UTF-8" />
 
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven conversion-service="conversionService"/>
     <mvc:resources mapping="/css/**" location="/css/"/>
     <mvc:resources mapping="/*.html" location="/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
@@ -59,4 +60,14 @@
         <property name="dataSource" ref="databaseSource"/>
     </bean>
 
+    <bean id="conversionService"
+          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="formatters">
+            <set>
+                <bean class="org.invoice.formatter.DateFormatter">
+                    <constructor-arg type="java.lang.String" value="MM-dd-yyyy"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
 </beans>

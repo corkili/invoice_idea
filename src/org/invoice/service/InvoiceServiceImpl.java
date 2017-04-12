@@ -5,6 +5,7 @@ import org.invoice.model.Invoice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     private Map<String, Invoice> incomeInvoices;    // 进项发票列表
 
     @Override
-    public List<Invoice> test(String invoiceId) {
-        return invoiceDao.findInvoiceByInvoiceId(invoiceId);
+    public List<Invoice> test(Date invoiceId) {
+        return invoiceDao.findInvoicesByDate(invoiceId);
     }
 }

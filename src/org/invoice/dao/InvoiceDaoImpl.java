@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,69 +50,53 @@ public class InvoiceDaoImpl implements InvoiceDao {
     }
 
     @Override
-    public List<Invoice> findInvoiceByInvoiceId(String invoiceId) {
-        List<Invoice> result = new ArrayList<>();
-        String sql = getSelectFromInvoiceBaseSql() + "where " + COL_INVOICE_ID + "=?";
-        Invoice invoice = null;
-        try {
-            RowMapper<Invoice> invoiceRowMapper = new BeanPropertyRowMapper<Invoice>(Invoice.class);
-            RowMapper<InvoiceDetail> detailRowMapper = new BeanPropertyRowMapper<InvoiceDetail>(InvoiceDetail.class);
-            invoice = jdbcTemplate.queryForObject(sql, invoiceRowMapper, invoiceId);
-            if(invoice != null) {
-                sql = getSelectFromDetailBaseSql() + "where " + COL_INVOICE_ID + "=?";
-                List<InvoiceDetail> details = jdbcTemplate.query(sql, detailRowMapper, invoice.getInvoiceId());
-                invoice.setDetails(details);
-                result.add(invoice);
-            }
-        } catch (Exception e) {
-            // do nothing
-        }
-        return result;
+    public List<Invoice> findInvoicesByInvoiceId(String invoiceId) {
+        return findInvoices(COL_INVOICE_ID, invoiceId);
     }
 
     @Override
-    public List<Invoice> findInvoiceByInvoiceCode(String invoiceCode) {
-        return null;
+    public List<Invoice> findInvoicesByInvoiceCode(String invoiceCode) {
+        return findInvoices(COL_INVOICE_CODE, invoiceCode);
     }
 
     @Override
     public List<Invoice> findInvoicesByDate(Date date) {
-        return null;
+        return findInvoices(COL_INVOICE_DATE, new SimpleDateFormat("yyyy-MM-dd").format(date));
     }
 
     @Override
     public List<Invoice> findInvoicesByDate(Date startDate, Date endDate) {
-        return null;
+        return findInvoices(startDate, endDate);
     }
 
     @Override
     public List<Invoice> findInvoicesByBuyerName(String buyerName) {
-        return null;
+        return findInvoices(COL_BUYER_NAME, buyerName);
     }
 
     @Override
     public List<Invoice> findInvoicesByBuyerId(String buyerId) {
-        return null;
+        return findInvoices(COL_BUYER_ID, buyerId);
     }
 
     @Override
     public List<Invoice> findInvoicesBySellerName(String sellerName) {
-        return null;
+        return findInvoices(COL_SELLER_NAME, sellerName);
     }
 
     @Override
     public List<Invoice> findInvoicesBySellerId(String sellerId) {
-        return null;
+        return findInvoices(COL_SELLER_ID, sellerId);
     }
 
     @Override
     public List<Invoice> findInvoicesByTotalAmount(String totalAmount) {
-        return null;
+        return findInvoices(COL_TOTAL_AMOUNT, totalAmount);
     }
 
     @Override
     public List<Invoice> findInvoicesByTotalTax(String totalTax) {
-        return null;
+        return findInvoices(COL_TOTAL_TAX, totalTax);
     }
 
     private String getSelectFromInvoiceBaseSql() {
@@ -125,5 +110,47 @@ public class InvoiceDaoImpl implements InvoiceDao {
         return "select " + COL_INVOICE_ID + "," + COL_DETAIL_NAME + "," + COL_SPECIFICATION + ","
                 + COL_UNIT_NAME + "," + COL_QUANTITY + "," + COL_UNIT_PRICE + "," + COL_AMOUNT + ","
                 + COL_TAX_RATE + "," + COL_TAX_SUM + " from " + TABLE_DETAILES + " ";
+    }
+
+    private List<Invoice> findInvoices(String colName, String colValue) {
+        List<Invoice> invoices = null;
+        String sql = getSelectFromInvoiceBaseSql() + "where " + colName + "=?";
+        try {
+            RowMapper<Invoice> invoiceRowMapper = new BeanPropertyRowMapper<>(Invoice.class);
+            invoices = jdbcTemplate.query(sql, invoiceRowMapper, colValue);
+
+            if(!invoices.isEmpty()) {
+                findAndSetDetails(invoices);
+            }
+        } catch (Exception e) {
+            // do nothing
+        }
+        return invoices;
+    }
+
+    private List<Invoice> findInvoices(Date start, Date end) {
+        List<Invoice> invoices = null;
+        String sql = getSelectFromInvoiceBaseSql() + "where " + COL_INVOICE_DATE + "between ? and ?";
+        try {
+            RowMapper<Invoice> invoiceRowMapper = new BeanPropertyRowMapper<Invoice>(Invoice.class);
+
+            invoices = jdbcTemplate.query(sql, invoiceRowMapper, start, end);
+
+            if(!invoices.isEmpty()) {
+                findAndSetDetails(invoices);
+            }
+        } catch (Exception e) {
+            // do nothing
+        }
+        return invoices;
+    }
+
+    private void findAndSetDetails(List<Invoice> invoices) {
+        String sql = getSelectFromDetailBaseSql() + "where " + COL_INVOICE_ID + "=?";
+        RowMapper<InvoiceDetail> detailRowMapper = new BeanPropertyRowMapper<>(InvoiceDetail.class);
+        for(Invoice invoice : invoices) {
+            List<InvoiceDetail> details = jdbcTemplate.query(sql, detailRowMapper, invoice.getInvoiceId());
+            invoice.setDetails(details);
+        }
     }
 }

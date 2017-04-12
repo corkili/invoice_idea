@@ -35,8 +35,8 @@ public interface InvoiceDao {
 
     public void addInvoice(Invoice invoice);
 
-    public List<Invoice> findInvoiceByInvoiceId(final String invoiceId);
-    public List<Invoice> findInvoiceByInvoiceCode(final String invoiceCode);
+    public List<Invoice> findInvoicesByInvoiceId(final String invoiceId);
+    public List<Invoice> findInvoicesByInvoiceCode(final String invoiceCode);
     public List<Invoice> findInvoicesByDate(final Date date);
     public List<Invoice> findInvoicesByDate(final Date startDate, final Date endDate);
     public List<Invoice> findInvoicesByBuyerName(final String buyerName);
