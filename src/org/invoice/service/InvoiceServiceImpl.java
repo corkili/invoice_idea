@@ -24,4 +24,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     public List<Invoice> test(Date invoiceId) {
         return invoiceDao.findInvoicesByDate(invoiceId);
     }
+
+    @Override
+    public void addInvoice(Invoice invoice) {
+        invoiceDao.addInvoice(invoice);
+    }
+
+    @Override
+    public void addInvoices(List<Invoice> invoices) {
+        invoiceDao.addInvoice(invoices);
+    }
 }

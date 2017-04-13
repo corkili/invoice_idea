@@ -10,9 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by 李浩然 on 2017/4/12.
@@ -35,7 +33,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
         List<InvoiceDetail> details = invoice.getDetails();
         List<Object[]> batchArgs = new ArrayList<>();
         for(InvoiceDetail detail : details) {
-            batchArgs.add(getInsertIntoDetailParams(invoice, detail));
+            batchArgs.add(getInsertIntoDetailParams(detail));
         }
         logger.info("count: " + batchArgs.size() + " , sql: " + detailSql);
         jdbcTemplate.batchUpdate(detailSql, batchArgs);
@@ -46,6 +44,37 @@ public class InvoiceDaoImpl implements InvoiceDao {
         for(Invoice invoice : invoices) {
             addInvoice(invoice);
         }
+    }
+
+    @Override
+    public void deleteInvoice(Invoice invoice) {
+        String invoiceSql = getDeleteFromInvoiceSql();
+        String detailSql = getDeleteFromDetailSql();
+        logger.info("sql: " + invoiceSql);
+        jdbcTemplate.update(invoiceSql, invoice.getInvoiceId());
+        logger.info("sql: " + detailSql);
+        jdbcTemplate.update(detailSql, invoice.getInvoiceId());
+    }
+
+    @Override
+    public void deleteInvoice(List<Invoice> invoices) {
+        for(Invoice invoice : invoices) {
+            deleteInvoice(invoice);
+        }
+    }
+
+    @Override
+    public void updateInvoice(Invoice invoice) {
+        String invoiceSql =getUpdateInvoiceSql();
+        logger.info("sql: " + invoiceSql);
+        jdbcTemplate.update(invoiceSql, getUpdateInvoiceParams(invoice));
+        updateDetailsOfInvoice(invoice);
+    }
+
+    @Override
+    public void updateInvoice(List<Invoice> invoices) {
+        for(Invoice invoice : invoices)
+            updateInvoice(invoice);
     }
 
     @Override
@@ -146,7 +175,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
     }
 
     private String getSelectFromDetailBaseSql() {
-        return "select " + COL_INVOICE_ID + "," + COL_DETAIL_NAME + "," + COL_SPECIFICATION + ","
+        return "select " + COL_DETAIL_ID + "," + COL_INVOICE_ID + "," + COL_DETAIL_NAME + "," + COL_SPECIFICATION + ","
                 + COL_UNIT_NAME + "," + COL_QUANTITY + "," + COL_UNIT_PRICE + "," + COL_AMOUNT + ","
                 + COL_TAX_RATE + "," + COL_TAX_SUM + " from " + TABLE_DETAILES + " ";
     }
@@ -164,6 +193,26 @@ public class InvoiceDaoImpl implements InvoiceDao {
                 + COL_AMOUNT + "," + COL_TAX_RATE + "," + COL_TAX_SUM + ") values(?,?,?,?,?,?,?,?,?)";
     }
 
+    private String getDeleteFromInvoiceSql() {
+        return "delete from " + TABLE_INVOICE + " where " + COL_INVOICE_ID + "=?";
+    }
+
+    private String getDeleteFromDetailSql() {
+        return "delete from " + TABLE_DETAILES + " where " + COL_INVOICE_ID + "=?";
+    }
+
+    private String getUpdateInvoiceSql() {
+        return "update " + TABLE_INVOICE + " set " + COL_BUYER_NAME + "=?," + COL_BUYER_ID + "=?,"
+                + COL_SELLER_NAME + "=?," + COL_SELLER_ID + "=?," + COL_TOTAL_AMOUNT + "=?," + COL_TOTAL_TAX + "=?,"
+                + COL_TOTAL + "=?," + COL_REMARK + "=? where " + COL_INVOICE_ID + "=?";
+    }
+
+    private String getUpdateDetailSql() {
+        return "update " + TABLE_DETAILES + " set " + COL_DETAIL_NAME + "=?," + COL_SPECIFICATION + "=?,"
+                + COL_UNIT_NAME + "=?," + COL_QUANTITY + "=?," + COL_UNIT_PRICE + "=?," + COL_AMOUNT + "=?,"
+                + COL_TAX_RATE + "=?," + COL_TAX_SUM + "=? where " + COL_INVOICE_ID + "=? and " + COL_DETAIL_ID + "=?";
+    }
+
     private Object[] getInsertIntoInvoiceParams(Invoice invoice) {
         return new Object[]{ invoice.getInvoiceId(), invoice.getInvoiceCode(),
                 invoice.getInvoiceDate(), invoice.getBuyerName(), invoice.getBuyerId(), invoice.getSellerName(),
@@ -171,10 +220,22 @@ public class InvoiceDaoImpl implements InvoiceDao {
                 invoice.getRemark() };
     }
 
-    private Object[] getInsertIntoDetailParams(Invoice invoice, InvoiceDetail detail) {
-        return new Object[]{ invoice.getInvoiceId(), detail.getDetailName(), detail.getSpecification(),
+    private Object[] getInsertIntoDetailParams(InvoiceDetail detail) {
+        return new Object[]{ detail.getInvoiceId(), detail.getDetailName(), detail.getSpecification(),
                 detail.getUnitName(), detail.getQuantity(), detail.getUnitPrice(), detail.getAmount(),
                 detail.getTaxRate(), detail.getTaxSum() };
+    }
+
+    private Object[] getUpdateInvoiceParams(Invoice invoice) {
+        return new Object[]{ invoice.getBuyerName(), invoice.getBuyerId(), invoice.getSellerName(),
+                invoice.getSellerId(), invoice.getTotalAmount(), invoice.getTotalTax(), invoice.getTotal(),
+                invoice.getRemark(), invoice.getInvoiceId() };
+    }
+
+    private Object[] getUpdateDetailParams(InvoiceDetail detail) {
+        return new Object[]{ detail.getDetailName(), detail.getSpecification(), detail.getUnitName(),
+                detail.getQuantity(), detail.getUnitPrice(), detail.getAmount(),
+                detail.getTaxRate(), detail.getTaxSum(), detail.getInvoiceId(), detail.getDetailId() };
     }
 
     private List<Invoice> findInvoices(String colName, String colValue) {
@@ -251,5 +312,81 @@ public class InvoiceDaoImpl implements InvoiceDao {
     private List<Invoice> findInvoicesBody(String sql, Object[] params) throws Exception {
         RowMapper<Invoice> invoiceRowMapper = new BeanPropertyRowMapper<>(Invoice.class);
         return jdbcTemplate.query(sql, invoiceRowMapper, params);
+    }
+
+    private List<InvoiceDetail> findDetails(Invoice invoice) {
+        String sql = getSelectFromDetailBaseSql() + "where " + COL_INVOICE_ID + "=?";
+        RowMapper<InvoiceDetail> detailRowMapper = new BeanPropertyRowMapper<>(InvoiceDetail.class);
+        List<InvoiceDetail> details = null;
+        try {
+            details = jdbcTemplate.query(sql, detailRowMapper, invoice.getInvoiceId());
+        } catch (Exception e) {
+            details = new ArrayList<>();
+        }
+        return details;
+    }
+
+    private Map<Long, InvoiceDetail> getDetailsMapWithIdKeyByList(List<InvoiceDetail> details) {
+        Map<Long, InvoiceDetail> detailsMap = new HashMap<>();
+        for(InvoiceDetail detail : details) {
+            detailsMap.put(detail.getDetailId(), detail);
+        }
+        return detailsMap;
+    }
+
+    private void updateDetailsOfInvoice(Invoice invoice) {
+        List<InvoiceDetail> oldDetails = findDetails(invoice);
+        int oldCount = oldDetails.size();
+        int newCount = invoice.getDetails().size();
+
+        Map<Long, InvoiceDetail> oldDetailsMap = getDetailsMapWithIdKeyByList(oldDetails);
+        Map<Long, InvoiceDetail> newDetailsMap = getDetailsMapWithIdKeyByList(invoice.getDetails());
+
+        List<InvoiceDetail> updateDetails = new ArrayList<>();
+        List<InvoiceDetail> addDetails = new ArrayList<>();
+        List<InvoiceDetail> deleteDetails = new ArrayList<>();
+
+        for(InvoiceDetail detail : invoice.getDetails()) {
+            if(detail.getDetailId() == InvoiceDetail.EMPTY_DETAIL_ID)
+                addDetails.add(detail);
+            else
+                updateDetails.add(detail);
+        }
+        for(InvoiceDetail detail : oldDetails) {
+            if(newDetailsMap.get(detail.getDetailId()) == null) {
+                deleteDetails.add(detail);
+            }
+        }
+
+        addDetails(addDetails);
+        deleteDetails(deleteDetails);
+        updateDetails(updateDetails);
+    }
+
+    private void addDetails(List<InvoiceDetail> details) {
+        String sql = getInsertIntoDetailSql();
+        List<Object[]> batchArgs = new ArrayList<>();
+        for(InvoiceDetail detail : details) {
+            batchArgs.add(getInsertIntoDetailParams(detail));
+        }
+        jdbcTemplate.batchUpdate(sql, batchArgs);
+    }
+
+    private void deleteDetails(List<InvoiceDetail> details) {
+        String sql = "delete from " + TABLE_DETAILES + " where " + COL_DETAIL_ID + "=?";
+        List<Object[]> batchArgs = new ArrayList<>();
+        for(InvoiceDetail detail : details) {
+            batchArgs.add(new Object[]{ detail.getDetailId() });
+        }
+        jdbcTemplate.batchUpdate(sql, batchArgs);
+    }
+
+    private void updateDetails(List<InvoiceDetail> details) {
+        String sql = getUpdateDetailSql();
+        List<Object[]> batchArgs = new ArrayList<>();
+        for(InvoiceDetail detail : details) {
+            batchArgs.add(getUpdateDetailParams(detail));
+        }
+        jdbcTemplate.batchUpdate(sql, batchArgs);
     }
 }

@@ -9,6 +9,8 @@ import java.io.Serializable;
 @Entity
 public class InvoiceDetail implements Serializable {
     private static final long serialVersionUID = -7556430720495004066L;
+    public static final long EMPTY_DETAIL_ID = 0;
+    private long detailId;                  // 明细编号
     private String invoiceId;               // 发票号码
     private String detailName;              // 明细名称
     private String specification;           // 规格型号
@@ -89,5 +91,13 @@ public class InvoiceDetail implements Serializable {
 
     public void setTaxSum(double taxSum) {
         this.taxSum = taxSum;
+    }
+
+    public long getDetailId() {
+        return detailId;
+    }
+
+    public void setDetailId(long detailId) {
+        this.detailId = detailId;
     }
 }

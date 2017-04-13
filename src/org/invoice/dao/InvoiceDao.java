@@ -24,6 +24,7 @@ public interface InvoiceDao {
     public static final String COL_TOTAL = "total";
     public static final String COL_REMARK = "remark";
 
+    public static final String COL_DETAIL_ID = "detail_id";
     public static final String COL_DETAIL_NAME = "detail_name";
     public static final String COL_SPECIFICATION = "specification";
     public static final String COL_UNIT_NAME = "unit_name";
@@ -33,9 +34,19 @@ public interface InvoiceDao {
     public static final String COL_TAX_RATE = "tax_rate";
     public static final String COL_TAX_SUM = "tax_sum";
 
+    // 添加
     public void addInvoice(Invoice invoice);
     public void addInvoice(List<Invoice> invoices);
 
+    // 删除
+    public void deleteInvoice(Invoice invoice);
+    public void deleteInvoice(List<Invoice> invoices);
+
+    // 更新
+    public void updateInvoice(Invoice invoice);
+    public void updateInvoice(List<Invoice> invoices);
+
+    // 查询
     public List<Invoice> findInvoicesByInvoiceId(final String invoiceId);
     public List<Invoice> findInvoicesByInvoiceCode(final String invoiceCode);
     public List<Invoice> findInvoicesByDate(final Date date);

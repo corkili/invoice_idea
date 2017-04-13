@@ -43,6 +43,7 @@
                 <c:when test="${not empty invoice and not empty invoice.details}">
                     <c:forEach var="detail" items="${invoice.details}" varStatus="detailStatus">
                         <p>${detailStatus.count}> <br/></p>
+                        <p>明细编号: ${detail.detailId}</p>
                         <p>明细名称: ${detail.detailName}</p>
                         <p>规格型号: ${detail.specification}</p>
                         <p>单位: ${detail.unitName}</p>
