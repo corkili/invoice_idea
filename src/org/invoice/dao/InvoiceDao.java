@@ -34,15 +34,26 @@ public interface InvoiceDao {
     public static final String COL_TAX_SUM = "tax_sum";
 
     public void addInvoice(Invoice invoice);
+    public void addInvoice(List<Invoice> invoices);
 
     public List<Invoice> findInvoicesByInvoiceId(final String invoiceId);
     public List<Invoice> findInvoicesByInvoiceCode(final String invoiceCode);
     public List<Invoice> findInvoicesByDate(final Date date);
-    public List<Invoice> findInvoicesByDate(final Date startDate, final Date endDate);
+    public List<Invoice> findInvoicesByDateRange(final Date startDate, final Date endDate);
     public List<Invoice> findInvoicesByBuyerName(final String buyerName);
     public List<Invoice> findInvoicesByBuyerId(final String buyerId);
     public List<Invoice> findInvoicesBySellerName(final String sellerName);
     public List<Invoice> findInvoicesBySellerId(final String sellerId);
     public List<Invoice> findInvoicesByTotalAmount(final String totalAmount);
     public List<Invoice> findInvoicesByTotalTax(final String totalTax);
+
+    public List<Invoice> findInvoicesByDateAndBuyerName(final Date date, final String buyerName);
+    public List<Invoice> findInvoicesByDateAndBuyerId(final Date date, final String buyerId);
+    public List<Invoice> findInvoicesByDateRangeAndBuyerName(final Date startDate, final Date endDate, final String buyerName);
+    public List<Invoice> findInvoicesByDateRangeAndBuyerId(final Date startDate, final Date endDate, final String buyerId);
+
+    public List<Invoice> findInvoicesByDateAndSellerName(final Date date, final String sellerName);
+    public List<Invoice> findInvoicesByDateAndSellerId(final Date date, final String sellerId);
+    public List<Invoice> findInvoicesByDateRangeAndSellerName(final Date startDate, final Date endDate, final String sellerName);
+    public List<Invoice> findInvoicesByDateRangeAndSellerId(final Date startDate, final Date endDate, final String sellerId);
 }

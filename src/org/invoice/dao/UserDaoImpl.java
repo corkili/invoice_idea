@@ -21,11 +21,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByUserName(String username) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("select ").append(COL_USER_ID).append(',').append(COL_USERNAME).append(',')
-                .append(COL_PASSWORD).append(',').append(COL_AUTHORITY).append(" from ").append(TABLE_USER)
-                .append(" where ").append(COL_USERNAME).append("=?");
-        String sql = stringBuilder.toString();
+        String sql = "select " + COL_USER_ID + ',' + COL_USERNAME + ',' +
+                COL_PASSWORD + ',' + COL_AUTHORITY + " from " + TABLE_USER +
+                " where " + COL_USERNAME + "=?";
         logger.info("sql: " + sql);
         User user = null;
         try {
