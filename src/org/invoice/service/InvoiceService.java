@@ -11,6 +11,7 @@ import java.util.List;
 public interface InvoiceService {
     public List<Invoice> test(Date invoiceId);
 
+    // 增加
     public void addInvoice(Invoice invoice);
     public void addInvoices(List<Invoice> invoices);
 

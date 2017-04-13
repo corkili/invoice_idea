@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
+
 
 /**
  * 用户控制器
@@ -40,7 +42,7 @@ public class UserController {
 
     @RequestMapping(value = "/login", name = "登录", method = RequestMethod.POST)
     public String validateLoginInformation(@ModelAttribute("user") User user,
-                                           BindingResult bindingResult,
+                                           BindingResult bindingResult, HttpSession session,
                                            RedirectAttributes redirectAttributes) {
         logger.info("validate Login Information");
         LoginValidator loginValidator = new LoginValidator(userService);
@@ -53,6 +55,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message", "Login successful!");
             redirectAttributes.addFlashAttribute("user", userService.findUserByUserNameAndPasswordFromDB(
                     user.getUsername(), user.getPassword()));
+            session.setAttribute("user", user);
             return "redirect:/main";
         }
 
