@@ -22,12 +22,12 @@
         <form:hidden path="authority" value="0" userId="authority" name="authority" />
         <p>
             <label for="username"><spring:message code="label.username" /></label>
-            <form:input path="username" userId="username" name="username" cssErrorClass="error" />
+            <form:input path="username" id="username" name="username" cssErrorClass="error" />
             <form:errors path="username"/>
         </p>
         <p>
             <label for="password"><spring:message code="label.password" /></label>
-            <form:input path="password" userId="password" name="password" cssErrorClass="error" />
+            <form:input path="password" id="password" name="password" cssErrorClass="error" />
             <form:errors path="password" />
         </p>
         <p>

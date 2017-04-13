@@ -1,6 +1,8 @@
 package org.invoice.action;
 
+import org.apache.log4j.Logger;
 import org.invoice.model.Invoice;
+import org.invoice.model.InvoiceDetail;
 import org.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,8 @@ public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
 
+    private Logger logger = Logger.getLogger(InvoiceController.class);
+
     @RequestMapping(value = "/test")
     public ModelAndView test(@RequestParam("condition") String condition) {
         List<Invoice> invoice = null;
@@ -36,14 +40,18 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "/add_invoice_hand", method = RequestMethod.GET)
-    public ModelAndView addInvoiceByHandInput() {
+    public ModelAndView addInvoiceByHandInput(@RequestParam("detail_num") int detailNum) {
         ModelAndView modelAndView = new ModelAndView("addInvoiceHandForm");
         modelAndView.addObject("invoice", new Invoice());
+        modelAndView.addObject("detail_num", detailNum);
         return modelAndView;
     }
 
     @RequestMapping(value = "/save_invoice", method = RequestMethod.POST)
-    public ModelAndView saveInvoice(@ModelAttribute("invoice") Invoice invoice) {
+    public ModelAndView saveInvoice(@ModelAttribute Invoice invoice) {
+        logger.info("save invoice");
+        for(InvoiceDetail detail : invoice.getDetails())
+            detail.setInvoiceId(invoice.getInvoiceId());
         invoiceService.addInvoice(invoice);
         return new ModelAndView("redirect:/main");
     }

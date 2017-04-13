@@ -188,7 +188,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
     }
 
     private String getInsertIntoDetailSql() {
-        return "insert into " + TABLE_DETAILES + " (" + "," + COL_INVOICE_ID + "," + COL_DETAIL_NAME + ","
+        return "insert into " + TABLE_DETAILES + " (" + COL_INVOICE_ID + "," + COL_DETAIL_NAME + ","
                 + COL_SPECIFICATION + "," + COL_UNIT_NAME + "," + COL_QUANTITY + "," + COL_UNIT_PRICE + ","
                 + COL_AMOUNT + "," + COL_TAX_RATE + "," + COL_TAX_SUM + ") values(?,?,?,?,?,?,?,?,?)";
     }

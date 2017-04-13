@@ -65,7 +65,7 @@
         <property name="formatters">
             <set>
                 <bean class="org.invoice.formatter.DateFormatter">
-                    <constructor-arg type="java.lang.String" value="MM-dd-yyyy"/>
+                    <constructor-arg type="java.lang.String" value="yyyy-MM-dd"/>
                 </bean>
             </set>
         </property>

@@ -29,7 +29,7 @@
                     <p>买方名称: ${invoice.buyerName}</p>
                     <p>买方纳税人识别号: ${invoice.buyerId}</p>
                     <p>卖方名称: ${invoice.sellerName}</p>
-                    <p>卖方纳税人识别号: ${invoice.sellerName}</p>
+                    <p>卖方纳税人识别号: ${invoice.sellerId}</p>
                     <p>合计金额: ${invoice.totalAmount}</p>
                     <p>合计税额: ${invoice.totalTax}</p>
                     <p>税价合计: ${invoice.total}</p>

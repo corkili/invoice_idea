@@ -2,6 +2,7 @@ package org.invoice.model;
 
 import javax.persistence.Entity;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,10 @@ public class Invoice implements Serializable {
     private double total;                   // 税价合计
     private String remark;                  // 备注
     private List<InvoiceDetail> details;    // 发票明细
+
+    public Invoice(){
+        details = new ArrayList<>();
+    }
 
     public String getInvoiceId() {
         return invoiceId;
