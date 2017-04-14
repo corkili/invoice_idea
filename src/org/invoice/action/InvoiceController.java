@@ -53,6 +53,6 @@ public class InvoiceController {
         for(InvoiceDetail detail : invoice.getDetails())
             detail.setInvoiceId(invoice.getInvoiceId());
         invoiceService.addInvoice(invoice);
-        return new ModelAndView("redirect:/main");
+        return new ModelAndView("redirect:/test?condition=" + new SimpleDateFormat("yyyy-MM-dd").format(invoice.getInvoiceDate()));
     }
 }
