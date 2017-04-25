@@ -28,6 +28,8 @@
         <p>
             <label for="password"><spring:message code="label.password" /></label>
             <form:input path="password" id="password" name="password" cssErrorClass="error" />
+        </p>
+        <p>
             <form:errors path="password" />
         </p>
         <p>

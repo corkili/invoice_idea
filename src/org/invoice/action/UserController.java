@@ -53,8 +53,8 @@ public class UserController {
             return "loginForm";
         } else {
             redirectAttributes.addFlashAttribute("message", "Login successful!");
-            redirectAttributes.addFlashAttribute("user", userService.findUserByUserNameAndPasswordFromDB(
-                    user.getUsername(), user.getPassword()));
+            redirectAttributes.addFlashAttribute("user", userService.findUserByUserNameFromDB(
+                    user.getUsername()));
             session.setAttribute("user", user);
             return "redirect:/main";
         }

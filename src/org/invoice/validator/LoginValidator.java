@@ -46,16 +46,10 @@ public class LoginValidator implements Validator {
         if(userService == null) {
             logger.info("userService is null");
         }
-        User userTest = userService.findUserByUserNameFromDB(user.getUsername());
-        if (userTest == null) {
-            logger.info("validate: there is no user in database");
-            errors.rejectValue("username", "username.not_exists", "用户不存在");
-            return;
-        }
-        userTest = userService.findUserByUserNameAndPasswordFromDB(user.getUsername(), user.getPassword());
+        User userTest = userService.findUserByUserNameAndPasswordFromDB(user.getUsername(), user.getPassword());
         if (userTest == null) {
             logger.info("validate: password error!");
-            errors.rejectValue("password", "password.error", "密码错误");
+            errors.rejectValue("password", "login.error", "用户名与密码不匹配");
             return;
         }
     }
