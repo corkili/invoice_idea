@@ -31,7 +31,7 @@ public class UserController {
     @RequestMapping(value = "/login", name = "登录", method = RequestMethod.GET)
     public ModelAndView inputLoginInformation(@ModelAttribute("user") User user){
         logger.info("input Login Information");
-        ModelAndView modelAndView = new ModelAndView("loginForm");
+        ModelAndView modelAndView = new ModelAndView("login");
         if (user == null) {
             modelAndView.addObject("user", new User());
         } else {
@@ -50,7 +50,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             FieldError fieldError = bindingResult.getFieldError();
             logger.info("Code:" + fieldError.getCode() + ", field" + fieldError.getField());
-            return "loginForm";
+            return "login";
         } else {
             redirectAttributes.addFlashAttribute("message", "Login successful!");
             redirectAttributes.addFlashAttribute("user", userService.findUserByUserNameFromDB(
