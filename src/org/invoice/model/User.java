@@ -1,19 +1,24 @@
 package org.invoice.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import org.invoice.dao.UserDao;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import static org.invoice.model.Authority.*;
 /**
  * Created by ran on 06/04/17.
  */
 @Entity
+@Table(name = UserDao.TABLE_USER)
 public class User implements Serializable {
     private static final long serialVersionUID = 3692706551391721360L;
+    @Column(name = UserDao.COL_USER_ID)
     private int userId;
+    @Column(name = UserDao.COL_USERNAME)
     private String username;
+    @Column(name = UserDao.COL_PASSWORD)
     private String password;
+    @Column(name = UserDao.COL_AUTHORITY)
     private int authority;
 
     public User() {

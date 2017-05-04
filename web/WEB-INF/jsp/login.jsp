@@ -57,7 +57,8 @@
                         <form:errors path="password" />
                     </div>
                     <div>
-                        <input id="submit" type="submit" value="<spring:message code="button.login" /> " tabindex="3">
+                        <input id="submit" type="submit" class="btn btn-default submit"
+                               value="<spring:message code="button.login" /> " tabindex="3">
                     </div>
                     <div class="clearfix"></div>
                     <div class="separator">

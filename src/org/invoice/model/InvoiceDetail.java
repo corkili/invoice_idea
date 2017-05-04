@@ -1,24 +1,39 @@
 package org.invoice.model;
 
+import org.invoice.dao.InvoiceDao;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
  * Created by 李浩然 on 2017/4/12.
  */
 @Entity
+@Table(name = InvoiceDao.TABLE_DETAILES)
 public class InvoiceDetail implements Serializable {
     private static final long serialVersionUID = -7556430720495004066L;
     public static final long EMPTY_DETAIL_ID = 0;
+    @Column(name = InvoiceDao.COL_DETAIL_ID)
     private long detailId;                  // 明细编号
+    @Column(name = InvoiceDao.COL_INVOICE_ID)
     private String invoiceId;               // 发票号码
+    @Column(name = InvoiceDao.COL_DETAIL_NAME)
     private String detailName;              // 明细名称
+    @Column(name = InvoiceDao.COL_SPECIFICATION)
     private String specification;           // 规格型号
+    @Column(name = InvoiceDao.COL_UNIT_NAME)
     private String unitName;                // 单位
+    @Column(name = InvoiceDao.COL_QUANTITY)
     private int quantity;                   // 数量
+    @Column(name = InvoiceDao.COL_UNIT_PRICE)
     private double unitPrice;               // 单价
+    @Column(name = InvoiceDao.COL_AMOUNT)
     private double amount;                  // 金额
+    @Column(name = InvoiceDao.COL_TAX_RATE)
     private double taxRate;                 // 税率
+    @Column(name = InvoiceDao.COL_TAX_SUM)
     private double taxSum;                  // 税额
 
     public String getInvoiceId() {
