@@ -25,6 +25,7 @@
     <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
     <mvc:resources mapping="/vendors/**" location="/WEB-INF/vendors/"/>
     <mvc:resources mapping="/build/**" location="/WEB-INF/build/"/>
+    <mvc:resources mapping="/images/**" location="/WEB-INF/images/" />
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>

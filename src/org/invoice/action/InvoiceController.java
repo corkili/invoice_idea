@@ -40,8 +40,25 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "/add_invoice_hand", method = RequestMethod.GET)
-    public ModelAndView addInvoiceByHandInput(@RequestParam("detail_num") int detailNum) {
+    public ModelAndView addInvoiceByHandInput() {
+        ModelAndView modelAndView = new ModelAndView("invoice_input_hand");
+        modelAndView.addObject("invoice", new Invoice());
+        int detailNum = 0;
+        modelAndView.addObject("detail_num", detailNum);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/test_invoice_hand", method = RequestMethod.GET)
+    public ModelAndView testInvoiceByHandInput(@RequestParam("detail_num") int detailNum) {
         ModelAndView modelAndView = new ModelAndView("addInvoiceHandForm");
+        modelAndView.addObject("invoice", new Invoice());
+        modelAndView.addObject("detail_num", detailNum);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/add_invoice_hand", method = RequestMethod.POST)
+    public ModelAndView addInvoiceByHandInput(@RequestParam("detail_num") int detailNum) {
+        ModelAndView modelAndView = new ModelAndView("invoice_input_hand");
         modelAndView.addObject("invoice", new Invoice());
         modelAndView.addObject("detail_num", detailNum);
         return modelAndView;

@@ -21,16 +21,16 @@
     <title>Login</title>
 
     <!-- Bootstrap -->
-    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- Animate.css -->
-    <link href="/vendors/animate.css/animate.min.css" rel="stylesheet">
+    <link href="../vendors/animate.css/animate.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="/build/css/custom.min.css" rel="stylesheet">
+    <link href="../build/css/custom.min.css" rel="stylesheet">
 </head>
 
 <body class="login">
@@ -48,13 +48,12 @@
                     <div>
                         <form:input path="username" id="username" name="username" cssErrorClass="error"
                                     type="text" cssClass="form-control" placeholder="Username" required=""/>
+                        <br/><form:errors path="username" />
                     </div>
                     <div>
                         <form:input path="password" id="password" name="password" cssErrorClass="error"
                                     type="password" cssClass="form-control" placeholder="Password" required=""/>
-                    </div>
-                    <div>
-                        <form:errors path="password" />
+                        <br/><form:errors path="password" />
                     </div>
                     <div>
                         <input id="submit" type="submit" class="btn btn-default submit"
