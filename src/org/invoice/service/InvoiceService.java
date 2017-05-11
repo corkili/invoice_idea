@@ -15,5 +15,8 @@ public interface InvoiceService {
     public void addInvoice(Invoice invoice);
     public void addInvoices(List<Invoice> invoices);
 
+    // 获取发票
+    public Invoice getInvoice(String invoiceId);
+
 
 }

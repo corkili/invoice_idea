@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +26,8 @@ public class InvoiceController {
     private InvoiceService invoiceService;
 
     private Logger logger = Logger.getLogger(InvoiceController.class);
+
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @RequestMapping(value = "/test")
     public ModelAndView test(@RequestParam("condition") String condition) {
@@ -70,6 +73,15 @@ public class InvoiceController {
         for(InvoiceDetail detail : invoice.getDetails())
             detail.setInvoiceId(invoice.getInvoiceId());
         invoiceService.addInvoice(invoice);
-        return new ModelAndView("redirect:/test?condition=" + new SimpleDateFormat("yyyy-MM-dd").format(invoice.getInvoiceDate()));
+        return new ModelAndView("redirect:/save_result?id=" + invoice.getInvoiceId());
+    }
+
+    @RequestMapping(value = "/save_result")
+    public ModelAndView invoiceSaveResult(@RequestParam("id") String id) {
+        Invoice invoice = invoiceService.getInvoice(id);
+        ModelAndView modelAndView = new ModelAndView("invoice_save_result");
+        modelAndView.addObject("invoice", invoice);
+        modelAndView.addObject("save_date", dateFormat.format(new Date()));
+        return modelAndView;
     }
 }

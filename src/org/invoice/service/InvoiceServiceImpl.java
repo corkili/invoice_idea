@@ -34,4 +34,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void addInvoices(List<Invoice> invoices) {
         invoiceDao.addInvoice(invoices);
     }
+
+    @Override
+    public Invoice getInvoice(String invoiceId) {
+        List<Invoice> results = invoiceDao.findInvoicesByInvoiceId(invoiceId);
+        Invoice invoice = null;
+        if(results != null && results.size() > 0) {
+            invoice = results.get(0);
+        }
+        return invoice;
+    }
 }
