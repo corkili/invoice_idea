@@ -265,7 +265,6 @@
                                 <div class="x_content">
                                     <br />
                                     <%@ include file="invoice_form.jspf"%>
-
                                 </div>
                             </div>
                         </div>

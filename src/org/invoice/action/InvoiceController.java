@@ -8,10 +8,14 @@ import org.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -150,7 +154,44 @@ public class InvoiceController {
     @RequestMapping(value = "add_invoice_image", method = RequestMethod.GET)
     public ModelAndView addInvoiceByImage() {
         ModelAndView modelAndView = new ModelAndView("invoice_input_image");
-        modelAndView.addObject("success", false);
+        modelAndView.addObject("has_file", false);
+        modelAndView.addObject("has_error", false);
+        modelAndView.addObject("invoice", null);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "add_invoice_image", method = RequestMethod.POST)
+    public ModelAndView addInvoiceImage(HttpServletRequest request,
+                                        @RequestParam(value = "invoice_image", required = false) MultipartFile file) {
+        ModelAndView modelAndView = new ModelAndView("invoice_input_image");
+
+        String path = request.getSession().getServletContext().getRealPath("invoiceImage");
+        String fileName = file.getOriginalFilename();
+        logger.info(path + "\\" + fileName);
+        File targetFile = new File(path, fileName);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+
+        // save
+        try {
+            file.transferTo(targetFile);
+            Invoice invoice = new Invoice();
+            List<InvoiceDetail> details = new ArrayList<>();
+            // id
+            // code
+            // quantity
+            // unitPrice
+            // tax
+            // many set
+            modelAndView.addObject("invoice", invoice);
+            modelAndView.addObject("has_file", true);
+            modelAndView.addObject("has_error", false);
+        } catch (Exception e) {
+            logger.info("save failed");
+            modelAndView.addObject("has_file", false);
+            modelAndView.addObject("has_error", true);
+        }
         return modelAndView;
     }
 }
