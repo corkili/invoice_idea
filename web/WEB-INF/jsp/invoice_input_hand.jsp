@@ -98,18 +98,18 @@
                         <ul class="nav side-menu">
                             <li><a><i class="fa fa-home"></i> 首页 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="/main">首页</a></li>
+                                    <li><a href="main">首页</a></li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-edit"></i> 发票数据导入 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="/add_invoice_hand">手动导入</a></li>
-                                    <li><a href="invoice_input_image.html">图像导入</a></li>
+                                    <li><a href="add_invoice_hand">手动导入</a></li>
+                                    <li><a href="add_invoice_image">图像导入</a></li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-table"></i> 数据查询 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="/list_query">列表查询</a></li>
+                                    <li><a href="list_query">列表查询</a></li>
                                     <li><a href="chart_query.html">图表查询</a></li>
                                 </ul>
                             </li>
@@ -264,163 +264,8 @@
                                 </div>
                                 <div class="x_content">
                                     <br />
-                                    <form:form commandName="invoice" action="save_invoice" method="post" cssClass="form-horizontal form-label-left">
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" for="invoiceCode">
-                                                <spring:message code="invoice.code" />
-                                                <span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-2">
-                                                <form:input path="invoiceCode" id="invoiceCode" name="invoiceCode"
-                                                            cssClass="form-control col-md-2" required="required"/>
-                                            </div>
-                                            <label class="control-label col-md-2" for="invoiceId">
-                                                <spring:message code="invoice.id" />
-                                                <span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-2">
-                                                <form:input path="invoiceId" id="invoiceId" name="invoiceId"
-                                                            cssClass="form-control col-md-2" required="required"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-6" for="invoiceDate">
-                                                <spring:message code="invoice.date" />
-                                                <span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-2">
-                                                <form:input path="invoiceDate" id="invoiceDate" name="invoiceDate"
-                                                            cssClass="form-control col-md-2" required="required"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" for="buyerName">
-                                                （购贷单位）名称
-                                                <span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-6">
-                                                <form:input path="buyerName" id="buyerName" name="buyerName"
-                                                            cssClass="form-control col-md-6" required="required" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" for="buyerId">
-                                                （购贷单位）纳税人识别号
-                                            </label>
-                                            <div class="col-md-6">
-                                                <form:input path="buyerId" id="buyerId" name="buyerId"
-                                                            cssClass="form-control col-md-6"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-1">产品名称<span class="required">*</span></label>
-                                            <label class="control-label col-md-1">规格型号</label>
-                                            <label class="control-label col-md-1">单位</label>
-                                            <label class="control-label col-md-1">数量<span class="required">*</span></label>
-                                            <label class="control-label col-md-1">单价<span class="required">*</span></label>
-                                            <label class="control-label col-md-1">金额<span class="required">*</span></label>
-                                            <label class="control-label col-md-1">税率（小数）<span class="required">*</span></label>
-                                            <label class="control-label col-md-1">税额<span class="required">*</span></label>
-                                        </div>
+                                    <%@ include file="invoice_form.jspf"%>
 
-                                        <c:forEach var="i" begin="0" end="${detail_num-1}" step="1">
-                                            <div class="form-group">
-                                                <div class="col-md-1">
-                                                    <form:input path="details[${i}].detailName"
-                                                                cssClass="form-control col-md-1" required="required"/>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <form:input path="details[${i}].specification"
-                                                                cssClass="form-control col-md-1"/>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <form:input path="details[${i}].unitName"
-                                                                cssClass="form-control col-md-1"/>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <form:input path="details[${i}].quantity"
-                                                                cssClass="form-control col-md-1" required="required"/>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <form:input path="details[${i}].unitPrice"
-                                                                cssClass="form-control col-md-1" required="required"/>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <form:input path="details[${i}].amount"
-                                                                cssClass="form-control col-md-1" required="required"/>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <form:input path="details[${i}].taxRate"
-                                                                cssClass="form-control col-md-1" required="required"/>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <form:input path="details[${i}].taxSum"
-                                                                cssClass="form-control col-md-1" required="required"/>
-                                                </div>
-                                            </div>
-                                        </c:forEach>
-
-                                        <div class="form-group">
-                                            <label class="control-label col-md-5" for="totalAmount">
-                                                合计金额<span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-1">
-                                                <form:input path="totalAmount" id="totalAmount" name="totalAmount"
-                                                            cssClass="form-control col-md-1" required="required"/>
-                                            </div>
-                                            <label class="control-label col-md-1" for="totalTax">
-                                                合计税额<span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-1">
-                                                <form:input path="totalTax" id="totalTax" name="totalTax"
-                                                            cssClass="form-control col-md-1" required="required"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-6" for="total">
-                                                税价合计<span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-2">
-                                                <form:input path="total" id="total" name="total"
-                                                            cssClass="form-control col-md-2" required="required"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" for="sellerName">
-                                                （销贷单位）名称
-                                                <span class="required">*</span>
-                                            </label>
-                                            <div class="col-md-6">
-                                                <form:input path="sellerName" id="sellerName" name="sellerName"
-                                                            cssClass="form-control col-md-6" required="required" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" for="sellerId">
-                                                （销贷单位）纳税人识别号
-                                            </label>
-                                            <div class="col-md-6">
-                                                <form:input path="sellerId" id="sellerId" name="sellerId"
-                                                            cssClass="form-control col-md-6"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" for="remark">备注</label>
-                                            <div class="col-md-6">
-                                                <form:input path="remark" id="remark" name="remark"
-                                                            cssClass="form-control col-md-6"/>
-                                            </div>
-                                        </div>
-                                        <div class="ln_solid"></div>
-                                        <div class="form-group">
-                                            <div class="col-md-5 col-md-offset-3">
-                                                <input type="reset" class="btn btn-primary" value="<spring:message code="button.reset" />">
-                                                <input type="submit" class="btn btn-success" value="<spring:message code="button.submit" /> ">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </form:form>
                                 </div>
                             </div>
                         </div>

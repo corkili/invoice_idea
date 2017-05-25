@@ -76,18 +76,18 @@
                         <ul class="nav side-menu">
                             <li><a><i class="fa fa-home"></i> 首页 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="/main">首页</a></li>
+                                    <li><a href="main">首页</a></li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-edit"></i> 发票数据导入 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="/add_invoice_hand">手动导入</a></li>
-                                    <li><a href="invoice_input_image.html">图像导入</a></li>
+                                    <li><a href="add_invoice_hand">手动导入</a></li>
+                                    <li><a href="add_invoice_image">图像导入</a></li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-table"></i> 数据查询 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="/list_query">列表查询</a></li>
+                                    <li><a href="list_query">列表查询</a></li>
                                     <li><a href="chart_query.html">图表查询</a></li>
                                 </ul>
                             </li>
@@ -227,127 +227,8 @@
 
                                 <section class="content invoice">
                                     <!-- title row -->
-                                    <div class="row">
-                                        <div class="col-xs-12 invoice-header">
-                                            <h1>
-                                                <i class="fa fa-globe"></i> <spring:message code="title.invoice"/>
-                                                <small class="pull-right">${save_date}</small>
-                                            </h1>
-                                        </div>
-                                        <!-- /.col -->
-                                    </div>
-                                    <!-- info row -->
-                                    <div class="row invoice-info">
-                                        <div class="col-sm-4 invoice-col">
-                                            购贷方
-                                            <address>
-                                                <strong>${invoice.buyerName}</strong>
-                                                <c:if test="${not empty invoice.buyerId}">
-                                                    <br>纳税人识别号：${invoice.buyerId}
-                                                </c:if>
-                                            </address>
-                                        </div>
-                                        <!-- /.col -->
-                                        <div class="col-sm-4 invoice-col">
-                                            销贷方
-                                            <address>
-                                                <strong>${invoice.sellerName}</strong>
-                                                <c:if test="${not empty invoice.sellerId}">
-                                                    <br>纳税人识别号：${invoice.sellerId}
-                                                </c:if>
-                                            </address>
-                                        </div>
-                                        <!-- /.col -->
-                                        <div class="col-sm-4 invoice-col">
-                                            <b>Invoice #${invoice.invoiceCode}</b>
-                                            <br>
-                                            <br>
-                                            <b>Invoice No.${invoice.invoiceId}</b>
-                                            <br>
-                                            <br>
-                                            <b>开票日期：${invoice.invoiceDate}</b>
-                                            <br>
-                                        </div>
-                                        <!-- /.col -->
-                                    </div>
-                                    <!-- /.row -->
 
-                                    <!-- Table row -->
-                                    <div class="row">
-                                        <div class="col-xs-12 table">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th>产品名称</th>
-                                                    <th>规格型号</th>
-                                                    <th>单位</th>
-                                                    <th>数量</th>
-                                                    <th>单价</th>
-                                                    <th>金额</th>
-                                                    <th>税率</th>
-                                                    <th>税额</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <c:forEach var="detail" items="${invoice.details}" varStatus="detailStatus">
-                                                    <tr>
-                                                        <td>${detail.detailName}</td>
-                                                        <td>${detail.specification}</td>
-                                                        <td>${detail.unitName}</td>
-                                                        <td>${detail.quantity}</td>
-                                                        <td>${detail.unitPrice}</td>
-                                                        <td>${detail.amount}</td>
-                                                        <td>${detail.taxRate}</td>
-                                                        <td>${detail.taxSum}</td>
-                                                    </tr>
-                                                </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!-- /.col -->
-                                    </div>
-                                    <!-- /.row -->
-
-                                    <div class="row">
-                                        <!-- accepted payments column -->
-                                        <div class="col-xs-6">
-                                            <p class="lead">备注:</p>
-                                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                                                <c:choose>
-                                                    <c:when test="${not empty invoice.remark}">
-                                                        ${invoice.remark}
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        无
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </p>
-                                        </div>
-                                        <!-- /.col -->
-                                        <div class="col-xs-6">
-                                            <p class="lead">合计概览</p>
-                                            <div class="table-responsive">
-                                                <table class="table">
-                                                    <tbody>
-                                                    <tr>
-                                                        <th style="width:50%">合计金额</th>
-                                                        <td>￥${invoice.totalAmount}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>合计税额</th>
-                                                        <td>￥${invoice.totalTax}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>税价合计</th>
-                                                        <td>￥${invoice.total}</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <!-- /.col -->
-                                    </div>
-                                    <!-- /.row -->
+                                    <%@include file="invoice_element.jspf"%>
 
                                     <!-- this row will not appear when printing -->
                                     <div class="row no-print">

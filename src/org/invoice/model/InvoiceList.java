@@ -57,4 +57,8 @@ public class InvoiceList {
     public List<Invoice> getInvoiceList() {
         return invoiceList;
     }
+
+    public Invoice get(int index) {
+        return invoiceList.get(index);
+    }
 }

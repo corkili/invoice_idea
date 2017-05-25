@@ -70,18 +70,18 @@
                         <ul class="nav side-menu">
                             <li><a><i class="fa fa-home"></i> 首页 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="/main">首页</a></li>
+                                    <li><a href="main">首页</a></li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-edit"></i> 发票数据导入 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="/add_invoice_hand">手动导入</a></li>
-                                    <li><a href="invoice_input_image.html">图像导入</a></li>
+                                    <li><a href="add_invoice_hand">手动导入</a></li>
+                                    <li><a href="/add_invoice_image">图像导入</a></li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-table"></i> 数据查询 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="/list_query">列表查询</a></li>
+                                    <li><a href="list_query">列表查询</a></li>
                                     <li><a href="chart_query.html">图表查询</a></li>
                                 </ul>
                             </li>

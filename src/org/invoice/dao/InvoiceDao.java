@@ -67,4 +67,6 @@ public interface InvoiceDao {
     public List<Invoice> findInvoicesByDateAndSellerId(final Date date, final String sellerId);
     public List<Invoice> findInvoicesByDateRangeAndSellerName(final Date startDate, final Date endDate, final String sellerName);
     public List<Invoice> findInvoicesByDateRangeAndSellerId(final Date startDate, final Date endDate, final String sellerId);
+
+    public List<Invoice> findInvoicesByDateRangeAndNames(final String buyerName, final String sellerName, final Date startDate, final Date endDate);
 }

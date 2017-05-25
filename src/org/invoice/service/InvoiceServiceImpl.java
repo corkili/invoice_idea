@@ -51,7 +51,37 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public Invoice getInvoice(int userId, int index) {
+        return getInvoiceListByUserId(userId).get(index);
+    }
+
+    @Override
     public InvoiceList getInvoiceListByUserId(int userId) {
         return invoiceLists.computeIfAbsent(userId, i -> new InvoiceList(i, new ArrayList<>()));
+    }
+
+    @Override
+    public List<Invoice> getInvoicesByNamesAndDateRange(String buyerName, String sellerName, Date startDate, Date endDate) {
+        if (buyerName == null || "".equals(buyerName)) {
+            return invoiceDao.findInvoicesByDateRangeAndSellerName(startDate, endDate, sellerName);
+        } else if (sellerName == null || "".equals(sellerName)) {
+            return invoiceDao.findInvoicesByDateRangeAndBuyerName(startDate, endDate, buyerName);
+        } else {
+            return invoiceDao.findInvoicesByDateRangeAndNames(buyerName, sellerName, startDate, endDate);
+        }
+    }
+
+    @Override
+    public void removeInvoice(int userId, int index) {
+        removeInvoice(getInvoiceListByUserId(userId).remove(index));
+    }
+
+    @Override
+    public void removeInvoice(String invoiceId) {
+        removeInvoice(getInvoice(invoiceId));
+    }
+
+    private void removeInvoice(Invoice invoice) {
+        invoiceDao.deleteInvoice(invoice);
     }
 }

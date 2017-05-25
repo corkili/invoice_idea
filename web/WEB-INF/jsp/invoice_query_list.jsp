@@ -47,7 +47,7 @@
     <script>
         function viewInvoice(index, invoice_id){
             var form = document.createElement("form");
-            form.action = "list_query";
+            form.action = "view_invoice";
             form.method = "post";
             form.style.display = "none";
             var opt1 = document.createElement("input");
@@ -271,7 +271,7 @@
                             </div>
 
                             <div class="x_content">
-
+                                <%@ include file="invoice_query_form.jspf"%>
                             </div>
                         </div>
                     </div>
@@ -311,35 +311,30 @@
                                                 </thead>
 
                                                 <tbody>
-                                                <c:forEach var="invoice" items="${invoice_list.invoiceList}" varStatus="i">
-                                                    <c:when test="${i % 2 == 0}">
-                                                        <tr class="even pointer">
-                                                            <td class=" ">${invoice.invoiceId}</td>
-                                                            <td class=" ">${invoice.invoiceDate}</td>
-                                                            <td class=" ">${invoice.buyerName}</td>
-                                                            <td class=" ">${invoice.sellerName}</td>
-                                                            <td class=" ">￥${invoice.totalAmount}</td>
-                                                            <td class=" ">￥${invoice.totalTax}</td>
-                                                            <td class=" last">
-                                                                <a onclick="viewInvoice(${i}, ${invoice.invoiceId})">查看</a>
-                                                                <a onclick="delInvoice(${i}, ${invoice.invoiceId})">删除</a>
-                                                            </td>
-                                                        </tr>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <tr class="odd pointer">
-                                                            <td class=" ">${invoice.invoiceId}</td>
-                                                            <td class=" ">${invoice.invoiceDate}</td>
-                                                            <td class=" ">${invoice.buyerName}</td>
-                                                            <td class=" ">${invoice.sellerName}</td>
-                                                            <td class=" ">￥${invoice.totalAmount}</td>
-                                                            <td class=" ">￥${invoice.totalTax}</td>
-                                                            <td class=" last">
-                                                                <a onclick="viewInvoice(${i}, ${invoice.invoiceId})">查看</a>
-                                                                <a onclick="delInvoice(${i}, ${invoice.invoiceId})">删除</a>
-                                                            </td>
-                                                        </tr>
-                                                    </c:otherwise>
+                                                <c:forEach var="invoice" items="${invoice_list.invoiceList}" varStatus="status">
+                                                    <c:choose>
+                                                        <c:when test="${status.index % 2 == 0}">
+                                                            <tr class="even pointer">
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <tr class="odd pointer">
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                                <td class=" ">${invoice.invoiceId}</td>
+                                                                <td class=" ">${invoice.invoiceDate}</td>
+                                                                <td class=" ">${invoice.buyerName}</td>
+                                                                <td class=" ">${invoice.sellerName}</td>
+                                                                <td class=" ">￥${invoice.totalAmount}</td>
+                                                                <td class=" ">￥${invoice.totalTax}</td>
+                                                                <td class=" last">
+                                                                    <form action="view_invoice" method="post">
+                                                                        <input type="hidden" name="index" value="${status.index}">
+                                                                        <input type="hidden" name="invoice_id" value="${invoice.invoiceId}">
+                                                                        <input type="submit" value="<spring:message code="button.view" />"
+                                                                            class="btn btn-round btn-success">
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
                                                 </c:forEach>
                                                 </tbody>
                                             </table>
@@ -353,10 +348,41 @@
                         </div>
                     </div>
                 </div>
+
+                <c:if test="${view_invoice}">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2><spring:message code="form.title.invoice" /></h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+
+                                    <section class="content invoice">
+                                        <!-- title row -->
+
+                                        <%@include file="invoice_element.jspf"%>
+
+                                        <div class="row no-print">
+                                            <div class="col-xs-12">
+                                                <form action="del_invoice" method="post">
+                                                    <input type="hidden" name="index" value="${index}">
+                                                    <input type="hidden" name="invoice_id" value="${invoice.invoiceId}">
+                                                    <input type="submit" value="<spring:message code="button.del" />"
+                                                           class="btn btn-round btn-danger pull-right">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
             </div>
         </div>
         <!-- /page content -->
-
 
         <!-- footer content -->
         <footer>

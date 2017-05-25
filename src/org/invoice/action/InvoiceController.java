@@ -1,6 +1,5 @@
 package org.invoice.action;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.log4j.Logger;
 import org.invoice.model.Invoice;
 import org.invoice.model.InvoiceDetail;
@@ -8,10 +7,7 @@ import org.invoice.model.InvoiceList;
 import org.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
@@ -90,9 +86,71 @@ public class InvoiceController {
     @RequestMapping(value = "/list_query", method = RequestMethod.GET)
     public ModelAndView queryInvoiceForList() {
         InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
-        ModelAndView modelAndView = new ModelAndView("invoice_list");
+        invoiceList.clear();
+        ModelAndView modelAndView = new ModelAndView("invoice_query_list");
         modelAndView.addObject("invoice_list", invoiceList);
         modelAndView.addObject("has_result", invoiceList.size() != 0);
+        modelAndView.addObject("view_invoice", false);
+        modelAndView.addObject("invoice", null);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/list_query", method = RequestMethod.POST)
+    public ModelAndView queryInvoiceForList(
+            @RequestParam("buyer_name") String buyerName,
+            @RequestParam("seller_name") String sellerName,
+            @RequestParam("start_time") Date startDate,
+            @RequestParam("end_time") Date endDate) {
+        System.out.println(buyerName + "\n" + sellerName + "\n" + startDate + "\n" + endDate);
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
+        List<Invoice> invoices = invoiceService.getInvoicesByNamesAndDateRange(buyerName, sellerName, startDate, endDate);
+        invoiceList.clear();
+        invoiceList.addAll(invoices);
+        ModelAndView modelAndView = new ModelAndView("invoice_query_list");
+        System.err.println("size: " + invoiceList.size());
+        modelAndView.addObject("invoice_list", invoiceList);
+        modelAndView.addObject("has_result", invoiceList.size() != 0);
+        modelAndView.addObject("view_invoice", false);
+        modelAndView.addObject("invoice", null);
+        modelAndView.addObject("index", -1);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/view_invoice", method = RequestMethod.POST)
+    public ModelAndView viewInvoice(@RequestParam("index") int index, @RequestParam("invoice_id") String invoiceId) {
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
+        Invoice invoice = invoiceService.getInvoice(0, index);
+        if (!invoice.getInvoiceId().equals(invoiceId)) {
+            invoice = invoiceService.getInvoice(invoiceId);
+        }
+        ModelAndView modelAndView = new ModelAndView("invoice_query_list");
+        modelAndView.addObject("invoice_list", invoiceList);
+        modelAndView.addObject("has_result", invoiceList.size() != 0);
+        modelAndView.addObject("view_invoice", true);
+        modelAndView.addObject("invoice", invoice);
+        modelAndView.addObject("index", index);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/del_invoice", method = RequestMethod.POST)
+    public ModelAndView delInvoice(@RequestParam("index") int index, @RequestParam("invoice_id") String invoiceId) {
+        if (invoiceService.getInvoice(0, index).getInvoiceId().equals(invoiceId)) {
+            invoiceService.removeInvoice(0, index);
+        }
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
+        ModelAndView modelAndView = new ModelAndView("invoice_query_list");
+        modelAndView.addObject("invoice_list", invoiceList);
+        modelAndView.addObject("has_result", invoiceList.size() != 0);
+        modelAndView.addObject("view_invoice", false);
+        modelAndView.addObject("invoice", null);
+        modelAndView.addObject("index", -1);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "add_invoice_image", method = RequestMethod.GET)
+    public ModelAndView addInvoiceByImage() {
+        ModelAndView modelAndView = new ModelAndView("invoice_input_image");
+        modelAndView.addObject("success", false);
         return modelAndView;
     }
 }
