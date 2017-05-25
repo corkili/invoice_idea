@@ -87,7 +87,7 @@
                             </li>
                             <li><a><i class="fa fa-table"></i> 数据查询 <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="list_query.html">列表查询</a></li>
+                                    <li><a href="/list_query">列表查询</a></li>
                                     <li><a href="chart_query.html">图表查询</a></li>
                                 </ul>
                             </li>
@@ -291,8 +291,6 @@
                                                 <tbody>
                                                 <c:forEach var="detail" items="${invoice.details}" varStatus="detailStatus">
                                                     <tr>
-                                                        <td>${detailStatus.count}></td>
-                                                        <td>${detail.detailId}</td>
                                                         <td>${detail.detailName}</td>
                                                         <td>${detail.specification}</td>
                                                         <td>${detail.unitName}</td>

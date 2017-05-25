@@ -1,8 +1,10 @@
 package org.invoice.action;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.log4j.Logger;
 import org.invoice.model.Invoice;
 import org.invoice.model.InvoiceDetail;
+import org.invoice.model.InvoiceList;
 import org.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,6 +84,15 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_save_result");
         modelAndView.addObject("invoice", invoice);
         modelAndView.addObject("save_date", dateFormat.format(new Date()));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/list_query", method = RequestMethod.GET)
+    public ModelAndView queryInvoiceForList() {
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
+        ModelAndView modelAndView = new ModelAndView("invoice_list");
+        modelAndView.addObject("invoice_list", invoiceList);
+        modelAndView.addObject("has_result", invoiceList.size() != 0);
         return modelAndView;
     }
 }

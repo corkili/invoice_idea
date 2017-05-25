@@ -2,12 +2,11 @@ package org.invoice.service;
 
 import org.invoice.dao.InvoiceDao;
 import org.invoice.model.Invoice;
+import org.invoice.model.InvoiceList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by 李浩然 on 2017/4/12.
@@ -19,6 +18,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private Map<String, Invoice> outputInvoices;   // 出项发票列表
     private Map<String, Invoice> incomeInvoices;    // 进项发票列表
+
+    private Map<Integer, InvoiceList> invoiceLists;
+
+    public InvoiceServiceImpl() {
+        invoiceLists = new HashMap<>();
+    }
 
     @Override
     public List<Invoice> test(Date invoiceId) {
@@ -43,5 +48,10 @@ public class InvoiceServiceImpl implements InvoiceService {
             invoice = results.get(0);
         }
         return invoice;
+    }
+
+    @Override
+    public InvoiceList getInvoiceListByUserId(int userId) {
+        return invoiceLists.computeIfAbsent(userId, i -> new InvoiceList(i, new ArrayList<>()));
     }
 }

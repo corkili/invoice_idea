@@ -1,6 +1,7 @@
 package org.invoice.service;
 
 import org.invoice.model.Invoice;
+import org.invoice.model.InvoiceList;
 
 import java.util.Date;
 import java.util.List;
@@ -18,5 +19,6 @@ public interface InvoiceService {
     // 获取发票
     public Invoice getInvoice(String invoiceId);
 
+    public InvoiceList getInvoiceListByUserId(int userId);
 
 }
