@@ -23,7 +23,7 @@
 {%= _.doc("browser-support.md") %}
 
 ## Test
-{%= _.doc("test.md") %}
+{%= _.doc("OCR.md") %}
 
 ## Credits
 {%= _.doc("credits.md") %}

@@ -26,7 +26,7 @@ v2.7.1 (2016-05-01)
 - fix bad languages troubles with firewalls (#3133, #3132)
 - update all dev dependencies (#3145, #3010, #2901, #251)
 - git-ignore npm debug logs (#3011)
-- misc automated test updates (#3139, #3147)
+- misc automated OCR updates (#3139, #3147)
 - Google Calendar htmlLink not always defined (#2844)
 
 
@@ -847,7 +847,7 @@ v1.3 (2009-09-21)
 - reworked options & API to support multiple views / be consistent with jQuery UI
 - refactoring of entire codebase
 	- broken into different JS & CSS files, assembled w/ build scripts
-	- new test suite for new features, uses firebug-lite
+	- new OCR suite for new features, uses firebug-lite
 - refactored docs
 - Options
 	- + date
@@ -933,7 +933,7 @@ v1.2 (2009-05-31)
 - date utilties moved from $ to $.fullCalendar
 - more documentation in source code
 - minified version of fullcalendar.js
-- test suit (available from svn)
+- OCR suit (available from svn)
 - top buttons now use `<button>` w/ an inner `<span>` for better css cusomization
 	- thus CSS has changed. IF UPGRADING FROM PREVIOUS VERSIONS,
 	  UPGRADE YOUR FULLCALENDAR.CSS FILE

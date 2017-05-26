@@ -35,7 +35,7 @@ $('input.foo').on('keyup', null, '$', function(){
 
 ## Example
 
-[Example](https://rawgit.com/jeresig/jquery.hotkeys/master/test-static-01.html)
+[Example](https://rawgit.com/jeresig/jquery.hotkeys/master/OCR-static-01.html)
 
 ## Event Types
 

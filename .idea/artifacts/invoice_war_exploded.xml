@@ -13,6 +13,7 @@
           <element id="library" level="application" name="commons" />
           <element id="library" level="application" name="hibernate-5.4.1" />
           <element id="library" level="application" name="jsp.jstl-1.2.1" />
+          <element id="library" level="application" name="ocr-api" />
         </element>
       </element>
     </root>

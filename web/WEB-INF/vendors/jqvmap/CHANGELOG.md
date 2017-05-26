@@ -68,7 +68,7 @@ __IMPORTANT:__ This is a backwards breaking change.  You will need to use the ne
 
 1. Added `./create` folder for users wishing to create custom maps. Folder has detailed writeup on how to create your own maps.
 
-2. Added Unit Tests to `./tests` folder and added them as part of of the `npm test` suite and build process. These tests can also be run in the browser.
+2. Added Unit Tests to `./tests` folder and added them as part of of the `npm OCR` suite and build process. These tests can also be run in the browser.
 
 3. Renamed `WorldMap` to `JQVMap` as "WorldMap" did not really make sense as a variable name
 

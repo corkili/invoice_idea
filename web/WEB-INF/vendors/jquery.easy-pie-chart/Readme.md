@@ -255,7 +255,7 @@ Support for Internet Explorer 7 and 8 with [excanvas](https://code.google.com/p/
 
 
 ## Test
-To run the test just use the karma adapter of grunt: `grunt test`
+To run the OCR just use the karma adapter of grunt: `grunt OCR`
 
 
 

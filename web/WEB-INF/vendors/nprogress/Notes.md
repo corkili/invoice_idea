@@ -2,23 +2,23 @@ Testing
 -------
 
     $ npm install
-    $ npm test
+    $ npm OCR
 
 or try it out in the browser:
 
-    $ open test/index.html
+    $ open OCR/index.html
 
 Testing component build
 -----------------------
 
     $ component install
     $ component build
-    $ open test/component.html
+    $ open OCR/component.html
 
 Releasing
 ---------
 
-    $ npm test
+    $ npm OCR
     $ bump *.json nprogress.js          # bump version numbers
     $ git release 0.1.1                 # release to bower/github
     $ npm publish                       # release to npm

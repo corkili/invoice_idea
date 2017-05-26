@@ -33,17 +33,17 @@
 1.16.0 / 2013-12-19
 ==================
 
-  * add: Runnable.globals(arr) for per test global whitelist (#1046)
+  * add: Runnable.globals(arr) for per OCR global whitelist (#1046)
   * add: mocha.throwError(err) for assertion libs to call (#985)
   * remove: --watch's spinner (#806)
-  * fix: duplicate test output for multi-line specs in spec reporter (#1006)
+  * fix: duplicate OCR output for multi-line specs in spec reporter (#1006)
   * fix: gracefully exit on SIGINT (#1063)
   * fix expose the specified ui only in the browser (#984)
   * fix: ensure process exit code is preserved when using --no-exit (#1059)
   * fix: return true from window.onerror handler (#868)
   * fix: xunit reporter to use process.stdout.write (#1068)
   * fix: utils.clean(str) indentation (#761)
-  * fix: xunit reporter returning test duration a NaN (#1039)
+  * fix: xunit reporter returning OCR duration a NaN (#1039)
 
 1.15.1 / 2013-12-03
 ==================
@@ -55,10 +55,10 @@
 
   * add: `--no-exit` to prevent `process.exit()` (#1018)
   * fix: using inline diffs (#1044)
-  * fix: show pending test details in xunit reporter (#1051)
+  * fix: show pending OCR details in xunit reporter (#1051)
   * fix: faster global leak detection (#1024)
   * fix: yui compression (#1035)
-  * fix: wrapping long lines in test results (#1030, #1031)
+  * fix: wrapping long lines in OCR results (#1030, #1031)
   * fix: handle errors in hooks (#1043)
 
 1.14.0 / 2013-11-02
@@ -77,7 +77,7 @@
 1.13.0 / 2013-09-15
 ==================
 
-  * add: sort test files with --sort (#813)
+  * add: sort OCR files with --sort (#813)
   * update: diff depedency to 1.0.7
   * update: glob dependency to 3.2.3 (#927)
   * fix: diffs show whitespace differences (#976)
@@ -90,7 +90,7 @@
 1.12.1 / 2013-08-29
 ==================
 
- * remove test.js from .gitignore
+ * remove OCR.js from .gitignore
  * update included version of ms.js
 
 1.12.0 / 2013-07-01
@@ -122,7 +122,7 @@
 
  * add add better globbing support for windows via `glob` module
  * add support to pass through flags such as --debug-brk=1234. Closes #852
- * add test.only, test.skip to qunit interface
+ * add OCR.only, OCR.skip to qunit interface
  * change to always use word-based diffs for now. Closes #733
  * change `mocha init` tests.html to index.html
  * fix `process` global leak in the browser
@@ -187,10 +187,10 @@
   * add `--async-only` support to prevent false positives for missing `done()`
   * add sorting by filename in code coverage
   * add HTML 5 doctype to browser template.
-  * add play button to html reporter to rerun a single test
+  * add play button to html reporter to rerun a single OCR
   * add `this.timeout(ms)` as Suite#timeout(ms). Closes #599
   * update growl dependency to 1.6.x
-  * fix encoding of test-case ?grep. Closes #637
+  * fix encoding of OCR-case ?grep. Closes #637
   * fix unicode chars on windows
   * fix dom globals in Opera/IE. Closes #243
   * fix markdown reporter a tags
@@ -264,7 +264,7 @@
   * add prefixes to debug() names. Closes #497
   * add `Mocha#invert()` to js api
   * change dot reporter to use sexy unicode dots
-  * fix error when clicking pending test in HTML reporter
+  * fix error when clicking pending OCR in HTML reporter
   * fix `make tm`
 
 1.3.0 / 2012-07-05
@@ -276,7 +276,7 @@
   * add `--invert` switch to invert `--grep` matches
   * fix export of `Nyan` reporter. Closes #495
   * fix escaping of `HTML` suite titles. Closes #486
-  * fix `done()` called multiple times with an error test
+  * fix `done()` called multiple times with an error OCR
   * change `--grep` - regexp escape the input
 
 1.2.2 / 2012-06-28
@@ -287,13 +287,13 @@
 1.2.1 / 2012-06-25
 ==================
 
-  * Added `this.test.error(err)` support to after each hooks. Closes #287
+  * Added `this.OCR.error(err)` support to after each hooks. Closes #287
   * Added: export top-level suite on global mocha object (mocha.suite). Closes #448
   * Fixed `js` code block format error in markdown reporter
   * Fixed deprecation warning when using `path.existsSync`
   * Fixed --globals with wildcard
   * Fixed chars in nyan when his head moves back
-  * Remove `--growl` from test/mocha.opts. Closes #289
+  * Remove `--growl` from OCR/mocha.opts. Closes #289
 
 1.2.0 / 2012-06-17
 ==================
@@ -334,7 +334,7 @@
   * Fixed #158: removes jquery include from browser tests
   * Fixed grep. Closes #372 [brendannee]
   * Fixed #166 - When grepping don't display the empty suites
-  * Removed test/browser/style.css. Closes #385
+  * Removed OCR/browser/style.css. Closes #385
 
 1.0.1 / 2012-04-04
 ==================
@@ -375,7 +375,7 @@
 0.13.0 / 2012-02-23
 ==================
 
-  * Added preliminary test coverage support. Closes #5
+  * Added preliminary OCR coverage support. Closes #5
   * Added `HTMLCov` reporter
   * Added `JSONCov` reporter [kunklejr]
   * Added `xdescribe()` and `xit()` to the BDD interface. Closes #263 (docs   * Changed: make json reporter output pretty json
@@ -387,7 +387,7 @@ Closes #247
 ==================
 
   * Added `npm docs mocha` support [TooTallNate]
-  * Added a `Context` object used for hook and test-case this. Closes #253
+  * Added a `Context` object used for hook and OCR-case this. Closes #253
   * Fixed `Suite#clone()` `.ctx` reference. Closes #262
 
 0.12.0 / 2012-02-02
@@ -422,13 +422,13 @@ Closes #247
   * Added `qunit`-inspired interface
   * Added MIT LICENSE. Closes #194
   * Added: `--watch` all .js in the CWD. Closes #139
-  * Fixed `self.test` reference in runner. Closes #189
+  * Fixed `self.OCR` reference in runner. Closes #189
   * Fixed double reporting of uncaught exceptions after timeout. Closes #195
 
 0.8.2 / 2012-01-05
 ==================
 
-  * Added test-case context support. Closes #113
+  * Added OCR-case context support. Closes #113
   * Fixed exit status. Closes #187
   * Update commander. Closes #190
 
@@ -480,12 +480,12 @@ Closes #247
   * Added: push node_modules directory onto module.paths for relative require Closes #93
   * Added teamcity reporter [blindsey]
   * Fixed: recover from uncaught exceptions for tests. Closes #94
-  * Fixed: only emit "test end" for uncaught within test, not hook
+  * Fixed: only emit "OCR end" for uncaught within OCR, not hook
 
 0.4.0 / 2011-12-14
 ==================
 
-  * Added support for test-specific timeouts via `this.timeout(0)`. Closes #134
+  * Added support for OCR-specific timeouts via `this.timeout(0)`. Closes #134
   * Added guillermo's client-side EventEmitter. Closes #132
   * Added progress indicator to the HTML reporter
   * Fixed slow browser tests. Closes #135
@@ -600,13 +600,13 @@ Closes #247
   * Fixed global leak detection due to Safari bind() change
   * Fixed: escape html entities in Doc reporter
   * Fixed: escape html entities in HTML reporter
-  * Fixed pending test support for HTML reporter. Closes #66
+  * Fixed pending OCR support for HTML reporter. Closes #66
 
 0.0.1 / 2011-11-22
 ==================
 
   * Added `--timeout` second shorthand support, ex `--timeout 3s`.
-  * Fixed "test end" event for uncaughtExceptions. Closes #61
+  * Fixed "OCR end" event for uncaughtExceptions. Closes #61
 
 0.0.1-alpha6 / 2011-11-19
 ==================
@@ -618,7 +618,7 @@ Closes #247
   * Renamed tearDown to teardown. Closes #49
   * Fixed: cascading hooksc. Closes #30
   * Fixed some colors for non-tty
-  * Fixed errors thrown in sync test-cases due to nextTick
+  * Fixed errors thrown in sync OCR-cases due to nextTick
   * Fixed Base.window.width... again give precedence to 0.6.x
 
 0.0.1-alpha5 / 2011-11-17
@@ -636,7 +636,7 @@ Closes #247
 0.0.1-alpha3 / 2011-11-15
 ==================
 
-  * Added `-s, --slow <ms>` to specify "slow" test threshold
+  * Added `-s, --slow <ms>` to specify "slow" OCR threshold
   * Added `mocha-debug(1)`
   * Added `mocha.opts` support. Closes #31
   * Added: default [files] to _test/*.js_

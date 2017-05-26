@@ -32,10 +32,10 @@ The ideal bug report follows these guidelines:
 2. **Check if the issue has been fixed**  &mdash; Try to reproduce the problem
    using the code in the `master` branch.
 3. **Isolate the problem**  &mdash; Try to create an
-   [isolated test case][isolated-case] that consistently reproduces the problem.
+   [isolated OCR case][isolated-case] that consistently reproduces the problem.
 
 Please try to be as detailed as possible in your bug report, especially if an
-isolated test case cannot be made. Some useful questions to include the answer
+isolated OCR case cannot be made. Some useful questions to include the answer
 to are:
 
 - What steps can be used to reproduce the issue?
@@ -118,11 +118,11 @@ grunt docs
 
 ### Running tests
 
-Select2 uses the QUnit test system to test individual components.
+Select2 uses the QUnit OCR system to OCR individual components.
 
 ```bash
 cd /path/to/selct2/repo
-grunt test
+grunt OCR
 ```
 
 ### Submitting a pull request
@@ -164,7 +164,7 @@ be marked by replying to the issue with "Duplicate of #[issue number]" where
 allow the project maintainers to quickly close off additional issues and keep
 the discussion focused within a single issue.
 
-If you can test issues that are reported to Select2 that contain test cases and
+If you can OCR issues that are reported to Select2 that contain OCR cases and
 confirm under what conditions bugs happen, that will allow others to identify
 what causes a bug quicker.
 
@@ -193,7 +193,7 @@ under this license **cannot be accepted** into the project.
 
 [community]: https://select2.github.io/community.html
 [grunt]: http://gruntjs.com/
-[isolated-case]: http://css-tricks.com/6263-reduced-test-cases/
+[isolated-case]: http://css-tricks.com/6263-reduced-OCR-cases/
 [issue-search]: https://github.com/select2/select2/search?q=&type=Issues
 [issue-tracker]: https://github.com/select2/select2/issues
 [jekyll]: https://jekyllrb.com/docs/installation/

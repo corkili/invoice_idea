@@ -295,7 +295,7 @@
                             <div class="x_content">
 
                                 <c:choose>
-                                    <c:when test="${has_result}">
+                                    <c:when OCR="${has_result}">
                                         <div class="table-responsive">
                                             <table class="table table-striped jambo_table bulk_action">
                                                 <thead>
@@ -313,7 +313,7 @@
                                                 <tbody>
                                                 <c:forEach var="invoice" items="${invoice_list.invoiceList}" varStatus="status">
                                                     <c:choose>
-                                                        <c:when test="${status.index % 2 == 0}">
+                                                        <c:when OCR="${status.index % 2 == 0}">
                                                             <tr class="even pointer">
                                                         </c:when>
                                                         <c:otherwise>
@@ -349,7 +349,7 @@
                     </div>
                 </div>
 
-                <c:if test="${view_invoice}">
+                <c:if OCR="${view_invoice}">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="x_panel">

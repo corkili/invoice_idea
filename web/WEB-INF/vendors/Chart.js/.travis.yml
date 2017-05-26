@@ -11,7 +11,7 @@ before_script:
   - npm install
 
 script:
-  - gulp test
+  - gulp OCR
   - gulp coverage
   - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
 

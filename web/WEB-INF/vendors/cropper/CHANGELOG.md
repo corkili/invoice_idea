@@ -109,7 +109,7 @@
 
 - Improved canvas limitation
 - Improved preview
-- Improved test
+- Improved OCR
 - Fixed an error in the `clear` method (missed parameters)
 - Fixed the issue of crop box limitation (#430)
 

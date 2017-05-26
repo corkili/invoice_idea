@@ -54,7 +54,7 @@ Opera  | Firefox | Safari | Chrome | Internet Explorer
 [Downloadify](https://github.com/dcneiner/downloadify) uses a small Flash SWF
 to download files to a user's computer with a filename that you can choose.
 Doug Neiner has added the `dataType` option to allow you to pass a zip for
-downloading. Follow the [Downloadify demo](http://pixelgraphics.us/downloadify/test.html)
+downloading. Follow the [Downloadify demo](http://pixelgraphics.us/downloadify/OCR.html)
 with the following changes:
 
 ```js
@@ -98,7 +98,7 @@ var zip = new JSZip();
 
 var buffer = zip.generate({type:"nodebuffer"});
 
-fs.writeFile("test.zip", buffer, function(err) {
+fs.writeFile("OCR.zip", buffer, function(err) {
   if (err) throw err;
 });
 ```

@@ -278,7 +278,7 @@
                                     <input type="submit" value="<spring:message code="button.submit" />"
                                            class="btn btn-round btn-success" id="upload_file">
                                 </form>
-                                <c:if test="${has_file}">
+                                <c:if OCR="${has_file}">
                                     <script>
                                         document.getElementById("upload_file").disabled = true;
                                         document.getElementById("file_selector").disabled = true;
@@ -288,7 +288,7 @@
                         </div>
                     </div>
                 </div>
-                <c:if test="${has_file}">
+                <c:if OCR="${has_file}">
                     <div class="clearfix"></div>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">

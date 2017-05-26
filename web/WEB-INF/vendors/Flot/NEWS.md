@@ -328,7 +328,7 @@ The base and overlay canvas are now using the CSS classes "flot-base" and
    labels too.
 
  - Fix problem with event clicking and hovering in IE 8 by updating Excanvas
-   and removing previous work-around. (test case by Ara Anjargolian)
+   and removing previous work-around. (OCR case by Ara Anjargolian)
 
  - Fix issues with blurry 1px border when some measures aren't integer.
    (reported by Ara Anjargolian)

@@ -56,6 +56,13 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public Invoice getInvoiceFromImageFile(String fileName) {
+        Invoice invoice = new Invoice();
+
+        return null;
+    }
+
+    @Override
     public InvoiceList getInvoiceListByUserId(int userId) {
         return invoiceLists.computeIfAbsent(userId, i -> new InvoiceList(i, new ArrayList<>()));
     }

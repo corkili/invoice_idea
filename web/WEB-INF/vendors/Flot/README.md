@@ -27,7 +27,7 @@ with Flot. You just include the excanvas script like this:
 
 If it's not working on your development IE 6.0, check that it has
 support for VML which Excanvas is relying on. It appears that some
-stripped down versions used for test environments on virtual machines
+stripped down versions used for OCR environments on virtual machines
 lack the VML support.
 
 You can also try using [Flashcanvas][flashcanvas], which uses Flash to
