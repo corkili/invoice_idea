@@ -15,14 +15,14 @@
 </head>
 <body>
 <c:choose>
-    <c:when OCR="${empty invoices}">
+    <c:when test="${empty invoices}">
         <p>empty invoices!</p>
     </c:when>
     <c:otherwise>
         <c:forEach var="invoice" items="${invoices}" varStatus="invoiceStatus">
             <p>${invoiceStatus.count}>...<br/></p>
             <c:choose>
-                <c:when OCR="${not empty invoice}">
+                <c:when test="${not empty invoice}">
                     <p>发票号码: ${invoice.invoiceId}</p>
                     <p>发票编码: ${invoice.invoiceCode}</p>
                     <p>开票日期: <fmt:formatDate value="${invoice.invoiceDate}" pattern="yyyy-MM-dd"/> </p>
@@ -40,7 +40,7 @@
                 </c:otherwise>
             </c:choose>
             <c:choose>
-                <c:when OCR="${not empty invoice and not empty invoice.details}">
+                <c:when test="${not empty invoice and not empty invoice.details}">
                     <c:forEach var="detail" items="${invoice.details}" varStatus="detailStatus">
                         <p>${detailStatus.count}> <br/></p>
                         <p>明细编号: ${detail.detailId}</p>
@@ -54,7 +54,7 @@
                         <p>税额: ${detail.taxSum}</p>
                     </c:forEach>
                 </c:when>
-                <c:when OCR="${not empty invoice and empty invoice.details}">
+                <c:when test="${not empty invoice and empty invoice.details}">
                     <p>empty details!</p>
                 </c:when>
             </c:choose>

@@ -11,6 +11,9 @@
     <title>Index</title>
 </head>
 <body>
-
+    <a href="login" style="display: none" id="index"/>
+    <script>
+        document.getElementById("index").click()
+    </script>
 </body>
 </html>

@@ -24,7 +24,7 @@
         购贷方
         <address>
             <strong>${invoice.buyerName}</strong>
-            <c:if OCR="${not empty invoice.buyerId}">
+            <c:if test="${not empty invoice.buyerId}">
                 <br>纳税人识别号：${invoice.buyerId}
             </c:if>
         </address>
@@ -34,7 +34,7 @@
         销贷方
         <address>
             <strong>${invoice.sellerName}</strong>
-            <c:if OCR="${not empty invoice.sellerId}">
+            <c:if test="${not empty invoice.sellerId}">
                 <br>纳税人识别号：${invoice.sellerId}
             </c:if>
         </address>
@@ -96,7 +96,7 @@
         <p class="lead">备注:</p>
         <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
             <c:choose>
-                <c:when OCR="${not empty invoice.remark}">
+                <c:when test="${not empty invoice.remark}">
                     ${invoice.remark}
                 </c:when>
                 <c:otherwise>
