@@ -1,10 +1,7 @@
 package org.invoice.action;
 
 import org.apache.log4j.Logger;
-import org.invoice.model.Invoice;
-import org.invoice.model.InvoiceDetail;
-import org.invoice.model.InvoiceList;
-import org.invoice.model.InvoiceMap;
+import org.invoice.model.*;
 import org.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -232,23 +229,24 @@ public class InvoiceController {
         InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
         List<Invoice> incomeInvoices = invoiceService.getInvoicesByNamesAndDateRange(buyerName, sellerName, startDate, endDate);
         List<Invoice> outcomeInvoices = invoiceService.getInvoicesByNamesAndDateRange(sellerName, buyerName, startDate, endDate);
+        logger.info("incomeInvoices.size: " + incomeInvoices.size());
+        logger.info("outcomeInvoices.size: " + outcomeInvoices.size());
         invoiceList.clear();
         invoiceList.addAll(incomeInvoices);
         invoiceList.addAll(outcomeInvoices);
-        Map<String, Double> incomesMap = null;
-        Map<String, Double> outcomesMap = null;
+        InvoiceMaps invoiceMaps = new InvoiceMaps(incomeInvoices, outcomeInvoices);
+        List<Come> comeList = invoiceMaps.getComeMap();
         List<String> dates = new ArrayList<>();
         List<Double> incomes = new ArrayList<>();
         List<Double> outcomes = new ArrayList<>();
         if (invoiceList.size() != 0) {
-            InvoiceMap incomeInvoiceMap = new InvoiceMap(incomeInvoices);
-            InvoiceMap outcomeInvoiceMap = new InvoiceMap(outcomeInvoices);
-            incomesMap = incomeInvoiceMap.getDate2AmountMap();
-            outcomesMap = outcomeInvoiceMap.getDate2AmountMap();
-            for (Map.Entry<String, Double> entry : incomesMap.entrySet()) {
-                dates.add(entry.getKey());
-                incomes.add(entry.getValue());
-                outcomes.add(outcomesMap.get(entry.getKey()));
+            for (Come come : comeList) {
+                dates.add(come.getDate());
+                incomes.add(come.getIncomes());
+                outcomes.add(come.getOutcomes());
+                logger.info(come.getDate());
+                logger.info(come.getIncomes());
+                logger.info(come.getOutcomes());
             }
         }
         ModelAndView modelAndView = new ModelAndView("invoice_query_chart");

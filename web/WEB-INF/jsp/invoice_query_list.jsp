@@ -119,7 +119,9 @@
                             </div>
 
                             <div class="x_content">
-                                <%@ include file="invoice_query_form.jspf"%>
+                                <form action="list_query" method="post" class="form-horizontal form-label-left">
+                                    <%@ include file="invoice_query_form.jspf"%>
+                                </form>
                             </div>
                         </div>
                     </div>

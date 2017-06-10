@@ -82,42 +82,69 @@
                     <div class="title_left">
                         <h3><spring:message code="title.add_invoice" /></h3>
                     </div>
+                </div>
 
-                    <div class="title_right">
-                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="detail_num"
-                                       placeholder="<spring:message code="input.detail_number" />">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" id="btn_determine"
-                                            onclick="determineDetailNumber()">
-                                        <spring:message code="button.ok"/>
-                                    </button>
-                                </span>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>发票明细数目设置</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <form action="add_invoice_hand" method="post" class="form-horizontal form-label-left">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2" for="detail_num">
+                                            待添加的发票的明细数目
+                                            <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input class="form-control has-feedback-left"
+                                                   id="detail_num" name="detail_num" placeholder="必填" required="required"/>
+                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="ln_solid"></div>
+                                    <div class="form-group">
+                                        <div class="col-md-5 col-md-offset-3">
+                                            <input type="submit" class="btn btn-success" value="<spring:message code="button.ok" /> ">
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="clearfix"></div>
-                <c:if test="${detail_num > 0}">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel">
-                                <div class="x_title">
-                                    <h2><spring:message code="form.title.invoice" /></h2>
-                                    <ul class="nav navbar-right panel_toolbox">
-                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                                    </ul>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content">
-                                    <br />
-                                    <%@ include file="invoice_form.jspf"%>
-                                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2><spring:message code="form.title.invoice" /></h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <br />
+                                <c:choose>
+                                    <c:when test="${detail_num > 0}">
+                                        <%@ include file="invoice_form.jspf"%>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <h3 style="text-align: center"><small><spring:message code="tip.no_detail_num"/></small></h3>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>
-                </c:if>
+                </div>
             </div>
         </div>
         <!-- /page content -->
