@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.invoice.model.Invoice;
 import org.invoice.model.InvoiceDetail;
 import org.invoice.model.InvoiceList;
+import org.invoice.model.InvoiceMap;
 import org.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by 李浩然 on 2017/4/12.
@@ -107,9 +106,11 @@ public class InvoiceController {
             @RequestParam("end_time") Date endDate) {
         System.out.println(buyerName + "\n" + sellerName + "\n" + startDate + "\n" + endDate);
         InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
-        List<Invoice> invoices = invoiceService.getInvoicesByNamesAndDateRange(buyerName, sellerName, startDate, endDate);
+        List<Invoice> IncomeInvoices = invoiceService.getInvoicesByNamesAndDateRange(buyerName, sellerName, startDate, endDate);
+        List<Invoice> OutputInvoices = invoiceService.getInvoicesByNamesAndDateRange(sellerName, buyerName, startDate, endDate);
         invoiceList.clear();
-        invoiceList.addAll(invoices);
+        invoiceList.addAll(IncomeInvoices);
+        invoiceList.addAll(OutputInvoices);
         ModelAndView modelAndView = new ModelAndView("invoice_query_list");
         System.err.println("size: " + invoiceList.size());
         modelAndView.addObject("invoice_list", invoiceList);
@@ -192,6 +193,70 @@ public class InvoiceController {
             modelAndView.addObject("has_file", false);
             modelAndView.addObject("has_error", true);
         }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "chart_query", method = RequestMethod.GET)
+    public ModelAndView queryInvoiceForChart() {
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
+        invoiceList.clear();
+        ModelAndView modelAndView = new ModelAndView("invoice_query_chart");
+
+        // 模拟数据
+        List<String> dates = new ArrayList<>();
+        List<Double> incomes = new ArrayList<>();
+        List<Double> outcomes = new ArrayList<>();
+        Random random = new Random();
+        int min  = 200;
+        int max = 2000;
+        for (int i = 1; i < 13; i++) {
+            dates.add(String.valueOf(i));
+            incomes.add((double)random.nextInt(max) % (max - min + 1) + min);
+            outcomes.add((double)random.nextInt(max) % (max - min + 1) + min);
+        }
+
+        modelAndView.addObject("dates", dates);
+        modelAndView.addObject("incomes", incomes);
+        modelAndView.addObject("outcomes", outcomes);
+        modelAndView.addObject("has_result", false);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "chart_query", method = RequestMethod.POST)
+    public ModelAndView queryInvoiceForChart(
+            @RequestParam("buyer_name") String buyerName,
+            @RequestParam("seller_name") String sellerName,
+            @RequestParam("start_time") Date startDate,
+            @RequestParam("end_time") Date endDate) {
+        logger.info(buyerName + "\n" + sellerName + "\n" + startDate + "\n" + endDate);
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
+        List<Invoice> incomeInvoices = invoiceService.getInvoicesByNamesAndDateRange(buyerName, sellerName, startDate, endDate);
+        List<Invoice> outcomeInvoices = invoiceService.getInvoicesByNamesAndDateRange(sellerName, buyerName, startDate, endDate);
+        invoiceList.clear();
+        invoiceList.addAll(incomeInvoices);
+        invoiceList.addAll(outcomeInvoices);
+        Map<String, Double> incomesMap = null;
+        Map<String, Double> outcomesMap = null;
+        List<String> dates = new ArrayList<>();
+        List<Double> incomes = new ArrayList<>();
+        List<Double> outcomes = new ArrayList<>();
+        if (invoiceList.size() != 0) {
+            InvoiceMap incomeInvoiceMap = new InvoiceMap(incomeInvoices);
+            InvoiceMap outcomeInvoiceMap = new InvoiceMap(outcomeInvoices);
+            incomesMap = incomeInvoiceMap.getDate2AmountMap();
+            outcomesMap = outcomeInvoiceMap.getDate2AmountMap();
+            for (Map.Entry<String, Double> entry : incomesMap.entrySet()) {
+                dates.add(entry.getKey());
+                incomes.add(entry.getValue());
+                outcomes.add(outcomesMap.get(entry.getKey()));
+            }
+        }
+        ModelAndView modelAndView = new ModelAndView("invoice_query_chart");
+        logger.info("size: " + invoiceList.size());
+        modelAndView.addObject("dates", dates);
+        modelAndView.addObject("incomes", incomes);
+        modelAndView.addObject("outcomes", outcomes);
+        modelAndView.addObject("has_result", invoiceList.size() != 0);
         return modelAndView;
     }
 }
