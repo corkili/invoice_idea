@@ -149,8 +149,6 @@ public class InvoiceMaps {
         return result;
     }
 
-
-
     private double computeAmountOfInvoices(Collection<Invoice> invoices) {
         double sum = 0.0;
         for (Invoice invoice : invoices) {

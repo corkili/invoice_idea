@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -243,8 +244,8 @@ public class InvoiceController {
         if (invoiceList.size() != 0) {
             for (TotalCome come : comeList) {
                 dates.add(come.getDate());
-                incomes.add(come.getIncomes());
-                outcomes.add(come.getOutcomes());
+                incomes.add(new BigDecimal(come.getIncomes()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                outcomes.add(new BigDecimal(come.getOutcomes()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
                 logger.info(come.getDate());
                 logger.info(come.getIncomes());
                 logger.info(come.getOutcomes());
@@ -258,4 +259,23 @@ public class InvoiceController {
         modelAndView.addObject("has_result", invoiceList.size() != 0);
         return modelAndView;
     }
+
+    @RequestMapping(value = "report", method = RequestMethod.GET)
+    public ModelAndView queryReportForm() {
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
+        invoiceList.clear();
+        ModelAndView modelAndView = new ModelAndView("invoice_report");
+
+
+        modelAndView.addObject("income_names", null);   // List
+        modelAndView.addObject("outcome_names", null);  // List
+        modelAndView.addObject("income_amounts", null); // List<List>
+        modelAndView.addObject("outcome_amounts",null); // List<List>
+        modelAndView.addObject("dates", null);  // List
+        modelAndView.addObject("incomes", null);    // List
+        modelAndView.addObject("outcomes", null);   // List
+        modelAndView.addObject("has_result", false);
+        return modelAndView;
+    }
+
 }

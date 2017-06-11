@@ -1,15 +1,14 @@
 <%--
   Created by IntelliJ IDEA.
   User: 李浩然
-  Date: 2017/6/9
-  Time: 22:35
+  Date: 2017/6/11
+  Time: 21:44
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +18,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><spring:message code="title.invoice_chart"/> </title>
+    <title><spring:message code="title.report"/></title>
+
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,6 +27,8 @@
     <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
@@ -46,7 +48,7 @@
             <div class="">
                 <div class="page-title">
                     <div class="title_left">
-                        <h3><spring:message code="title.invoice_chart"/></h3>
+                        <h3><spring:message code="title.report"/></h3>
                     </div>
 
                 </div>
@@ -67,7 +69,7 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                                <form action="chart_query" method="post" class="form-horizontal form-label-left">
+                                <form action="/report" method="post" class="form-horizontal form-label-left">
                                     <%@ include file="invoice_query_form.jspf"%>
                                 </form>
                             </div>
@@ -77,11 +79,12 @@
 
                 <div class="clearfix"></div>
 
+                <!-- main panel -->
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2><spring:message code="title.chart.line"/></h2>
+                                <h2></h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
@@ -91,79 +94,135 @@
                             <div class="x_content">
                                 <c:choose>
                                     <c:when test="${has_result}">
+                                        <!-- section 1 -->
+                                        <h3 style="text-align: center"><spring:message code="text.report_title"/></h3><br/>
+                                        <div class="clearfix"></div>
+                                        <h4 style="text-align: center">
+                                            <spring:message code="title.table.income"/>
+                                            <small>（单位：元）</small>
+                                        </h4><br/>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped jambo_table bulk_action">
+                                                <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">月份\项目</th>
+                                                    <c:forEach var="n" items="${income_names}" varStatus="status" >
+                                                        <th class="column-title" style="text-align: center">${n}</th>
+                                                    </c:forEach>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                <c:forEach var="line" items="${income_amounts}" varStatus="status">
+                                                    <c:choose>
+                                                        <c:when test="${status.index % 2 == 0}">
+                                                            <tr class="even pointer">
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <tr class="odd pointer">
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <td class=" " style="text-align: center">${dates.get(status.index)}</td>
+                                                    <c:forEach var="price" items="${line}">
+                                                        <td class=" " style="text-align: center">${price}</td>
+                                                    </c:forEach>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <h4 style="text-align: center">
+                                            <spring:message code="title.table.outcome"/>
+                                            <small>（单位：元）</small>
+                                        </h4><br/>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped jambo_table bulk_action">
+                                                <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">月份\项目</th>
+                                                    <c:forEach var="n" items="${outcome_names}" varStatus="status" >
+                                                        <th class="column-title" style="text-align: center">${n}</th>
+                                                    </c:forEach>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                <c:forEach var="line" items="${outcome_amounts}" varStatus="status">
+                                                    <c:choose>
+                                                        <c:when test="${status.index % 2 == 0}">
+                                                            <tr class="even pointer">
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <tr class="odd pointer">
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <td class=" " style="text-align: center">${dates.get(status.index)}</td>
+                                                    <c:forEach var="price" items="${line}">
+                                                        <td class=" " style="text-align: center">${price}</td>
+                                                    </c:forEach>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <!-- charts -->
+                                        <div id="income_chart_line" style="height:350px;"></div>
+                                        <div class="clearfix"></div>
+                                        <div id="income_chart_bar" style="height:350px;"></div>
+                                        <div class="clearfix"></div>
+                                        <div id="outcome_chart_line" style="height:350px;"></div>
+                                        <div class="clearfix"></div>
+                                        <div id="outcome_chart_bar" style="height:350px;"></div>
+                                        <!-- /section 1 -->
+                                        <!-- section 2 -->
+                                        <div class="clearfix"></div>
+                                        <h4 style="text-align: center">
+                                            <spring:message code="title.table.compare"/>
+                                            <small>（单位：元）</small>
+                                        </h4><br/>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped jambo_table bulk_action">
+                                                <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title"></th>
+                                                    <c:forEach var="date" items="${dates}" varStatus="status" >
+                                                        <th class="column-title" style="text-align: center">${date}</th>
+                                                    </c:forEach>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                <tr class="even pointer">
+                                                    <td class=" " style="text-align: center">
+                                                        <spring:message code="legend.income"/>
+                                                    </td>
+                                                    <c:forEach var="amount" items="${incomes}">
+                                                        <td class=" " style="text-align: center">${amount}</td>
+                                                    </c:forEach>
+                                                </tr>
+                                                <tr class="odd pointer">
+                                                    <td class=" " style="text-align: center">
+                                                        <spring:message code="legend.outcome"/>
+                                                    </td>
+                                                    <c:forEach var="amount" items="${outcomes}">
+                                                        <td class=" " style="text-align: center">${amount}</td>
+                                                    </c:forEach>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <!-- charts -->
                                         <div id="chart_line" style="height:350px;"></div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><spring:message code="title.chart.bar"/></h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <c:choose>
-                                    <c:when test="${has_result}">
+                                        <div class="clearfix"></div>
                                         <div id="chart_bar" style="height:350px;"></div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><spring:message code="title.chart.radar"/></h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <c:choose>
-                                    <c:when test="${has_result}">
+                                        <div class="clearfix"></div>
                                         <div id="chart_radar" style="height:400px;"></div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm6 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><spring:message code="title.chart.pie"/></h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <c:choose>
-                                    <c:when test="${has_result}">
+                                        <div class="clearfix"></div>
                                         <div id="chart_pie" style="height:400px;"></div>
+                                        <!-- /section 2 -->
                                     </c:when>
                                     <c:otherwise>
                                         <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
@@ -173,6 +232,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- /main panel -->
             </div>
         </div>
         <!-- /page content -->
@@ -187,7 +247,17 @@
         <!-- /footer content -->
     </div>
 </div>
-</div>
+
+<!-- jQuery -->
+<script src="../vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="../vendors/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="../vendors/iCheck/icheck.min.js"></script>
 
 <!-- jQuery -->
 <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -651,6 +721,5 @@
 
     </script>
 </c:if>
-
 </body>
 </html>
