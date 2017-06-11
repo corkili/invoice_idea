@@ -235,12 +235,12 @@ public class InvoiceController {
         invoiceList.addAll(incomeInvoices);
         invoiceList.addAll(outcomeInvoices);
         InvoiceMaps invoiceMaps = new InvoiceMaps(incomeInvoices, outcomeInvoices);
-        List<Come> comeList = invoiceMaps.getComeMap();
+        List<TotalCome> comeList = invoiceMaps.getTotalComes();
         List<String> dates = new ArrayList<>();
         List<Double> incomes = new ArrayList<>();
         List<Double> outcomes = new ArrayList<>();
         if (invoiceList.size() != 0) {
-            for (Come come : comeList) {
+            for (TotalCome come : comeList) {
                 dates.add(come.getDate());
                 incomes.add(come.getIncomes());
                 outcomes.add(come.getOutcomes());

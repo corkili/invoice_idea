@@ -5,13 +5,13 @@ import java.text.SimpleDateFormat;
 /**
  * Created by 李浩然 on 2017/6/10.
  */
-public class Come implements Comparable<Come> {
+public class TotalCome implements Comparable<TotalCome> {
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM");
     private String date;
     private double incomes;
     private double outcomes;
 
-    public Come(String date, double incomes, double outcomes) {
+    public TotalCome(String date, double incomes, double outcomes) {
         this.date = date;
         this.incomes = incomes;
         this.outcomes = outcomes;
@@ -42,7 +42,7 @@ public class Come implements Comparable<Come> {
     }
 
     @Override
-    public int compareTo(Come o) {
+    public int compareTo(TotalCome o) {
         return date.compareTo(o.getDate());
     }
 }
