@@ -149,7 +149,7 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <%@ include file="invoice_form.jspf"%>
+                                    <%@ include file="invoice_edit_form.jspf"%>
                                 </div>
                             </div>
                         </div>

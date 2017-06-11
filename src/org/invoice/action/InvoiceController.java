@@ -61,6 +61,7 @@ public class InvoiceController {
     public ModelAndView addInvoiceByHandInput(@RequestParam("detail_num") int detailNum) {
         ModelAndView modelAndView = new ModelAndView("invoice_input_hand");
         modelAndView.addObject("invoice", new Invoice());
+        logger.info("detail_num: " +  detailNum);
         modelAndView.addObject("detail_num", detailNum);
         return modelAndView;
     }

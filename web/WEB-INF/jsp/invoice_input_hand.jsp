@@ -135,7 +135,7 @@
                                 <br />
                                 <c:choose>
                                     <c:when test="${detail_num > 0}">
-                                        <%@ include file="invoice_form.jspf"%>
+                                        <%@ include file="invoice_input_form.jspf"%>
                                     </c:when>
                                     <c:otherwise>
                                         <h3 style="text-align: center"><small><spring:message code="tip.no_detail_num"/></small></h3>
