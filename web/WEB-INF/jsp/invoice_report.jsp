@@ -69,7 +69,7 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                                <form action="/report" method="post" class="form-horizontal form-label-left">
+                                <form action="report" method="post" class="form-horizontal form-label-left">
                                     <%@ include file="invoice_query_form.jspf"%>
                                 </form>
                             </div>
@@ -105,7 +105,7 @@
                                             <table class="table table-striped jambo_table bulk_action">
                                                 <thead>
                                                 <tr class="headings">
-                                                    <th class="column-title">月份\项目</th>
+                                                    <th class="column-title">项目\<br/>月份</th>
                                                     <c:forEach var="n" items="${income_names}" varStatus="status" >
                                                         <th class="column-title" style="text-align: center">${n}</th>
                                                     </c:forEach>
@@ -140,7 +140,7 @@
                                             <table class="table table-striped jambo_table bulk_action">
                                                 <thead>
                                                 <tr class="headings">
-                                                    <th class="column-title">月份\项目</th>
+                                                    <th class="column-title">项目\<br/>月份</th>
                                                     <c:forEach var="n" items="${outcome_names}" varStatus="status" >
                                                         <th class="column-title" style="text-align: center">${n}</th>
                                                     </c:forEach>
@@ -168,13 +168,13 @@
                                         </div>
                                         <div class="clearfix"></div>
                                         <!-- charts -->
-                                        <div id="income_chart_line" style="height:350px;"></div>
+                                        <div id="income_chart_line" style="height:450px;"></div>
                                         <div class="clearfix"></div>
-                                        <div id="income_chart_bar" style="height:350px;"></div>
+                                        <div id="income_chart_bar" style="height:450px;"></div>
                                         <div class="clearfix"></div>
-                                        <div id="outcome_chart_line" style="height:350px;"></div>
+                                        <div id="outcome_chart_line" style="height:450px;"></div>
                                         <div class="clearfix"></div>
-                                        <div id="outcome_chart_bar" style="height:350px;"></div>
+                                        <div id="outcome_chart_bar" style="height:450px;"></div>
                                         <!-- /section 1 -->
                                         <!-- section 2 -->
                                         <div class="clearfix"></div>
@@ -495,12 +495,20 @@
         var pieIncomes = [];
         var pieOutcomes = [];
         var size = 0;
-
         size = ${dates.size()};
 
-        // 填充数据
+        var incomeNames = [];
+        var outcomeNames = [];
+        var incomeLine = [];
+        var incomeBar = [];
+        var outcomeLine = [];
+        var outcomeBar = [];
+
+        var tmp;
+
+        // 填充数据--进销项对比
         <c:forEach var="date" items="${dates}" varStatus="status">
-        dates.push(''+${date});
+        dates.push('${date}');
         incomes.push(${incomes.get(status.index)});
         outcomes.push(${outcomes.get(status.index)});
         if (incomes[${status.index}] > outcomes[${status.index}])
@@ -520,6 +528,226 @@
             name: ''+dates[${status.index}]
         });
         </c:forEach>
+
+        // 填充数据--进项
+        <c:forEach var="i" begin="0" end="${income_names.size() - 1}" step="1">
+        incomeNames.push('${income_names.get(i)}');
+        tmp = [];
+        <c:forEach var="j" begin="0" end="${income_amounts.size() - 1}" step="1">
+        tmp.push(${income_amounts.get(j).get(i)});
+        </c:forEach>
+        incomeLine.push({
+            name: ''+incomeNames[${i}],
+            type: 'line',
+            smooth: true,
+            itemStyle: {
+                normal: {
+                    areaStyle: {
+                        type: 'default'
+                    }
+                }
+            },
+            data: tmp
+        });
+        incomeBar.push({
+            name:''+incomeNames[${i}],
+            type:'bar',
+            data:tmp
+        });
+        </c:forEach>
+
+        // 填充数据--销项
+        <c:forEach var="i" begin="0" end="${outcome_names.size() - 1}" step="1">
+        outcomeNames.push('${outcome_names.get(i)}');
+        tmp = [];
+        <c:forEach var="j" begin="0" end="${outcome_amounts.size() - 1}" step="1">
+        tmp.push(${outcome_amounts.get(j).get(i)});
+        </c:forEach>
+        outcomeLine.push({
+            name: outcomeNames[${i}],
+            type: 'line',
+            smooth: true,
+            itemStyle: {
+                normal: {
+                    areaStyle: {
+                        type: 'default'
+                    }
+                }
+            },
+            data: tmp
+        });
+        outcomeBar.push({
+            name:outcomeNames[${i}],
+            type:'bar',
+            data:tmp
+        });
+        </c:forEach>
+
+        // income_chart_line
+        var incomeLineChart = echarts.init(document.getElementById("income_chart_line"), theme);
+
+        incomeLineChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataView: {show: true, readOnly: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            legend: {
+                x: 'center',
+                y: 'bottom',
+                data: incomeNames
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                name: '<spring:message code="axis.x"/>',
+                data: dates
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '<spring:message code="axis.y"/>',
+            }],
+            series: incomeLine
+        });
+        // income_chart_line
+
+        // income_chart_bar
+        var incomeBarChart = echarts.init(document.getElementById("income_chart_bar"), theme);
+
+        incomeBarChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataView: {show: true, readOnly: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            legend: {
+                x: 'center',
+                y: 'bottom',
+                data:incomeNames
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    name: '<spring:message code="axis.x"/>',
+                    data: dates,
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '<spring:message code="axis.y"/>'
+                }
+            ],
+            series: incomeBar
+        });
+        // income_chart_bar
+
+        // outcome_chart_line
+        var outcomeLineChart = echarts.init(document.getElementById("outcome_chart_line"), theme);
+
+        outcomeLineChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataView: {show: true, readOnly: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            legend: {
+                x: 'center',
+                y: 'bottom',
+                data: outcomeNames
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                name: '<spring:message code="axis.x"/>',
+                data: dates
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '<spring:message code="axis.y"/>',
+            }],
+            series: outcomeLine
+        });
+        // outcome_chart_line
+
+        // outcome_chart_bar
+        var outcomeBarChart = echarts.init(document.getElementById("outcome_chart_bar"), theme);
+
+        outcomeBarChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataView: {show: true, readOnly: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            legend: {
+                x: 'center',
+                y: 'bottom',
+                data:outcomeNames
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    name: '<spring:message code="axis.x"/>',
+                    data: dates,
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '<spring:message code="axis.y"/>'
+                }
+            ],
+            series: outcomeBar
+        });
+        // outcome_chart_bar
 
 
         // chart_line

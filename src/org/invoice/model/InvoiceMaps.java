@@ -1,6 +1,7 @@
 package org.invoice.model;
 
 import javax.naming.Name;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -120,7 +121,7 @@ public class InvoiceMaps {
             }
             for (Map.Entry<String, Double> i : map.entrySet()) {
                 names.add(i.getKey());
-                amounts.add(i.getValue());
+                amounts.add(new BigDecimal(i.getValue()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
             }
             incomeProductComes.add(new ProductCome(entry.getKey(), names, amounts));
         }
@@ -138,7 +139,7 @@ public class InvoiceMaps {
             }
             for (Map.Entry<String, Double> i : map.entrySet()) {
                 names.add(i.getKey());
-                amounts.add(i.getValue());
+                amounts.add(new BigDecimal(i.getValue()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
             }
             outcomeProductComes.add(new ProductCome(entry.getKey(), names, amounts));
         }
