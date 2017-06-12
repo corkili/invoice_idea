@@ -303,6 +303,9 @@ public class InvoiceController {
         List<String> outcomeNames = new ArrayList<>();
         List<List<Double>> incomeAmounts = new ArrayList<>();
         List<List<Double>> outcomeAmounts = new ArrayList<>();
+        List<Double> incomeProductTotals = new ArrayList<>();
+        List<Double> outcomeProductTotals = new ArrayList<>();
+        List<Double> balances = new ArrayList<>();
         if (invoiceList.size() != 0) {
             for (TotalCome come : comeList) {
                 logger.info(come.getDate());
@@ -311,6 +314,7 @@ public class InvoiceController {
                 dates.add(come.getDate());
                 incomes.add(new BigDecimal(come.getIncomes()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
                 outcomes.add(new BigDecimal(come.getOutcomes()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                balances.add(new BigDecimal(come.getOutcomes() - come.getIncomes()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
             }
 
             incomeNames.addAll(incomeProductComes.get(0).getNames());
@@ -323,10 +327,44 @@ public class InvoiceController {
             for (ProductCome outcome : outcomeProductComes) {
                 outcomeAmounts.add(outcome.getAmounts());
             }
+            double sum = 0.0;
+            // 进项数据，年月总和
+            for (int i = 0; i < incomeNames.size(); i++) {
+                sum = 0.0;
+                for (int j = 0; j < incomeAmounts.size(); j++) {
+                    sum += incomeAmounts.get(j).get(i);
+                }
+                incomeProductTotals.add(new BigDecimal(sum).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+            }
+            sum = 0.0;
+            for (Double income : incomes) {
+                sum += income;
+            }
+            incomeProductTotals.add(new BigDecimal(sum).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+
+            for (int i = 0; i < outcomeNames.size(); i++) {
+                sum = 0.0;
+                for (List<Double> amounts : outcomeAmounts) {
+                    sum += amounts.get(i);
+                }
+                outcomeProductTotals.add(new BigDecimal(sum).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+            }
+            sum = 0.0;
+            for (Double outcome : outcomes) {
+                sum += outcome;
+            }
+            outcomeProductTotals.add(new BigDecimal(sum).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+
+            balances.add(new BigDecimal(outcomeProductTotals.get(outcomeProductTotals.size() - 1)
+                    - incomeProductTotals.get(incomeProductTotals.size() - 1))
+                    .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         }
 
         ModelAndView modelAndView = new ModelAndView("invoice_report");
         logger.info("size: " + invoiceList.size());
+        modelAndView.addObject("balances", balances);
+        modelAndView.addObject("income_product_totals", incomeProductTotals);
+        modelAndView.addObject("outcome_product_totals", outcomeProductTotals);
         modelAndView.addObject("income_names", incomeNames);   // List
         modelAndView.addObject("outcome_names", outcomeNames);  // List
         modelAndView.addObject("income_amounts", incomeAmounts); // List<List>

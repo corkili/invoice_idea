@@ -95,8 +95,8 @@
                                 <c:choose>
                                     <c:when test="${has_result}">
                                         <!-- section 1 -->
-                                        <h3 style="text-align: center"><spring:message code="text.report_title"/></h3><br/>
-                                        <div class="clearfix"></div>
+                                        <h3 style="text-align: center">${dates.get(0)}至${dates.get(dates.size()-1)}<spring:message code="text.report_title"/></h3><br/>
+                                        <div class="ln_solid"></div>
                                         <h4 style="text-align: center">
                                             <spring:message code="title.table.income"/>
                                             <small>（单位：元）</small>
@@ -109,6 +109,7 @@
                                                     <c:forEach var="n" items="${income_names}" varStatus="status" >
                                                         <th class="column-title" style="text-align: center">${n}</th>
                                                     </c:forEach>
+                                                    <th class="column-title" style="text-align: center">合计</th>
                                                 </tr>
                                                 </thead>
 
@@ -122,16 +123,42 @@
                                                             <tr class="odd pointer">
                                                         </c:otherwise>
                                                     </c:choose>
-                                                    <td class=" " style="text-align: center">${dates.get(status.index)}</td>
+                                                    <td class=" " style="text-align: center"><b>${dates.get(status.index)}</b></td>
                                                     <c:forEach var="price" items="${line}">
-                                                        <td class=" " style="text-align: center">${price}</td>
+                                                        <td class=" " style="text-align: center">
+                                                            <c:choose>
+                                                                <c:when test="${price!=0}">${price}</c:when>
+                                                                <c:otherwise>-</c:otherwise>
+                                                            </c:choose>
+                                                        </td>
                                                     </c:forEach>
+                                                    <td class=" " style="text-align: center">${incomes.get(status.index)}</td>
                                                     </tr>
                                                 </c:forEach>
+
+                                                <c:choose>
+                                                <c:when test="${dates.size() % 2 == 0}">
+                                                <tr class="even pointer">
+                                                </c:when>
+                                                <c:otherwise>
+                                                <tr class="odd pointer">
+                                                </c:otherwise>
+                                                </c:choose>
+
+                                                    <td class=" " style="text-align: center"><b>合计</b></td>
+                                                    <c:forEach var="total" items="${income_product_totals}">
+                                                        <td class=" " style="text-align: center">
+                                                            <c:choose>
+                                                                <c:when test="${total!=0}">${total}</c:when>
+                                                                <c:otherwise>-</c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                    </c:forEach>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="clearfix"></div>
+                                        <div class="ln_solid"></div>
                                         <h4 style="text-align: center">
                                             <spring:message code="title.table.outcome"/>
                                             <small>（单位：元）</small>
@@ -144,6 +171,7 @@
                                                     <c:forEach var="n" items="${outcome_names}" varStatus="status" >
                                                         <th class="column-title" style="text-align: center">${n}</th>
                                                     </c:forEach>
+                                                    <th class="column-title" style="text-align: center">合计</th>
                                                 </tr>
                                                 </thead>
 
@@ -157,27 +185,53 @@
                                                             <tr class="odd pointer">
                                                         </c:otherwise>
                                                     </c:choose>
-                                                    <td class=" " style="text-align: center">${dates.get(status.index)}</td>
+                                                    <td class=" " style="text-align: center"><b>${dates.get(status.index)}</b></td>
                                                     <c:forEach var="price" items="${line}">
-                                                        <td class=" " style="text-align: center">${price}</td>
+                                                        <td class=" " style="text-align: center">
+                                                            <c:choose>
+                                                                <c:when test="${price!=0}">${price}</c:when>
+                                                                <c:otherwise>-</c:otherwise>
+                                                            </c:choose>
+                                                        </td>
                                                     </c:forEach>
+                                                    <td class=" " style="text-align: center">${outcomes.get(status.index)}</td>
                                                     </tr>
                                                 </c:forEach>
+
+                                                <c:choose>
+                                                <c:when test="${dates.size() % 2 == 0}">
+                                                <tr class="even pointer">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                <tr class="odd pointer">
+                                                    </c:otherwise>
+                                                    </c:choose>
+
+                                                    <td class=" " style="text-align: center"><b>合计</b></td>
+                                                    <c:forEach var="total" items="${outcome_product_totals}">
+                                                        <td class=" " style="text-align: center">
+                                                            <c:choose>
+                                                                <c:when test="${total!=0}">${total}</c:when>
+                                                                <c:otherwise>-</c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                    </c:forEach>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="clearfix"></div>
+                                        <div class="ln_solid"></div>
                                         <!-- charts -->
                                         <div id="income_chart_line" style="height:450px;"></div>
-                                        <div class="clearfix"></div>
+                                        <div class="ln_solid"></div>
                                         <div id="income_chart_bar" style="height:450px;"></div>
-                                        <div class="clearfix"></div>
+                                        <div class="ln_solid"></div>
                                         <div id="outcome_chart_line" style="height:450px;"></div>
-                                        <div class="clearfix"></div>
+                                        <div class="ln_solid"></div>
                                         <div id="outcome_chart_bar" style="height:450px;"></div>
                                         <!-- /section 1 -->
                                         <!-- section 2 -->
-                                        <div class="clearfix"></div>
+                                        <div class="ln_solid"></div>
                                         <h4 style="text-align: center">
                                             <spring:message code="title.table.compare"/>
                                             <small>（单位：元）</small>
@@ -190,37 +244,83 @@
                                                     <c:forEach var="date" items="${dates}" varStatus="status" >
                                                         <th class="column-title" style="text-align: center">${date}</th>
                                                     </c:forEach>
+                                                    <th class="column-title" style="text-align: center">合计</th>
                                                 </tr>
                                                 </thead>
 
                                                 <tbody>
                                                 <tr class="even pointer">
                                                     <td class=" " style="text-align: center">
-                                                        <spring:message code="legend.income"/>
+                                                        <b><spring:message code="legend.income"/></b>
                                                     </td>
                                                     <c:forEach var="amount" items="${incomes}">
                                                         <td class=" " style="text-align: center">${amount}</td>
                                                     </c:forEach>
+                                                    <td class=" " style="text-align: center">
+                                                        ${income_product_totals.get(income_product_totals.size() - 1)}
+                                                    </td>
                                                 </tr>
                                                 <tr class="odd pointer">
                                                     <td class=" " style="text-align: center">
-                                                        <spring:message code="legend.outcome"/>
+                                                        <b><spring:message code="legend.outcome"/></b>
                                                     </td>
                                                     <c:forEach var="amount" items="${outcomes}">
-                                                        <td class=" " style="text-align: center">${amount}</td>
+                                                        <td class=" " style="text-align: center">
+                                                            <c:choose>
+                                                                <c:when test="${amount!=0}">${amount}</c:when>
+                                                                <c:otherwise>-</c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                    </c:forEach>
+                                                    <td class=" " style="text-align: center">
+                                                            ${outcome_product_totals.get(outcome_product_totals.size() - 1)}
+                                                    </td>
+                                                </tr>
+                                                <tr class="even pointer">
+                                                    <td class=" " style="text-align: center">
+                                                        <b>差额</b>
+                                                    </td>
+                                                    <c:forEach var="amount" items="${balances}">
+                                                        <td class=" " style="text-align: center">
+                                                            ${amount}
+                                                        </td>
+                                                    </c:forEach>
+                                                </tr>
+                                                <tr class="odd pointer">
+                                                    <td class=" " style="text-align: center">
+                                                        <b>盈亏</b>
+                                                    </td>
+                                                    <c:forEach var="amount" items="${balances}">
+                                                        <c:choose>
+                                                            <c:when test="${amount > 0}">
+                                                                <td class=" " style="text-align: center; color: green">
+                                                                    盈利
+                                                                </td>
+                                                            </c:when>
+                                                            <c:when test="${amount < 0}">
+                                                                <td class=" " style="text-align: center; color: red">
+                                                                    亏损
+                                                                </td>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <td class=" " style="text-align: center; color: yellow">
+                                                                    平衡
+                                                                </td>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </c:forEach>
                                                 </tr>
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="clearfix"></div>
+                                        <div class="ln_solid"></div>
                                         <!-- charts -->
                                         <div id="chart_line" style="height:350px;"></div>
-                                        <div class="clearfix"></div>
+                                        <div class="ln_solid"></div>
                                         <div id="chart_bar" style="height:350px;"></div>
-                                        <div class="clearfix"></div>
+                                        <div class="ln_solid"></div>
                                         <div id="chart_radar" style="height:400px;"></div>
-                                        <div class="clearfix"></div>
+                                        <div class="ln_solid"></div>
                                         <div id="chart_pie" style="height:400px;"></div>
                                         <!-- /section 2 -->
                                     </c:when>
@@ -583,10 +683,19 @@
         });
         </c:forEach>
 
+        var subTitle = '${dates.get(0)}' + '~' + '${dates.get(dates.size()-1)}';
+
         // income_chart_line
         var incomeLineChart = echarts.init(document.getElementById("income_chart_line"), theme);
 
         incomeLineChart.setOption({
+            title: {
+                text: '<spring:message code="legend.income"/>数据<spring:message code="title.chart.line"/>',
+                subtext: subTitle,
+                x: 'center',
+                y: 'top',
+                padding: [0,5,20,5]
+            },
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -605,6 +714,7 @@
             legend: {
                 x: 'center',
                 y: 'bottom',
+                padding: 0,
                 data: incomeNames
             },
             calculable: true,
@@ -626,6 +736,13 @@
         var incomeBarChart = echarts.init(document.getElementById("income_chart_bar"), theme);
 
         incomeBarChart.setOption({
+            title: {
+                text: '<spring:message code="legend.income"/>数据<spring:message code="title.chart.bar"/>',
+                subtext: subTitle,
+                x: 'center',
+                y: 'top',
+                padding: [0,5,20,5]
+            },
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -644,6 +761,7 @@
             legend: {
                 x: 'center',
                 y: 'bottom',
+                padding: 0,
                 data:incomeNames
             },
             xAxis: [
@@ -670,6 +788,13 @@
         var outcomeLineChart = echarts.init(document.getElementById("outcome_chart_line"), theme);
 
         outcomeLineChart.setOption({
+            title: {
+                text: '<spring:message code="legend.outcome"/>数据<spring:message code="title.chart.line"/>',
+                subtext: subTitle,
+                x: 'center',
+                y: 'top',
+                padding: [0,5,20,5]
+            },
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -688,6 +813,7 @@
             legend: {
                 x: 'center',
                 y: 'bottom',
+                padding: 0,
                 data: outcomeNames
             },
             calculable: true,
@@ -709,6 +835,13 @@
         var outcomeBarChart = echarts.init(document.getElementById("outcome_chart_bar"), theme);
 
         outcomeBarChart.setOption({
+            title: {
+                text: '<spring:message code="legend.outcome"/>数据<spring:message code="title.chart.bar"/>',
+                subtext: subTitle,
+                x: 'center',
+                y: 'top',
+                padding: [0,5,20,5]
+            },
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -727,6 +860,7 @@
             legend: {
                 x: 'center',
                 y: 'bottom',
+                padding: 0,
                 data:outcomeNames
             },
             xAxis: [
@@ -754,6 +888,13 @@
         var lineChart = echarts.init(document.getElementById("chart_line"), theme);
 
         lineChart.setOption({
+            title: {
+                text: '企业进销项数据对比<spring:message code="title.chart.line"/>',
+                subtext: subTitle,
+                x: 'center',
+                y: 'top',
+                padding: [0,5,20,5]
+            },
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -770,6 +911,8 @@
                 }
             },
             legend: {
+                orient: 'vertical',
+                x: 'left',
                 data: ['<spring:message code="legend.income"/>','<spring:message code="legend.outcome"/>']
             },
             calculable: true,
@@ -815,6 +958,13 @@
         var barChart = echarts.init(document.getElementById("chart_bar"), theme);
 
         barChart.setOption({
+            title: {
+                text: '企业进销项数据对比<spring:message code="title.chart.bar"/>',
+                subtext: subTitle,
+                x: 'center',
+                y: 'top',
+                padding: [0,5,20,5]
+            },
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -831,6 +981,8 @@
                 }
             },
             legend: {
+                orient: 'vertical',
+                x: 'left',
                 data:['<spring:message code="legend.income"/>','<spring:message code="legend.outcome"/>']
             },
             xAxis: [
@@ -869,6 +1021,13 @@
         var  radarChart = echarts.init(document.getElementById("chart_radar"), theme);
 
         radarChart.setOption({
+            title: {
+                text: '企业进销项数据对比<spring:message code="title.chart.radar"/>',
+                subtext: subTitle,
+                x: 'left',
+                y: 'top',
+                padding: [0,5,20,5]
+            },
             tooltip: {
                 trigger: 'item'
             },
@@ -881,6 +1040,7 @@
             legend: {
                 orient: 'vertical',
                 x:'left',
+                y:'bottom',
                 data: ['<spring:message code="legend.income"/>','<spring:message code="legend.outcome"/>']
             },
             polar: [{
@@ -904,6 +1064,13 @@
         var  pieChart = echarts.init(document.getElementById("chart_pie"), theme);
 
         pieChart.setOption({
+            title: {
+                text: '企业进项（左图）与销项（右图）数据<spring:message code="title.chart.pie"/>',
+                subtext: subTitle,
+                x: 'center',
+                y: 'top',
+                padding: [0,5,20,5]
+            },
             tooltip : {
                 trigger: 'item',
                 formatter: "{a} <br/>{b} : {c}元 ({d}%)"
