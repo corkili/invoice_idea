@@ -36,11 +36,18 @@
             开始日期
             <span class="required">*</span>
         </label>
-        <div class="col-md-6">
-            <input class="form-control has-feedback-left" required="required"
-                   id="start_time" name="start_time" placeholder="year-month-day(e.g. 2017-6-15)"/>
-            <span class="fa fa-times form-control-feedback left" aria-hidden="true"></span>
+        <div class="col-md-6 xdisplay_inputx form-group has-feedback">
+            <input type="date" id="start_time" name="start_time" class="form-control has-feedback-left"
+                   aria-describedby="inputSuccess2StatusStart" value="2016-01-01" required="required">
+            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+            <span id="inputSuccess2StatusStart" class="sr-only"></span>
         </div>
+
+        <%--<div class="col-md-6">--%>
+            <%--<input class="form-control has-feedback-left" required="required"--%>
+                   <%--id="start_time" name="start_time" placeholder="year-month-day(e.g. 2017-6-15)"/>--%>
+            <%--<span class="fa fa-times form-control-feedback left" aria-hidden="true"></span>--%>
+        <%--</div>--%>
 
     </div>
     <div class="form-group">
@@ -48,11 +55,17 @@
             结束日期
             <span class="required">*</span>
         </label>
-        <div class="col-md-6">
-            <input class="form-control has-feedback-left" required="required"
-                   id="end_time" name="end_time" placeholder="year-month-day(e.g. 2017-6-15)"/>
-            <span class="fa fa-times form-control-feedback left" aria-hidden="true"></span>
+        <div class="col-md-6 xdisplay_inputx form-group has-feedback">
+            <input type="date" id="end_time" name="end_time" class="form-control has-feedback-left"
+                   aria-describedby="inputSuccess2StatusEnd" value="2016-06-30" required="required">
+            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+            <span id="inputSuccess2StatusEnd" class="sr-only"></span>
         </div>
+        <%--<div class="col-md-6">--%>
+            <%--<input class="form-control has-feedback-left" required="required"--%>
+                   <%--id="end_time" name="end_time" placeholder="year-month-day(e.g. 2017-6-15)"/>--%>
+            <%--<span class="fa fa-times form-control-feedback left" aria-hidden="true"></span>--%>
+        <%--</div>--%>
     </div>
     <div class="ln_solid"></div>
     <div class="form-group">

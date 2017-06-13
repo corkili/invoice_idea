@@ -129,6 +129,42 @@
 
                 <div class="clearfix"></div>
 
+                <c:if test="${view_invoice}">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2><spring:message code="form.title.invoice" /></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+
+                                    <section class="content invoice">
+                                        <!-- title row -->
+
+                                        <%@include file="invoice_element.jspf"%>
+
+                                        <div class="row no-print">
+                                            <div class="col-xs-12">
+                                                <form action="del_invoice" method="post">
+                                                    <input type="hidden" name="index" value="${index}">
+                                                    <input type="hidden" name="invoice_id" value="${invoice.invoiceId}">
+                                                    <input type="submit" value="<spring:message code="button.del" />"
+                                                           class="btn btn-round btn-danger pull-right" onclick="return confirm('确定删除发票？');">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+
                 <!-- result list -->
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -198,38 +234,6 @@
                         </div>
                     </div>
                 </div>
-
-                <c:if test="${view_invoice}">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="x_panel">
-                                <div class="x_title">
-                                    <h2><spring:message code="form.title.invoice" /></h2>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content">
-
-                                    <section class="content invoice">
-                                        <!-- title row -->
-
-                                        <%@include file="invoice_element.jspf"%>
-
-                                        <div class="row no-print">
-                                            <div class="col-xs-12">
-                                                <form action="del_invoice" method="post">
-                                                    <input type="hidden" name="index" value="${index}">
-                                                    <input type="hidden" name="invoice_id" value="${invoice.invoiceId}">
-                                                    <input type="submit" value="<spring:message code="button.del" />"
-                                                           class="btn btn-round btn-danger pull-right">
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </c:if>
             </div>
         </div>
         <!-- /page content -->

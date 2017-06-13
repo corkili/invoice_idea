@@ -58,7 +58,11 @@ public class UserController {
             session.setAttribute("user", user);
             return "redirect:/main";
         }
+    }
 
+    @RequestMapping(value = "/user_manage", method = RequestMethod.GET)
+    public ModelAndView userManage() {
+        return new ModelAndView("user_manage");
     }
 
     @RequestMapping(value = "/main", name = "主页")

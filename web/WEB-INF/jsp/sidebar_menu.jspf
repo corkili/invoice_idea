@@ -27,8 +27,8 @@
             </li>
             <li><a><i class="fa fa-clone"></i> 系统管理 <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="users_manage.html">用户管理</a></li>
-                    <li><a href="logs_maintain.html">日志维护</a></li>
+                    <li><a href="user_manage">用户管理</a></li>
+                    <%--<li><a href="logs_maintain.html">日志维护</a></li>--%>
                 </ul>
             </li>
         </ul>
