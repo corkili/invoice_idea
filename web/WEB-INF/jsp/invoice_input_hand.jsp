@@ -152,7 +152,7 @@
         <!-- footer content -->
         <footer>
             <div class="pull-right">
-
+                <spring:message code="text.footer"/>
             </div>
             <div class="clearfix"></div>
         </footer>
