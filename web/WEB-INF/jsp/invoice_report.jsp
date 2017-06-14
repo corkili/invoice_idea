@@ -159,6 +159,15 @@
                                             </table>
                                         </div>
                                         <div class="ln_solid"></div>
+                                        <div id="income_chart_line" style="height:450px;"></div>
+                                        <div class="ln_solid"></div>
+                                        <div id="income_chart_bar" style="height:450px;"></div>
+                                        <div class="ln_solid"></div>
+                                        <p>
+                                            进项数据分析：${income_comments}
+                                        </p><br/>
+                                        <div class="ln_solid"></div>
+                                        <!-- outcome -->
                                         <h4 style="text-align: center">
                                             <spring:message code="title.table.outcome"/>
                                             <small>（单位：元）</small>
@@ -221,14 +230,13 @@
                                             </table>
                                         </div>
                                         <div class="ln_solid"></div>
-                                        <!-- charts -->
-                                        <div id="income_chart_line" style="height:450px;"></div>
-                                        <div class="ln_solid"></div>
-                                        <div id="income_chart_bar" style="height:450px;"></div>
-                                        <div class="ln_solid"></div>
                                         <div id="outcome_chart_line" style="height:450px;"></div>
                                         <div class="ln_solid"></div>
                                         <div id="outcome_chart_bar" style="height:450px;"></div>
+                                        <div class="ln_solid"></div>
+                                        <p>
+                                            销项数据分析：${outcome_comments}
+                                        </p><br/>
                                         <!-- /section 1 -->
                                         <!-- section 2 -->
                                         <div class="ln_solid"></div>

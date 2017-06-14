@@ -27,6 +27,9 @@ public class InvoiceController {
     private Logger logger = Logger.getLogger(InvoiceController.class);
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+    private SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+    private SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
 
     @RequestMapping(value = "/test")
     public ModelAndView test(@RequestParam("condition") String condition) {
@@ -306,6 +309,10 @@ public class InvoiceController {
         List<Double> incomeProductTotals = new ArrayList<>();
         List<Double> outcomeProductTotals = new ArrayList<>();
         List<Double> balances = new ArrayList<>();
+        String incomeComment = "";
+        String outcomeComment = "";
+        String compareComment = "";
+
         if (invoiceList.size() != 0) {
             for (TotalCome come : comeList) {
                 logger.info(come.getDate());
@@ -342,6 +349,7 @@ public class InvoiceController {
             }
             incomeProductTotals.add(new BigDecimal(sum).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 
+            // 销项数据, 年月总和
             for (int i = 0; i < outcomeNames.size(); i++) {
                 sum = 0.0;
                 for (List<Double> amounts : outcomeAmounts) {
@@ -358,21 +366,97 @@ public class InvoiceController {
             balances.add(new BigDecimal(outcomeProductTotals.get(outcomeProductTotals.size() - 1)
                     - incomeProductTotals.get(incomeProductTotals.size() - 1))
                     .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+
+            // 日期
+            String dateString = yearFormat.format(startDate) + "年" +
+                    monthFormat.format(startDate) + "月至" +
+                    yearFormat.format(endDate) + "年" +
+                    monthFormat.format(endDate) + "月";
+
+            // 进项数据对比
+            incomeComment = compareIncomeOrOutcome(incomeAmounts, incomeProductTotals, dateString, "进项", incomeNames);
+            outcomeComment = compareIncomeOrOutcome(outcomeAmounts, outcomeProductTotals, dateString, "销项", outcomeNames);
+            logger.info(incomeComment);
+            logger.info(outcomeComment);
         }
 
         ModelAndView modelAndView = new ModelAndView("invoice_report");
         logger.info("size: " + invoiceList.size());
-        modelAndView.addObject("balances", balances);
-        modelAndView.addObject("income_product_totals", incomeProductTotals);
-        modelAndView.addObject("outcome_product_totals", outcomeProductTotals);
+        modelAndView.addObject("balances", balances); // List
+        modelAndView.addObject("income_product_totals", incomeProductTotals); // List
+        modelAndView.addObject("outcome_product_totals", outcomeProductTotals); // List
         modelAndView.addObject("income_names", incomeNames);   // List
         modelAndView.addObject("outcome_names", outcomeNames);  // List
         modelAndView.addObject("income_amounts", incomeAmounts); // List<List>
         modelAndView.addObject("outcome_amounts",outcomeAmounts); // List<List>
-        modelAndView.addObject("dates", dates);
-        modelAndView.addObject("incomes", incomes);
-        modelAndView.addObject("outcomes", outcomes);
+        modelAndView.addObject("dates", dates); // List
+        modelAndView.addObject("incomes", incomes); // List
+        modelAndView.addObject("outcomes", outcomes); // List
+        modelAndView.addObject("income_comments", incomeComment);   // String
+        modelAndView.addObject("outcome_comments", outcomeComment); // String
         modelAndView.addObject("has_result", invoiceList.size() != 0);
         return modelAndView;
+    }
+
+    private String compareIncomeOrOutcome(List<List<Double>> amounts, List<Double> productTotals,
+                                         String dateString, String type, List<String> names) {
+        StringBuilder comments = new StringBuilder();
+        List<String> Ups = new ArrayList<>();
+        List<String> Downs = new ArrayList<>();
+        List<String> Holds = new ArrayList<>();
+        for (int i = 0; i < names.size(); i++) {
+            double diff = amounts.get(amounts.size() - 1).get(i) - amounts.get(0).get(i);
+            if (diff > 0) {
+                Ups.add(names.get(i));
+            } else if (diff < 0) {
+                Downs.add(names.get(i));
+            } else {
+                Holds.add(names.get(i));
+            }
+        }
+        comments.append("由以上数据可以看出，");
+        if (Ups.size() > 0) {
+            comments.append(Ups.get(0));
+            for (int i = 1; i < Ups.size(); i++) {
+                comments.append("、").append(Ups.get(i));
+            }
+            if (Ups.size() > 1) {
+                comments.append("等");
+            }
+            comments.append("产品，在").append(dateString).append("时间段内总体呈现上升趋势");
+        }
+        if (Downs.size() > 0) {
+            comments.append("；").append(Downs.get(0));
+            for (int i = 1; i < Downs.size(); i++) {
+                comments.append("、").append(Downs.get(i));
+            }
+            if (Downs.size() > 1) {
+                comments.append("等");
+            }
+            comments.append("产品，在").append(dateString).append("时间段内总体呈现下降趋势");
+        }
+        if (Holds.size() > 0) {
+            comments.append("；").append(Holds.get(0));
+            for (int i = 1; i < Holds.size(); i++) {
+                comments.append("、").append(Holds.get(i));
+            }
+            if (Holds.size() > 1) {
+                comments.append("等");
+            }
+            comments.append("产品，在").append(dateString).append("时间段内总体呈现平滑趋势");
+        }
+        comments.append("。\n");
+        comments.append("企业在").append(dateString).append("时间段内，总计").append(type)
+                .append(productTotals.get(productTotals.size() - 1)).append("元，总体在")
+                .append(dateString).append("时间段内呈现");
+        if (productTotals.get(productTotals.size() - 1) > productTotals.get(0)) {
+            comments.append("上升");
+        } else if (productTotals.get(productTotals.size() - 1) < productTotals.get(0)) {
+            comments.append("下降");
+        } else {
+            comments.append("平滑");
+        }
+        comments.append("趋势。");
+        return comments.toString();
     }
 }
