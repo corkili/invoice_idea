@@ -4152,11 +4152,16 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     border-bottom-color: #fff;
   }
 }
-.tab-content > .tab-pane {
-  display: none;
-}
-.tab-content > .active {
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
   display: block;
+  height: 0;
+  overflow-y: hidden;
+}
+
+.tab-content > .active,
+.pill-content > .active {
+  height: auto;
 }
 .nav-tabs .dropdown-menu {
   margin-top: -1px;

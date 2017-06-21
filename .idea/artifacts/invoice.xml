@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="invoice">
+    <output-path>$USER_HOME$/Desktop/invoice</output-path>
+    <root id="archive" name="invoice.war">
+      <element id="artifact" artifact-name="invoice:war exploded" />
+    </root>
+  </artifact>
+</component>

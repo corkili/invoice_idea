@@ -311,7 +311,7 @@ public class InvoiceController {
         List<Double> balances = new ArrayList<>();
         String incomeComment = "";
         String outcomeComment = "";
-        String compareComment = "";
+        StringBuilder compareComment = new StringBuilder();
 
         if (invoiceList.size() != 0) {
             for (TotalCome come : comeList) {
@@ -373,11 +373,28 @@ public class InvoiceController {
                     yearFormat.format(endDate) + "年" +
                     monthFormat.format(endDate) + "月";
 
-            // 进项数据对比
+            // 进、销项数据分析
             incomeComment = compareIncomeOrOutcome(incomeAmounts, incomeProductTotals, dateString, "进项", incomeNames);
             outcomeComment = compareIncomeOrOutcome(outcomeAmounts, outcomeProductTotals, dateString, "销项", outcomeNames);
             logger.info(incomeComment);
             logger.info(outcomeComment);
+
+            compareComment.append("进销项对比分析：由上述的数据可知，在")
+                    .append(dateString).append("，企业的总进项额为")
+                    .append(incomeProductTotals.get(incomeProductTotals.size() - 1))
+                    .append("元，").append("总销项额为")
+                    .append(outcomeProductTotals.get(outcomeProductTotals.size() - 1))
+                    .append("元，").append("进、销项差值为：")
+                    .append(Math.abs(balances.get(balances.size() - 1)))
+                    .append("元。");
+            compareComment.append("在").append(dateString);
+            if (balances.get(balances.size() - 1) > 0) {
+                compareComment.append("，企业总体运营情况良好！");
+            } else if (balances.get(balances.size() - 1) < 0) {
+                compareComment.append("，企业总体运营情况不好！");
+            } else {
+                compareComment.append("，企业总体运营情况稳定！");
+            }
         }
 
         ModelAndView modelAndView = new ModelAndView("invoice_report");
@@ -394,6 +411,7 @@ public class InvoiceController {
         modelAndView.addObject("outcomes", outcomes); // List
         modelAndView.addObject("income_comments", incomeComment);   // String
         modelAndView.addObject("outcome_comments", outcomeComment); // String
+        modelAndView.addObject("compare_comments", compareComment.toString());  // String
         modelAndView.addObject("has_result", invoiceList.size() != 0);
         return modelAndView;
     }

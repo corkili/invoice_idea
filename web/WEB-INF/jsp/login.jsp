@@ -42,7 +42,10 @@
         <div class="animate form login_form">
             <section class="login_content">
                 <form:form commandName="user" action="login" method="post">
-                    <h1><spring:message code="login.form.title" /></h1>
+                    <h1>
+                        <spring:message code="login.form.title"/><br/><br/>
+                        <small><spring:message code="title.app_name"/></small>
+                    </h1>
                     <form:hidden path="userId" value="0" userId="userId" name="userId"/>
                     <form:hidden path="authority" value="0" userId="authority" name="authority" />
                     <div>
