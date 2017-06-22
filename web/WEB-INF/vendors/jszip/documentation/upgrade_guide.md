@@ -15,11 +15,11 @@ section: main
 
 ```js
 // deprecated
-zip.file("OCR.txt").options.date
-zip.file("OCR.txt").options.dir
+zip.file("test.txt").options.date
+zip.file("test.txt").options.dir
 // new API
-zip.file("OCR.txt").date
-zip.file("OCR.txt").dir
+zip.file("test.txt").date
+zip.file("test.txt").dir
 ```
 
 
@@ -44,14 +44,14 @@ Example for the data attribute :
 
 ```js
 // before
-zip.file("OCR.txt").data;
-zip.files["OCR.txt"].data;
+zip.file("test.txt").data;
+zip.files["test.txt"].data;
 zip.file("image.png").data;
 zip.files["image.png"].data;
 
 // after
-zip.file("OCR.txt").asText();
-zip.files["OCR.txt"].asText();
+zip.file("test.txt").asText();
+zip.files["test.txt"].asText();
 zip.file("image.png").asBinary();
 zip.files["image.png"].asBinary();
 ```

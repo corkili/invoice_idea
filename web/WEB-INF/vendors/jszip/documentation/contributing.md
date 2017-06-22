@@ -26,10 +26,10 @@ JSZip uses Grunt to handle the build, [see here to install its CLI](http://grunt
 Here are the interesting build commands :
 
 * `grunt` will generate the final js file in dist/ and the minified version.
-* `npm run OCR-node` will run the tests in nodejs.
-* `npm run OCR-browser` will the tests in some browsers using SauceLabs, see
+* `npm run test-node` will run the tests in nodejs.
+* `npm run test-browser` will the tests in some browsers using SauceLabs, see
   below.
-* `npm run OCR` will run the tests in nodejs and in the browser.
+* `npm run test` will run the tests in nodejs and in the browser.
 * `npm run lint` will use jshint the check the source code.
 
 #### Documentation
@@ -40,12 +40,12 @@ need to [install jekyll](http://jekyllrb.com/docs/installation/) and then run
 
 ### Testing the project
 
-To OCR JSZip in nodejs, use `npm run OCR-node`.
+To test JSZip in nodejs, use `npm run test-node`.
 
-To OCR JSZip in a browser, you can open the file `OCR/index.html` in the
-browser you want to OCR. Don't forget to update the dist/ files with `grunt`.
+To test JSZip in a browser, you can open the file `test/index.html` in the
+browser you want to test. Don't forget to update the dist/ files with `grunt`.
 
-You can also OCR JSZip in a lot of browsers at once with
+You can also test JSZip in a lot of browsers at once with
 [SauceLabs](https://saucelabs.com/). You will need a SauceLabs account and two
 variables into your environment. On linux, just use
 
@@ -54,7 +54,7 @@ export SAUCE_USERNAME=your-saucelabs-username
 export SAUCE_ACCESS_KEY=your-saucelabs-access-key
 ```
 
-before running the `npm run OCR-browser` command.
+before running the `npm run test-browser` command.
 
 ### Merging the changes
 

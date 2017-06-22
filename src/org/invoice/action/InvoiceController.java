@@ -64,6 +64,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_input_hand");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -81,6 +82,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_input_hand");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -100,6 +102,7 @@ public class InvoiceController {
         if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
             ModelAndView modelAndView = new ModelAndView("redirect:/add_invoice_hand");
             modelAndView.addObject("has_authority", false);
+            modelAndView.addObject("display_name", user.getName());
             return modelAndView;
         }
         for(InvoiceDetail detail : invoice.getDetails())
@@ -107,6 +110,7 @@ public class InvoiceController {
         invoiceService.addInvoice(invoice);
         ModelAndView modelAndView = new ModelAndView("redirect:/save_result?id=" + invoice.getInvoiceId());
         modelAndView.addObject("has_authority", true);
+        modelAndView.addObject("display_name", user.getName());
         return modelAndView;
     }
 
@@ -116,6 +120,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_save_result");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -131,6 +136,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_query_list");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_RECORD) == 0) { // 验证添加发票的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -155,6 +161,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_query_list");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_RECORD) == 0) { // 验证添加发票的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -181,6 +188,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_query_list");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_RECORD) == 0) { // 验证添加发票的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -205,6 +213,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_query_list");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_REMOVE_INVOICE_RECORE) == 0) { // 验证删除发票的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -227,6 +236,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_input_image");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -244,6 +254,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_input_image");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -284,6 +295,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_query_chart");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_RECORD) == 0) { // 验证查询发票的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -321,6 +333,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_query_chart");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_RECORD) == 0) { // 验证查询发票的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -362,6 +375,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_report");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_ANALYSIS_RESULT) == 0) { // 验证查询报表的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;
@@ -390,6 +404,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_report");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
         if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_ANALYSIS_RESULT) == 0) { // 验证查询报表的权限
             modelAndView.addObject("has_authority", false);
             return modelAndView;

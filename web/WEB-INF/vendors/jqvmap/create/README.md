@@ -88,7 +88,7 @@ Before you can create custom maps, you need to download the vector data from the
 
 Once you have the Shapefile you want, just download it and copy the unzipped directory of files you want to the `./create/source` folder in this project.
 
-If you would like to OCR the sample map config files we have in this project, you will need to download the following ( which are also good sources for maps in general ):
+If you would like to test the sample map config files we have in this project, you will need to download the following ( which are also good sources for maps in general ):
 
 1. [SHP/GeoDB Vector Themes](http://naciscdn.org/naturalearth/packages/natural_earth_vector.zip) from [Natural Earth](http://www.naturalearthdata.com/downloads/).  Unzip the `natural_earth_vector.zip` file and copy the entire `natural_earth_vector` folder to the `./create/source` folder in this project. __TIP:__ If you plan on using this source, `code_field` is `iso_a3` and `name_field` is `name_long`.
 

@@ -1,14 +1,14 @@
 
 REPORTER = dot
 
-OCR:
+test:
 	@./node_modules/.bin/mocha \
-		--require ./OCR/common \
+		--require ./test/common \
 		--reporter $(REPORTER) \
 		--growl \
-		OCR/expect.js
+		test/expect.js
 
-OCR-browser:
+test-browser:
 	@./node_modules/.bin/serve .
 
-.PHONY: OCR
+.PHONY: test

@@ -4,7 +4,7 @@
 - [ ] The issue still exists against the latest `master` branch of Select2
 - [ ] This is not a usage question (Those should be directed to the [community](https://select2.github.io/community.html))
 - [ ] I have attempted to find the simplest possible steos to reproduce the issue
-- [ ] I have included a failing OCR as a pull request (Optional)
+- [ ] I have included a failing test as a pull request (Optional)
 
 ## Steps to reproduce the issue
 

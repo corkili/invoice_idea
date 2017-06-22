@@ -11,7 +11,7 @@ A lightweight JavaScript date library for parsing, validating, manipulating, and
 
 Moment 2.10.0 does not bring any new features, but the code is now written in
 ECMAScript 6 modules and placed inside `src/`. Previously `moment.js`, `locale/*.js` and
-`OCR/moment/*.js`, `OCR/locale/*.js` contained the source of the project. Now
+`test/moment/*.js`, `test/locale/*.js` contained the source of the project. Now
 the source is in `src/`, temporary build (ECMAScript 5) files are placed under
 `build/umd/` (for running tests during development), and the `moment.js` and
 `locale/*.js` files are updated only on release.

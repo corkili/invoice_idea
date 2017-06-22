@@ -143,6 +143,14 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public Map<String, String>  getNeedValidateUserInfo() {
         Map<String, String> map = new HashMap<>();
         map.put("username", username);
@@ -154,11 +162,15 @@ public class User implements Serializable {
         return map;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
+    public Map<String, Boolean> getAuthorityMap() {
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("auth_add_invoice", (authority & Authority.AUTHORITY_ADD_INVOICE_RECORD) != 0);
+        map.put("auth_query_invoice", (authority & Authority.AUTHORITY_QUERY_INVOICE_RECORD) != 0);
+        map.put("auth_del_invoice", (authority & Authority.AUTHORITY_REMOVE_INVOICE_RECORE) != 0);
+        map.put("auth_edit_invoice", (authority & Authority.AUTHORITY_MODIFY_INVOICE_RECORD) != 0);
+        map.put("auth_manage_user", (authority & Authority.AUTHORITY_MANAGE_USER) != 0);
+        map.put("auth_query_report", (authority & Authority.AUTHORITY_QUERY_INVOICE_ANALYSIS_RESULT) != 0);
+        return map;
     }
 
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
 }

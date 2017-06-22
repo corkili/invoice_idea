@@ -4,9 +4,9 @@ describe "Morris.Hover", ->
 
     beforeEach ->
       parent = $('<div style="width:200px;height:180px"></div>')
-        .appendTo($('#OCR'))
+        .appendTo($('#test'))
       @hover = new Morris.Hover(parent:  parent)
-      @element = $('#OCR .morris-hover')
+      @element = $('#test .morris-hover')
 
     it "should initialise a hidden, empty popup", ->
       @element.should.exist
@@ -55,10 +55,10 @@ describe "Morris.Hover", ->
 
   describe "#update", ->
     it "should update content, show and reposition the popup", ->
-      hover = new Morris.Hover(parent: $('#OCR'))
+      hover = new Morris.Hover(parent: $('#test'))
       html = "<div style='width:84px;height:84px'>Hello, Everyone!</div>"
       hover.update(html, 150, 200)
-      el = $('#OCR .morris-hover')
+      el = $('#test .morris-hover')
       el.should.have.css('left', '100px')
       el.should.have.css('top', '90px')
       el.should.have.text('Hello, Everyone!')

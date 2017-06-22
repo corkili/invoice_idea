@@ -62,7 +62,7 @@ var fs = require("fs");
 var JSZip = require("jszip");
 
 // read a zip file
-fs.readFile("OCR.zip", function(err, data) {
+fs.readFile("test.zip", function(err, data) {
   if (err) throw err;
   var zip = new JSZip(data);
 });

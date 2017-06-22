@@ -1,6 +1,7 @@
 package org.invoice.action;
 
 import org.apache.log4j.Logger;
+import org.invoice.model.Authority;
 import org.invoice.model.User;
 import org.invoice.service.UserService;
 import org.invoice.session.SessionContext;
@@ -98,14 +99,26 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user_manage", method = RequestMethod.GET)
-    public ModelAndView userManage() {
+    public ModelAndView userManage(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("user_manage");
-        modelAndView.addObject("has_authority", false);
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
+        if ((user.getAuthority() & Authority.AUTHORITY_MANAGE_USER) == 0) { // 验证管理用户的的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
     @RequestMapping(value = "/main", name = "主页")
-    public ModelAndView loginSuccessfulAndTurnToMainPage(@ModelAttribute("user") User user) {
-        return new ModelAndView("main").addObject("user", user);
+    public ModelAndView loginSuccessfulAndTurnToMainPage(HttpSession session) {
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        return new ModelAndView("main")
+                .addObject("user", user)
+                .addObject("display_name", user.getName())
+                .addObject("auth", user.getAuthorityMap());
     }
 }

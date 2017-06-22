@@ -44,7 +44,7 @@ You'll need [node.js](https://nodejs.org).  I recommend using
 development environments.
 
 With node installed, install [grunt](https://github.com/cowboy/grunt) using
-`npm install -g grunt-cli`, and then the rest of the OCR/build dependencies
+`npm install -g grunt-cli`, and then the rest of the test/build dependencies
 with `npm install` in the morris.js project folder.
 
 Once you're all set up, you can compile, minify and run the tests using `grunt`.
@@ -126,7 +126,7 @@ tests currently *only* pass on OS X.
 ### 0.3.2 - 28th October 2012
 
 - **Area charts!** [#47](https://github.com/morrisjs/morris.js/issues/47).
-- Some major refactoring and OCR suite improvements.
+- Some major refactoring and test suite improvements.
 - Set smooth parameter per series [#91](https://github.com/morrisjs/morris.js/issues/91).
 - Custom dateFormat for string x-values [#90](https://github.com/morrisjs/morris.js/issues/90).
 

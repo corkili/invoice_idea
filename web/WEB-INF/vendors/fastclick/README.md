@@ -133,7 +133,7 @@ FastClick is designed to cope with many different browser oddities. Here are som
 
 ## Tests ##
 
-There are no automated tests. The files in `tests/` are manual reduced OCR cases. We've had a think about how best to OCR these cases, but they tend to be very browser/device specific and sometimes subjective which means it's not so trivial to OCR.
+There are no automated tests. The files in `tests/` are manual reduced test cases. We've had a think about how best to test these cases, but they tend to be very browser/device specific and sometimes subjective which means it's not so trivial to test.
 
 ## Credits and collaboration ##
 

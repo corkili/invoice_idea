@@ -24,7 +24,7 @@ Well structured, detailed bug reports are hugely valuable for the project.
 Guidlines for reporting bugs:
 
  - Check the issue search to see if it has already been reported
- - Isolate the problem to a simple OCR case
+ - Isolate the problem to a simple test case
  - Provide a demonstration of the problem on [JS Bin](http://jsbin.com) or similar
 
 Please provide any additional details associated with the bug, if it's browser or screen density specific, or only happens with a certain configuration or data.
@@ -33,7 +33,7 @@ Please provide any additional details associated with the bug, if it's browser o
 Local development
 -----------------
 
-Run `npm install` to install all the libraries, then run `gulp dev --OCR` to build and run tests as you make changes.
+Run `npm install` to install all the libraries, then run `gulp dev --test` to build and run tests as you make changes.
 
 
 Pull requests

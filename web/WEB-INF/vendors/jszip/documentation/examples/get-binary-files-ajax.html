@@ -24,7 +24,7 @@ section: example
   //=========================
   // JSZipUtils
   //=========================
-  JSZipUtils.getBinaryContent('{{site.baseurl}}/OCR/ref/text.zip', function(err, data) {
+  JSZipUtils.getBinaryContent('{{site.baseurl}}/test/ref/text.zip', function(err, data) {
     var elt = document.getElementById('jszip_utils');
     if(err) {
       showError(elt, err);

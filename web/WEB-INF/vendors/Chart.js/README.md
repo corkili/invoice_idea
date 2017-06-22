@@ -29,9 +29,9 @@ Before submitting an issue or a pull request to the project, please take a momen
 For support using Chart.js, please post questions with the [`chartjs` tag on Stack Overflow](http://stackoverflow.com/questions/tagged/chartjs).
 
 ## Building and Testing
-`gulp build`, `gulp OCR`
+`gulp build`, `gulp test`
 
-Thanks to [BrowserStack](https://browserstack.com) for allowing our team to OCR on thousands of browsers.
+Thanks to [BrowserStack](https://browserstack.com) for allowing our team to test on thousands of browsers.
 
 ## License
 

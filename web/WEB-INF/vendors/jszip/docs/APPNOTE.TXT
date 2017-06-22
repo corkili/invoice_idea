@@ -2241,7 +2241,7 @@ After the header is decrypted,  the last 1 or 2 bytes in Buffer
 should be the high-order word/byte of the CRC for the file being
 decrypted, stored in Intel low-byte/high-byte order.  Versions of
 PKZIP prior to 2.0 used a 2 byte CRC check; a 1 byte CRC check is
-used on versions after 2.0.  This can be used to OCR if the password
+used on versions after 2.0.  This can be used to test if the password
 supplied is correct or not.
 
 Step 3 - Decrypting the compressed data stream

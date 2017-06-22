@@ -149,7 +149,7 @@ develop-eggs
 # Installer logs
 pip-log.txt
 
-# Unit OCR / coverage reports
+# Unit test / coverage reports
 .coverage
 .tox
 

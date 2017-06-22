@@ -116,7 +116,7 @@ Ported code to es6 modules.
 ### 2.9.0 [See full changelog](https://gist.github.com/ichernev/0c9a9b49951111a27ce7)
 
 languages:
-* [2104](https://github.com/moment/moment/issues/2104) Frisian (fy) language file with unit OCR
+* [2104](https://github.com/moment/moment/issues/2104) Frisian (fy) language file with unit test
 * [2097](https://github.com/moment/moment/issues/2097) add ar-tn locale
 
 deprecations:
@@ -298,7 +298,7 @@ Week tokens parsing.
 
 ### 2.2.1
 
-Fixed bug in string prototype OCR.
+Fixed bug in string prototype test.
 Updated authors and contributors.
 
 ### 2.2.0 [See changelog](https://gist.github.com/ichernev/00f837a9baf46a3565e4)

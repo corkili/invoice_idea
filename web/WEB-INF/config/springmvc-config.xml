@@ -42,6 +42,7 @@
             <mvc:exclude-mapping path="/**/*.jpeg"/>
             <mvc:exclude-mapping path="/**/*.gif"/>
             <mvc:exclude-mapping path="/**/*.png"/>
+            <mvc:exclude-mapping path="/**/vendors/**"/>
             <bean id="SessionInterceptor" class="org.invoice.session.SessionInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
