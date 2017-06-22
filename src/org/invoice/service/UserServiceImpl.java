@@ -138,10 +138,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean modifyUserPassword(int userId, String newPassword, Errors errors) {
+        boolean hasError = true;
         User user = userDao.findUserByUserId(String.valueOf(userId));
         user.setPassword(newPassword);
         if (!validateUserInfo(user, errors)) {
-            return false;
+            hasError = false;
         }
         user.setPassword(HashUtil.generate(newPassword));
         user.setSalt(HashUtil.getSalt(user.getPassword()));

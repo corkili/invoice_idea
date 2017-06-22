@@ -89,7 +89,7 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-                                <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                                <div class="col-md-4 col-sm-4 profile_details">
                                     <div class="well profile_view">
                                         <div class="col-sm-12">
                                             <h4 class="brief"><i>个人信息</i></h4>
@@ -166,17 +166,79 @@
                                         </div>
                                         <div class="col-xs-12 bottom text-center">
                                             <div class="col-xs-12 col-sm-6 emphasis right">
-                                                <button type="button" class="btn btn-primary btn-xs">
-                                                    <i class="fa fa-edit"> </i> 修改密码
-                                                </button>
+                                                <form action="main" method="post">
+                                                    <input type="submit" class="btn btn-primary btn-xs"
+                                                           value="修改密码">
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <c:if test="${edit_password}">
+                                    <div class="col-md-8 col-sm-8" >
+                                        <form action="modify_password" method="post" class="form-horizontal form-label-left">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2" for="old_password">
+                                                    原始密码
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control has-feedback-left"  type="password"
+                                                           id="old_password" name="old_password" placeholder="" required="required"/>
+                                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2" for="new_password">
+                                                    新密码
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control has-feedback-left" type="password"
+                                                           id="new_password" name="new_password" placeholder="" required="required"/>
+                                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2" for="confirm_password">
+                                                    确认密码
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control has-feedback-left" type="password"
+                                                           id="confirm_password" name="confirm_password" placeholder="" required="required"/>
+                                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                </div>
+                                            </div>
+                                            <div class="ln_solid"></div>
+                                            <c:if test="${has_message}">
+                                                <div class="form-group">
+                                                    <div class="col-md-8 text-center">
+                                                        ${message}
+                                                    </div>
+                                                </div>
+                                                <div class="ln_solid"></div>
+                                            </c:if>
+                                            <div class="form-group">
+                                                <div class="col-md-5 col-md-offset-3">
+                                                    <script>
+                                                        function cancel() {
+                                                            window.location.href="/main";
+                                                        }
+                                                    </script>
+                                                    <input type="submit" class="btn btn-success" value="<spring:message code="button.ok" /> ">
+                                                    <input type="button" class="btn btn-primary" value="<spring:message code="button.cancel" />"
+                                                           onclick="cancel()">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <!-- /page content -->
