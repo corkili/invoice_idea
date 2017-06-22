@@ -14,9 +14,9 @@
 
     <context:component-scan base-package="org.invoice.action"/>
     <context:component-scan base-package="org.invoice.service"/>
-    <context:component-scan base-package="org.invoice.dao" />
-    <context:component-scan base-package="org.invoice.validator" />
-    <context:component-scan base-package="org.invoice.formatter" />
+    <context:component-scan base-package="org.invoice.dao"/>
+    <context:component-scan base-package="org.invoice.validator"/>
+    <context:component-scan base-package="org.invoice.formatter"/>
     <context:property-placeholder location="classpath:*.properties" file-encoding="UTF-8" />
 
     <mvc:annotation-driven conversion-service="conversionService"/>
@@ -25,12 +25,26 @@
     <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
     <mvc:resources mapping="/vendors/**" location="/WEB-INF/vendors/"/>
     <mvc:resources mapping="/build/**" location="/WEB-INF/build/"/>
-    <mvc:resources mapping="/images/**" location="/WEB-INF/images/" />
+    <mvc:resources mapping="/images/**" location="/WEB-INF/images/"/>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/**/*.css"/>
+            <mvc:exclude-mapping path="/**/*.html"/>
+            <mvc:exclude-mapping path="/**/*.js"/>
+            <mvc:exclude-mapping path="/**/*.jpg"/>
+            <mvc:exclude-mapping path="/**/*.jpeg"/>
+            <mvc:exclude-mapping path="/**/*.gif"/>
+            <mvc:exclude-mapping path="/**/*.png"/>
+            <bean id="SessionInterceptor" class="org.invoice.session.SessionInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <bean id="messageSource"
           class="org.springframework.context.support.ResourceBundleMessageSource">

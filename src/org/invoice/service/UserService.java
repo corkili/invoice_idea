@@ -4,6 +4,7 @@ import org.invoice.model.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 /**
  * Created by ran on 06/04/17.
@@ -11,9 +12,9 @@ import java.util.List;
 public interface UserService {
     public boolean register(User user, Errors errors);
 
-    public boolean login(User user, Errors errors);
+    public boolean login(User user, Errors errors, HttpSession session);
 
-    public void logout(int userId);
+    public void logout(int userId, HttpSession session);
 
     public boolean modifyUserInfo(User user, Errors errors);
 
@@ -32,4 +33,5 @@ public interface UserService {
     public void removeAuthorityOfUser(int authority, User user);
 
     public boolean validateUserLoginInformation(User user);
+
 }

@@ -5,6 +5,8 @@ import org.invoice.dao.UserDao;
 import org.invoice.model.Authority;
 import org.invoice.model.User;
 import org.invoice.security.HashUtil;
+import org.invoice.session.SessionContext;
+import org.invoice.session.SessionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean login(User user, Errors errors) {
+    public boolean login(User user, Errors errors, HttpSession session) {
         if(StringUtils.isEmpty(user.getUsername())) {
             logger.info("validate: \"username\" is empty!");
             errors.rejectValue("username", "username.required", "用户名不能为空");
@@ -78,13 +81,17 @@ public class UserServiceImpl implements UserService {
         loginUser.setPassword("#");
         loginUsers.put(loginUser.getUserId(), loginUser);
         // session处理
+        session.setAttribute(SessionContext.ATTR_USER_ID, String.valueOf(loginUser.getUserId()));
+        sessionHandlerByCacheMap(session);
         return true;
     }
 
     @Override
-    public void logout(int userId) {
+    public void logout(int userId, HttpSession session) {
         loginUsers.remove(userId);
         invoiceService.removeInvoiceListByUserId(userId);
+        session.invalidate();
+
     }
 
     @Override
@@ -207,5 +214,26 @@ public class UserServiceImpl implements UserService {
             return false;
 
         return true;
+    }
+
+    private void sessionHandlerByCacheMap(HttpSession session) {
+        synchronized (SessionListener.sessionContext) {
+            String userId = session.getAttribute(SessionContext.ATTR_USER_ID).toString();
+            HttpSession userSession = (HttpSession) SessionListener.sessionContext
+                    .getSessionMap().get(userId);
+            if (userSession != null) {
+                // 注销在线用户
+                userSession.invalidate();
+                SessionListener.sessionContext.getSessionMap().remove(userId);
+                // 清楚在线用户后，更新map，替换map
+                SessionListener.sessionContext.getSessionMap().remove(session.getId());
+                SessionListener.sessionContext.getSessionMap().put(userId, session);
+            } else {
+                // 根据当前sessionId取session对象，更新map
+                SessionListener.sessionContext.getSessionMap().put(userId, SessionListener.sessionContext
+                        .getSessionMap().get(session.getId()));
+                SessionListener.sessionContext.getSessionMap().remove(session.getId());
+            }
+        }
     }
 }

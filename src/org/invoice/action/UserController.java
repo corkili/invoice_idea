@@ -3,6 +3,7 @@ package org.invoice.action;
 import org.apache.log4j.Logger;
 import org.invoice.model.User;
 import org.invoice.service.UserService;
+import org.invoice.session.SessionContext;
 import org.invoice.validator.LoginValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,12 @@ public class UserController {
 
     private static final Logger logger = Logger.getLogger(UserController.class);
 
+    @RequestMapping(value = "/no_login")
+    public String noLogin() {
+        return "no_login";
+    }
+
+
     @RequestMapping(value = "/login", name = "登录", method = RequestMethod.GET)
     public ModelAndView inputLoginInformation(@ModelAttribute("user") User user){
         logger.info("input Login Information");
@@ -45,16 +52,21 @@ public class UserController {
                                            BindingResult bindingResult, HttpSession session,
                                            RedirectAttributes redirectAttributes) {
         logger.info("validate Login Information");
-        if (!userService.login(user, bindingResult)) {
+        if (!userService.login(user, bindingResult, session)) {
             FieldError fieldError = bindingResult.getFieldError();
             logger.info("Code:" + fieldError.getCode() + ", field" + fieldError.getField());
             return "login";
         } else {
             redirectAttributes.addFlashAttribute("message", "Login successful!");
             redirectAttributes.addFlashAttribute("user", userService.findUserByUserName(user.getUsername()));
-//            session.setAttribute("user", user);
             return "redirect:/main";
         }
+    }
+
+    @RequestMapping(value = "/logout", name = "注销", method = {RequestMethod.GET, RequestMethod.POST})
+    public String logout(HttpSession session) {
+        userService.logout(Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString()), session);
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)

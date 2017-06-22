@@ -3,6 +3,8 @@ package org.invoice.action;
 import org.apache.log4j.Logger;
 import org.invoice.model.*;
 import org.invoice.service.InvoiceService;
+import org.invoice.service.UserService;
+import org.invoice.session.SessionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -23,6 +26,9 @@ import java.util.*;
 public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
+
+    @Autowired
+    private UserService userService;
 
     private Logger logger = Logger.getLogger(InvoiceController.class);
 
@@ -44,16 +50,6 @@ public class InvoiceController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/add_invoice_hand", method = RequestMethod.GET)
-    public ModelAndView addInvoiceByHandInput() {
-        ModelAndView modelAndView = new ModelAndView("invoice_input_hand");
-        modelAndView.addObject("invoice", new Invoice());
-        int detailNum = 0;
-        modelAndView.addObject("detail_num", detailNum);
-        modelAndView.addObject("has_authority", true);
-        return modelAndView;
-    }
-
     @RequestMapping(value = "/test_invoice_hand", method = RequestMethod.GET)
     public ModelAndView testInvoiceByHandInput(@RequestParam("detail_num") int detailNum) {
         ModelAndView modelAndView = new ModelAndView("addInvoiceHandForm");
@@ -63,9 +59,32 @@ public class InvoiceController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/add_invoice_hand", method = RequestMethod.POST)
-    public ModelAndView addInvoiceByHandInput(@RequestParam("detail_num") int detailNum) {
+    @RequestMapping(value = "/add_invoice_hand", method = RequestMethod.GET)
+    public ModelAndView addInvoiceByHandInput(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("invoice_input_hand");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        modelAndView.addObject("invoice", new Invoice());
+        int detailNum = 0;
+        modelAndView.addObject("detail_num", detailNum);
+        modelAndView.addObject("has_authority", true);
+        return modelAndView;
+    }
+
+
+    @RequestMapping(value = "/add_invoice_hand", method = RequestMethod.POST)
+    public ModelAndView addInvoiceByHandInput(@RequestParam("detail_num") int detailNum, HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView("invoice_input_hand");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
         modelAndView.addObject("invoice", new Invoice());
         logger.info("detail_num: " +  detailNum);
         modelAndView.addObject("detail_num", detailNum);
@@ -74,8 +93,15 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "/save_invoice", method = RequestMethod.POST)
-    public ModelAndView saveInvoice(@ModelAttribute Invoice invoice) {
+    public ModelAndView saveInvoice(@ModelAttribute Invoice invoice, HttpSession session) {
         logger.info("save invoice");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
+            ModelAndView modelAndView = new ModelAndView("redirect:/add_invoice_hand");
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
         for(InvoiceDetail detail : invoice.getDetails())
             detail.setInvoiceId(invoice.getInvoiceId());
         invoiceService.addInvoice(invoice);
@@ -85,9 +111,15 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "/save_result")
-    public ModelAndView invoiceSaveResult(@RequestParam("id") String id) {
+    public ModelAndView invoiceSaveResult(@RequestParam("id") String id, HttpSession session) {
         Invoice invoice = invoiceService.getInvoice(id);
         ModelAndView modelAndView = new ModelAndView("invoice_save_result");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
         modelAndView.addObject("invoice", invoice);
         modelAndView.addObject("save_date", dateFormat.format(new Date()));
         modelAndView.addObject("has_authority", true);
@@ -95,10 +127,16 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "/list_query", method = RequestMethod.GET)
-    public ModelAndView queryInvoiceForList() {
-        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
-        invoiceList.clear();
+    public ModelAndView queryInvoiceForList(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("invoice_query_list");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_RECORD) == 0) { // 验证添加发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
+        invoiceList.clear();
         modelAndView.addObject("invoice_list", invoiceList);
         modelAndView.addObject("has_result", invoiceList.size() != 0);
         modelAndView.addObject("view_invoice", false);
@@ -112,15 +150,21 @@ public class InvoiceController {
             @RequestParam("buyer_name") String buyerName,
             @RequestParam("seller_name") String sellerName,
             @RequestParam("start_time") Date startDate,
-            @RequestParam("end_time") Date endDate) {
-        System.out.println(buyerName + "\n" + sellerName + "\n" + startDate + "\n" + endDate);
-        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
+            @RequestParam("end_time") Date endDate,
+            HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView("invoice_query_list");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_RECORD) == 0) { // 验证添加发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
         List<Invoice> IncomeInvoices = invoiceService.getInvoicesByNamesAndDateRange(buyerName, sellerName, startDate, endDate);
         List<Invoice> OutputInvoices = invoiceService.getInvoicesByNamesAndDateRange(sellerName, buyerName, startDate, endDate);
         invoiceList.clear();
         invoiceList.addAll(IncomeInvoices);
         invoiceList.addAll(OutputInvoices);
-        ModelAndView modelAndView = new ModelAndView("invoice_query_list");
         System.err.println("size: " + invoiceList.size());
         modelAndView.addObject("invoice_list", invoiceList);
         modelAndView.addObject("has_result", invoiceList.size() != 0);
@@ -132,13 +176,20 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "/view_invoice", method = RequestMethod.POST)
-    public ModelAndView viewInvoice(@RequestParam("index") int index, @RequestParam("invoice_id") String invoiceId) {
-        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
-        Invoice invoice = invoiceService.getInvoice(0, index);
+    public ModelAndView viewInvoice(@RequestParam("index") int index, HttpSession session,
+                                    @RequestParam("invoice_id") String invoiceId) {
+        ModelAndView modelAndView = new ModelAndView("invoice_query_list");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_RECORD) == 0) { // 验证添加发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
+        Invoice invoice = invoiceService.getInvoice(userId, index);
         if (!invoice.getInvoiceId().equals(invoiceId)) {
             invoice = invoiceService.getInvoice(invoiceId);
         }
-        ModelAndView modelAndView = new ModelAndView("invoice_query_list");
         modelAndView.addObject("invoice_list", invoiceList);
         modelAndView.addObject("has_result", invoiceList.size() != 0);
         modelAndView.addObject("view_invoice", true);
@@ -149,12 +200,19 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "/del_invoice", method = RequestMethod.POST)
-    public ModelAndView delInvoice(@RequestParam("index") int index, @RequestParam("invoice_id") String invoiceId) {
-        if (invoiceService.getInvoice(0, index).getInvoiceId().equals(invoiceId)) {
-            invoiceService.removeInvoice(0, index);
-        }
-        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
+    public ModelAndView delInvoice(@RequestParam("index") int index, HttpSession session,
+                                   @RequestParam("invoice_id") String invoiceId) {
         ModelAndView modelAndView = new ModelAndView("invoice_query_list");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_REMOVE_INVOICE_RECORE) == 0) { // 验证删除发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        if (invoiceService.getInvoice(userId, index).getInvoiceId().equals(invoiceId)) {
+            invoiceService.removeInvoice(userId, index);
+        }
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
         modelAndView.addObject("invoice_list", invoiceList);
         modelAndView.addObject("has_result", invoiceList.size() != 0);
         modelAndView.addObject("view_invoice", false);
@@ -165,8 +223,14 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "add_invoice_image", method = RequestMethod.GET)
-    public ModelAndView addInvoiceByImage() {
+    public ModelAndView addInvoiceByImage(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("invoice_input_image");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
         modelAndView.addObject("has_file", false);
         modelAndView.addObject("has_error", false);
         modelAndView.addObject("invoice", null);
@@ -175,10 +239,15 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "add_invoice_image", method = RequestMethod.POST)
-    public ModelAndView addInvoiceImage(HttpServletRequest request,
+    public ModelAndView addInvoiceImage(HttpServletRequest request, HttpSession session,
                                         @RequestParam(value = "invoice_image", required = false) MultipartFile file) {
         ModelAndView modelAndView = new ModelAndView("invoice_input_image");
-
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
         String path = request.getSession().getServletContext().getRealPath("invoiceImage");
         String fileName = file.getOriginalFilename();
         logger.info(path + "\\" + fileName);
@@ -211,11 +280,16 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "chart_query", method = RequestMethod.GET)
-    public ModelAndView queryInvoiceForChart() {
-        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
-        invoiceList.clear();
+    public ModelAndView queryInvoiceForChart(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("invoice_query_chart");
-
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_RECORD) == 0) { // 验证查询发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
+        invoiceList.clear();
         // 模拟数据
         List<String> dates = new ArrayList<>();
         List<Double> incomes = new ArrayList<>();
@@ -242,9 +316,16 @@ public class InvoiceController {
             @RequestParam("buyer_name") String buyerName,
             @RequestParam("seller_name") String sellerName,
             @RequestParam("start_time") Date startDate,
-            @RequestParam("end_time") Date endDate) {
-        logger.info(buyerName + "\n" + sellerName + "\n" + startDate + "\n" + endDate);
-        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
+            @RequestParam("end_time") Date endDate,
+            HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView("invoice_query_chart");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_RECORD) == 0) { // 验证查询发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
         List<Invoice> incomeInvoices = invoiceService.getInvoicesByNamesAndDateRange(buyerName, sellerName, startDate, endDate);
         List<Invoice> outcomeInvoices = invoiceService.getInvoicesByNamesAndDateRange(sellerName, buyerName, startDate, endDate);
         logger.info("incomeInvoices.size: " + incomeInvoices.size());
@@ -267,7 +348,6 @@ public class InvoiceController {
                 logger.info(come.getOutcomes());
             }
         }
-        ModelAndView modelAndView = new ModelAndView("invoice_query_chart");
         logger.info("size: " + invoiceList.size());
         modelAndView.addObject("dates", dates);
         modelAndView.addObject("incomes", incomes);
@@ -278,10 +358,16 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "report", method = RequestMethod.GET)
-    public ModelAndView queryReportForm() {
-        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
-        invoiceList.clear();
+    public ModelAndView queryReportForm(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("invoice_report");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_ANALYSIS_RESULT) == 0) { // 验证查询报表的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
+        invoiceList.clear();
         modelAndView.addObject("income_names", null);   // List
         modelAndView.addObject("outcome_names", null);  // List
         modelAndView.addObject("income_amounts", null); // List<List>
@@ -299,8 +385,16 @@ public class InvoiceController {
             @RequestParam("buyer_name") String buyerName,
             @RequestParam("seller_name") String sellerName,
             @RequestParam("start_time") Date startDate,
-            @RequestParam("end_time") Date endDate) {
-        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(0);
+            @RequestParam("end_time") Date endDate,
+            HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView("invoice_report");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_QUERY_INVOICE_ANALYSIS_RESULT) == 0) { // 验证查询报表的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
         List<Invoice> incomeInvoices = invoiceService.getInvoicesByNamesAndDateRange(buyerName, sellerName, startDate, endDate);
         List<Invoice> outcomeInvoices = invoiceService.getInvoicesByNamesAndDateRange(sellerName, buyerName, startDate, endDate);
         logger.info(buyerName + "\n" + sellerName + "\n" + startDate + "\n" + endDate);
@@ -412,7 +506,6 @@ public class InvoiceController {
             }
         }
 
-        ModelAndView modelAndView = new ModelAndView("invoice_report");
         logger.info("size: " + invoiceList.size());
         modelAndView.addObject("balances", balances); // List
         modelAndView.addObject("income_product_totals", incomeProductTotals); // List
