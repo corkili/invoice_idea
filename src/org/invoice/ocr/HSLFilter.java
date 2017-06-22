@@ -245,9 +245,9 @@ public class HSLFilter extends AbstractBufferedImageOp {  //增加对比度和�
 		imageCutting.ImageCuttingUnitPrice("001C.jpg","/Users/hanzhengbo/Desktop/zzs/test4.jpg");
 		imageCutting.ImageCuttingTax("001C.jpg","/Users/hanzhengbo/Desktop/zzs/test5.jpg");
     	for(int i=1;i<=5;i++){
-    	    String readimgPath = "/Users/hanzhengbo/Desktop/zzs/OCR"+ i +".jpg";
-    	    String writeimgPath="/Users/hanzhengbo/Desktop/zzs/OCR"+ i +"_des.jpg";
-    	    String ZoomimgPath="/Users/hanzhengbo/Desktop/zzs/OCR"+ i +"_zoo.jpg";
+    	    String readimgPath = "/Users/hanzhengbo/Desktop/zzs/test"+ i +".jpg";
+    	    String writeimgPath="/Users/hanzhengbo/Desktop/zzs/test"+ i +"_des.jpg";
+    	    String ZoomimgPath="/Users/hanzhengbo/Desktop/zzs/test"+ i +"_zoo.jpg";
     	
     	    BufferedImage src = ReadBufferedImage(readimgPath);
     	
@@ -259,8 +259,8 @@ public class HSLFilter extends AbstractBufferedImageOp {  //增加对比度和�
     	    	NarrowImage narrowImage=new NarrowImage();
     	    	narrowImage.zoomImage(writeimgPath);
     	    	narrowImage.writeHighQuality(narrowImage.zoomImage(writeimgPath), ZoomimgPath);
-    	    	OCR OCR = new OCR();
-    	    	OCR.ImageRecognition(writeimgPath);
+    	    	OCR test = new OCR();
+    	    	//test.ImageRecognition(writeimgPath);
     	    }
     	    System.out.println(" ");
     	}

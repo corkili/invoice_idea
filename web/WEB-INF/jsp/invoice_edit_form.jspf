@@ -81,47 +81,47 @@
             <label class="control-label col-md-1">税额<span class="required">*</span></label>
         </div>
 
-        <c:forEach var="detail" items="${invoice.details}">
+        <c:forEach var="i" begin="0" end="${detail_num-1}" step="1">
             <div class="form-group">
                 <div class="col-md-1">
-                    <form:input path="detail.detailName"
+                    <form:input path="details[${i}].detailName"
                                 cssClass="form-control col-md-1" required="required"
-                                value="${detail.detailName}"/>
+                                value="${invoice.details[i].detailName}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="detail.specification"
+                    <form:input path="details[${i}].specification"
                                 cssClass="form-control col-md-1"
-                                value="${detail.specification}"/>
+                                value="${invoice.details[i].specification}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="detail.unitName"
+                    <form:input path="details[${i}].unitName"
                                 cssClass="form-control col-md-1"
-                                value="${detail.unitName}"/>
+                                value="${invoice.details[i].unitName}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="detail.quantity"
+                    <form:input path="details[${i}].quantity"
                                 cssClass="form-control col-md-1" required="required"
-                                value="${detail.quantity}"/>
+                                value="${invoice.details[i].quantity}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="detail.unitPrice"
+                    <form:input path="details[${i}].unitPrice"
                                 cssClass="form-control col-md-1" required="required"
-                                value="${detail.unitPrice}"/>
+                                value="${invoice.details[i].unitPrice}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="detail.amount"
+                    <form:input path="details[${i}].amount"
                                 cssClass="form-control col-md-1" required="required"
-                                value="${detail.amount}"/>
+                                value="${invoice.details[i].amount}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="detail.taxRate"
+                    <form:input path="details[${i}].taxRate"
                                 cssClass="form-control col-md-1" required="required"
-                                value="${detail.taxRate}"/>
+                                value="${invoice.details[i].taxRate}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="detail.taxSum"
+                    <form:input path="details[${i}].taxSum"
                                 cssClass="form-control col-md-1" required="required"
-                                value="${detail.taxSum}"/>
+                                value="${invoice.details[i].taxSum}"/>
                 </div>
             </div>
         </c:forEach>

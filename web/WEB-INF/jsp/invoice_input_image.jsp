@@ -120,13 +120,32 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="x_content">
-                                        <form action="add_invoice_image" method="post" enctype="multipart/form-data">
-                                            <a class="file"><spring:message code="tip.upload"/>
-                                                <input type="file" name="invoice_image" id="file_selector" class="btn btn-round"
-                                                       placeholder="<spring:message code="tip.upload"/>" >
-                                            </a>
-                                            <input type="submit" value="<spring:message code="button.submit" />"
-                                                   class="btn btn-round btn-success" id="upload_file">
+                                        <form action="add_invoice_image" method="post"
+                                              enctype="multipart/form-data" class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2" for="detail_num">
+                                                    待添加的发票的明细数目
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control has-feedback-left"
+                                                           id="detail_num" name="detail_num" placeholder="必填" required="required"/>
+                                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                </div>
+                                            </div>
+                                            <div class="ln_solid"></div>
+                                            <div class="form-group">
+                                                <div class="col-md-3 col-md-offset-2">
+                                                    <a class="file"><spring:message code="tip.upload"/>
+                                                        <input type="file" name="invoice_image" id="file_selector" class="btn btn-round"
+                                                               placeholder="<spring:message code="tip.upload"/>" >
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="submit" value="<spring:message code="button.submit" />"
+                                                           class="btn btn-round btn-success" id="upload_file">
+                                                </div>
+                                            </div>
                                         </form>
                                         <c:if test="${has_file}">
                                             <script>

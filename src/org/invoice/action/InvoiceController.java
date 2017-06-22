@@ -2,6 +2,7 @@ package org.invoice.action;
 
 import org.apache.log4j.Logger;
 import org.invoice.model.*;
+import org.invoice.ocr.Recognition;
 import org.invoice.service.InvoiceService;
 import org.invoice.service.UserService;
 import org.invoice.session.SessionContext;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -250,6 +252,7 @@ public class InvoiceController {
 
     @RequestMapping(value = "add_invoice_image", method = RequestMethod.POST)
     public ModelAndView addInvoiceImage(HttpServletRequest request, HttpSession session,
+                                        @RequestParam(value = "detail_num") int detailNum,
                                         @RequestParam(value = "invoice_image", required = false) MultipartFile file) {
         ModelAndView modelAndView = new ModelAndView("invoice_input_image");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
@@ -272,16 +275,81 @@ public class InvoiceController {
             file.transferTo(targetFile);
             Invoice invoice = new Invoice();
             List<InvoiceDetail> details = new ArrayList<>();
+            Map<String, Object> result = new Recognition().recognition(path + "\\" + fileName, path);
+            invoice.setInvoiceCode(result.get("invoiceCode").toString());
+            invoice.setInvoiceId(result.get("invoiceId").toString());
+            List<String> quantities = (List<String>)result.get("quantities");
+            List<String> unitPrices = (List<String>)result.get("unitPrices");
+            List<String> taxs = (List<String>)result.get("taxs");
+            logger.info(quantities.size());
+            logger.info(unitPrices.size());
+            logger.info(taxs.size());
+            if (quantities.size() == unitPrices.size() && quantities.size() == taxs.size()) {
+                int quantity = 0;
+                double unitPrice = 0.0;
+                double tax = 0.0;
+                for (int i = 0; i < quantities.size(); i++) {
+                    try {
+                        quantity = Integer.parseInt(quantities.get(i));
+                    } catch (NumberFormatException e) {
+                        quantity = 0;
+                    }
+                    try {
+                        unitPrice = Double.parseDouble(unitPrices.get(i));
+                    } catch (NumberFormatException e) {
+                        unitPrice = 0.0;
+                    }
+                    try {
+                        tax = Double.parseDouble(taxs.get(i));
+                    } catch (NumberFormatException e) {
+                        tax = 0.0;
+                    }
+                    InvoiceDetail invoiceDetail = new InvoiceDetail();
+                    invoiceDetail.setQuantity(quantity);
+                    invoiceDetail.setUnitPrice(unitPrice);
+                    invoiceDetail.setTaxSum(tax);
+                    invoiceDetail.setAmount(quantity * unitPrice);
+                    details.add(invoiceDetail);
+                }
+                double totalAmount = 0.0;
+                double totalTax = 0.0;
+                for (InvoiceDetail detail : details) {
+                    totalAmount += detail.getAmount();
+                    totalTax += detail.getTaxSum();
+                }
+                if (details.size() < detailNum)  {
+                    for (int i = 0; i < detailNum - details.size(); i++) {
+                        InvoiceDetail detail = new InvoiceDetail();
+                        detail.setDetailName("");
+                        detail.setSpecification("");
+                        detail.setUnitName("");
+                        detail.setQuantity(0);
+                        detail.setUnitPrice(0);
+                        detail.setAmount(0);
+                        detail.setTaxRate(0);
+                        detail.setTaxSum(0);
+                        details.add(detail);
+                    }
+                }
+                invoice.setDetails(details);
+                invoice.setTotalAmount(totalAmount);
+                invoice.setTotalTax(totalTax);
+                invoice.setTotal(totalAmount + totalTax);
+                modelAndView.addObject("invoice", invoice);
+                modelAndView.addObject("detail_num", detailNum);
+                modelAndView.addObject("has_file", true);
+                modelAndView.addObject("has_error", false);
+            } else {
+                modelAndView.addObject("has_file", false);
+                modelAndView.addObject("has_error", true);
+            }
             // id
             // code
             // quantity
             // unitPrice
             // tax
             // many set
-            modelAndView.addObject("invoice", invoice);
-            modelAndView.addObject("has_file", true);
-            modelAndView.addObject("has_error", false);
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.info("save failed");
             modelAndView.addObject("has_file", false);
             modelAndView.addObject("has_error", true);
