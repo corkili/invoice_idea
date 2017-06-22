@@ -20,6 +20,8 @@ public interface UserService {
 
     public boolean modifyUserPassword(int userId, String newPassword, Errors errors);
 
+    public List<User> getAllUserList(int userId);
+
     public User findUserByUserId(int userId);
 
     public User findUserByUserName(String username);

@@ -1,5 +1,8 @@
 package org.invoice.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by ran on 06/04/17.
  */
@@ -38,7 +41,19 @@ public abstract class Authority{
      */
     public static final int AUTHORITY_QUERY_SYSTEM_LOG              = 0x0040;
 
-    public static final int getAllAuthority() {
+    public static Map<String, Integer> authorityMap;
+
+    static {
+        authorityMap = new HashMap<>();
+        authorityMap.put("auth_add_invoice", AUTHORITY_ADD_INVOICE_RECORD);
+        authorityMap.put("auth_query_invoice", AUTHORITY_QUERY_INVOICE_RECORD);
+        authorityMap.put("auth_del_invoice",  AUTHORITY_REMOVE_INVOICE_RECORE);
+        authorityMap.put("auth_edit_invoice", AUTHORITY_MODIFY_INVOICE_RECORD);
+        authorityMap.put("auth_query_report", AUTHORITY_QUERY_INVOICE_ANALYSIS_RESULT);
+        authorityMap.put("auth_manage_user", AUTHORITY_MANAGE_USER);
+    }
+
+    public static int getAllAuthority() {
         return AUTHORITY_QUERY_INVOICE_RECORD
                 | AUTHORITY_MODIFY_INVOICE_RECORD
                 | AUTHORITY_ADD_INVOICE_RECORD

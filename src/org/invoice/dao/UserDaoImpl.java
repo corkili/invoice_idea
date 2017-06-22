@@ -8,6 +8,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 提供用户数据库操作的试题库
  * Created by 李浩然 on 2017/4/11.
@@ -42,6 +45,19 @@ public class UserDaoImpl implements UserDao {
             // do nothing
         }
         return user;
+    }
+
+    @Override
+    public List<User> findAllUser() {
+        String sql = "select * from " + TABLE_USER;
+        logger.info(sql);
+        List<User> userList;
+        try {
+            userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
+        } catch (Exception e) {
+            userList = new ArrayList<>();
+        }
+        return userList;
     }
 
     @Override

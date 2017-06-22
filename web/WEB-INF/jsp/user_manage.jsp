@@ -57,6 +57,124 @@
                     </div>
                 </div>
 
+                <c:if test="${edit_user}">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2><spring:message code="form.title.invoice" /></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                                        <div class="well profile_view">
+                                            <form action="modify_authority" method="post">
+                                                <div class="col-sm-12">
+                                                    <h4 class="brief"><i>个人信息</i></h4>
+                                                    <div class="left col-xs-7">
+                                                        <h2>${user.username}</h2>
+                                                        <p><strong><i class="fa fa-user"></i> 姓名: </strong>${user.name}</p>
+                                                        <p><strong><i class="fa fa-credit-card"></i> 工号：</strong>${user.jobId}</p>
+                                                        <p><strong><i class="fa fa-phone"></i>  手机：</strong>${user.phone}</p>
+                                                        <p><strong><i class="fa fa-envelope"></i> 邮箱：</strong>${user.email}</p>
+                                                        <p>
+                                                            <strong>权限：</strong><br/>
+                                                        </p>
+                                                        <ul class="list-unstyled">
+                                                            <li>
+                                                                添加发票
+                                                                <c:choose>
+                                                                    <c:when test="${user.authorityMap.get('auth_add_invoice')}">
+                                                                        <input type="checkbox" name="authority" class="flat"
+                                                                               value="auth_add_invoice" checked="checked">
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <input type="checkbox" name="authority"
+                                                                               value="auth_add_invoice" class="flat">
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </li>
+                                                            <li>
+                                                                查询发票
+                                                                <c:choose>
+                                                                    <c:when test="${user.authorityMap.get('auth_query_invoice')}">
+                                                                        <input type="checkbox" name="authority" class="flat"
+                                                                               value="auth_query_invoice" checked="checked">
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <input type="checkbox" name="authority"
+                                                                               value="auth_query_invoice" class="flat">
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </li>
+                                                            <li>
+                                                                修改发票
+                                                                <c:choose>
+                                                                    <c:when test="${user.authorityMap.get('auth_edit_invoice')}">
+                                                                        <input type="checkbox" name="authority" class="flat"
+                                                                               value="auth_edit_invoice" checked="checked">
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <input type="checkbox" name="authority"
+                                                                               value="auth_edit_invoice" class="flat">
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </li>
+                                                            <li>
+                                                                删除发票
+                                                                <c:choose>
+                                                                    <c:when test="${user.authorityMap.get('auth_del_invoice')}">
+                                                                        <input type="checkbox" name="authority" class="flat"
+                                                                               value="auth_del_invoice" checked="checked">
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <input type="checkbox" name="authority"
+                                                                               value="auth_del_invoice" class="flat">
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </li>
+                                                            <li>
+                                                                查询报表
+                                                                <c:choose>
+                                                                    <c:when test="${user.authorityMap.get('auth_query_report')}">
+                                                                        <input type="checkbox" name="authority" class="flat"
+                                                                               value="auth_query_report" checked="checked">
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <input type="checkbox" name="authority"
+                                                                               value="auth_query_report" class="flat">
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="right col-xs-5 text-center">
+                                                        <img src="images/img.jpg" alt="" class="img-circle img-responsive">
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 bottom text-center">
+                                                    <div class="col-xs-12 col-sm-6 emphasis right">
+                                                        <input type="hidden" name="index" value="${index}">
+                                                        <input type="hidden" name="user_id" value="${user.userId}">
+                                                        <input type="submit" value="<spring:message code="button.ok" />"
+                                                               class="btn btn-round btn-danger pull-right" onclick="return confirm('确定保存修改？');">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+
                 <c:choose>
                     <c:when test="${has_authority}">
                         <div class="row">
@@ -71,13 +189,110 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="x_content">
-                                        <h3 style="text-align: center"><spring:message code="text.welcome"/></h3>
+                                        <h3 style="text-align: center">用户列表</h3>
+                                        <div class="table-responsive">
+                                            <table id="datatable" class="table table-striped jambo_table">
+                                                <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">用户名</th>
+                                                    <th class="column-title">姓名</th>
+                                                    <th class="column-title">工号</th>
+                                                    <th class="column-title">手机</th>
+                                                    <th class="column-title">邮箱</th>
+                                                    <th class="column-title">添加发票</th>
+                                                    <th class="column-title">查询发票</th>
+                                                    <th class="column-title">修改发票</th>
+                                                    <th class="column-title">删除发票</th>
+                                                    <th class="column-title">查询报表</th>
+                                                    <th class="column-title no-link last"><span class="nobr">操作</span></th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                <c:forEach var="user" items="${user_list}" varStatus="status">
+                                                    <c:choose>
+                                                        <c:when test="${status.index % 2 == 0}">
+                                                            <tr class="even pointer">
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <tr class="odd pointer">
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <td class=" ">${user.username}</td>
+                                                    <td class=" ">${user.name}</td>
+                                                    <td class=" ">${user.jobId}</td>
+                                                    <td class=" ">${user.phone}</td>
+                                                    <td class=" ">${user.email}</td>
+                                                    <td class=" ">
+                                                        <c:choose>
+                                                            <c:when test="${user.authorityMap.get('auth_add_invoice')}">
+                                                                <span class="fa fa-star"></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="fa fa-star-o"></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td class=" ">
+                                                        <c:choose>
+                                                            <c:when test="${user.authorityMap.get('auth_query_invoice')}">
+                                                                <span class="fa fa-star"></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="fa fa-star-o"></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td class=" ">
+                                                        <c:choose>
+                                                            <c:when test="${user.authorityMap.get('auth_edit_invoice')}">
+                                                                <span class="fa fa-star"></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="fa fa-star-o"></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td class=" ">
+                                                        <c:choose>
+                                                            <c:when test="${user.authorityMap.get('auth_del_invoice')}">
+                                                                <span class="fa fa-star"></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="fa fa-star-o"></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td class=" ">
+                                                        <c:choose>
+                                                            <c:when test="${user.authorityMap.get('auth_query_report')}">
+                                                                <span class="fa fa-star"></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="fa fa-star-o"></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td class=" last">
+                                                        <form action="user_manage" method="post">
+                                                            <input type="hidden" name="index" value="${status.index}">
+                                                            <input type="hidden" name="user_id" value="${user.userId}">
+                                                            <input type="submit" value="<spring:message code="button.edit_authority" />"
+                                                                   class="btn btn-round btn-success">
+                                                        </form>
+                                                    </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="clearfix"></div>
+
                     </c:when>
                     <c:otherwise>
                         <%@ include file="no_authority.jspf"%>

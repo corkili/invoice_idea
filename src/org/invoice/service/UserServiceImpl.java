@@ -37,18 +37,44 @@ public class UserServiceImpl implements UserService {
 
     private Map<Integer, User> loginUsers;
 
+    private Map<Integer, List<User>> userLists;
+
     private Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl() {
         loginUsers = new HashMap<>();
+        userLists = new HashMap<>();
     }
-
 
     @Override
     public boolean register(User user, Errors errors) {
+        boolean hasError = true;
         if (!validateUserInfo(user, errors))
-            return false;
+            hasError = false;
 
+        if (userDao.findUserByUserName(user.getUsername()) != null) {
+            if (errors != null)
+                errors.rejectValue("username", "username.exists", "用户名已存在");
+            hasError = false;
+        }
+        if (!Pattern.matches("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$", user.getPhone())) {
+            if (errors != null)
+                errors.rejectValue("phone", "phone.error", "无效的手机号");
+            hasError = false;
+        }
+        if (user.getPassword().trim().length() < 8) {
+            if (errors != null)
+                errors.rejectValue("password", "password.length", "密码长度至少为8位");
+            hasError = false;
+        }
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            if (errors != null)
+                errors.rejectValue("confirmPassword", "password.not_equal", "两次输入的密码不一致");
+            hasError = false;
+        }
+        if (!hasError) {
+            return false;
+        }
         user.setAuthority(0);
         user.setPassword(HashUtil.generate(user.getPassword()));
         user.setSalt(HashUtil.getSalt(user.getPassword()));
@@ -70,6 +96,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User loginUser = userDao.findUserByUserName(user.getUsername());
+        logger.info(loginUser);
         if (loginUser == null || !HashUtil.verify(user.getPassword(), loginUser.getPassword())) {
             errors.rejectValue("password", "password.error", "用户名或密码错误");
             logger.info("用户名或密码错误，登录失败!");
@@ -79,6 +106,8 @@ public class UserServiceImpl implements UserService {
         // 添加登录信息
         loginUser.setSalt("#");
         loginUser.setPassword("#");
+        loginUsers.remove(loginUser.getUserId());
+        userLists.remove(loginUser.getUserId());
         loginUsers.put(loginUser.getUserId(), loginUser);
         // session处理
         session.setAttribute(SessionContext.ATTR_USER_ID, String.valueOf(loginUser.getUserId()));
@@ -89,9 +118,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void logout(int userId, HttpSession session) {
         loginUsers.remove(userId);
+        userLists.remove(userId);
         invoiceService.removeInvoiceListByUserId(userId);
         session.invalidate();
-
     }
 
     @Override
@@ -100,6 +129,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(oldUser.getPassword());
         user.setSalt(oldUser.getSalt());
         if (!validateUserInfo(user, errors)) {
+            logger.info("has errors");
             return false;
         }
         userDao.updateUser(user);
@@ -117,6 +147,16 @@ public class UserServiceImpl implements UserService {
         user.setSalt(HashUtil.getSalt(user.getPassword()));
         userDao.updateUser(user);
         return true;
+    }
+
+    @Override
+    public List<User> getAllUserList(int userId) {
+        List<User> userList = userLists.get(userId);
+        if (userList == null) {
+            userList = userDao.findAllUser();
+            userLists.put(userId, userList);
+        }
+        return userList;
     }
 
     @Override
@@ -179,7 +219,9 @@ public class UserServiceImpl implements UserService {
         Map<String, String> map = user.getNeedValidateUserInfo();
         for (Map.Entry<String, String> entry : map.entrySet()) {
             if (StringUtils.isEmpty(entry.getValue()) || StringUtils.containsWhitespace(entry.getValue())) {
-                errors.rejectValue(entry.getKey(), entry.getKey() + ".required", "此项不能为空或包含空格");
+                logger.info("error: " + entry.toString());
+                if (errors != null)
+                    errors.rejectValue(entry.getKey(), entry.getKey() + ".required", "此项不能为空或包含空格");
                 hasError = false;
             }
         }
@@ -187,32 +229,16 @@ public class UserServiceImpl implements UserService {
             return false;
         // 合法性校验
         logger.info(user.getUsername());
-        if (userDao.findUserByUserName(user.getUsername()) != null) {
-            errors.rejectValue("username", "username.exists", "用户名已存在");
-            hasError = false;
-        }
-        if (user.getPassword().trim().length() < 8) {
-            errors.rejectValue("password", "password.length", "密码长度至少为8位");
-            hasError = false;
-        }
-        if (!user.getPassword().equals(user.getConfirmPassword())) {
-            errors.rejectValue("confirmPassword", "password.not_equal", "两次输入的密码不一致");
-            hasError = false;
-        }
-        if (!Pattern.matches("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$", user.getPhone())) {
-            errors.rejectValue("phone", "phone.error", "无效的手机号");
-            hasError = false;
-        }
         String check = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
         Pattern regex = Pattern.compile(check);
         Matcher matcher = regex.matcher(user.getEmail());
         if (!matcher.matches()) {
-            errors.rejectValue("email", "email.error", "无效的邮箱");
+            if (errors != null)
+                errors.rejectValue("email", "email.error", "无效的邮箱");
             hasError = false;
         }
         if (!hasError)
             return false;
-
         return true;
     }
 

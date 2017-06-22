@@ -13,10 +13,14 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -108,9 +112,82 @@ public class UserController {
             modelAndView.addObject("has_authority", false);
             return modelAndView;
         }
+        List<User> userList = userService.getAllUserList(userId);
+        modelAndView.addObject("user", null);
+        modelAndView.addObject("edit_user", false);
+        modelAndView.addObject("index", -1);
+        modelAndView.addObject("user_list", userList);
         modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
+
+    @RequestMapping(value = "/user_manage", method = RequestMethod.POST)
+    public ModelAndView userManage(HttpSession session, @RequestParam("index") int index,
+                                   @RequestParam("user_id") int editUserId) {
+        ModelAndView modelAndView = new ModelAndView("user_manage");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_MANAGE_USER) == 0) { // 验证管理用户的的权限
+            modelAndView.addObject("has_authority", false);
+            modelAndView.addObject("display_name", user.getName());
+            return modelAndView;
+        }
+        List<User> userList = userService.getAllUserList(userId);
+        User editUser = null;
+        for (User u : userList) {
+            if (u.getUserId() == editUserId) {
+                editUser = u;
+                break;
+            }
+        }
+        modelAndView.addObject("display_name", user.getName());
+        modelAndView.addObject("user", editUser);
+        modelAndView.addObject("edit_user", editUser != null);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("user_list", userList);
+        modelAndView.addObject("has_authority", true);
+        return modelAndView;
+    }
+
+
+    @RequestMapping(value = "/modify_authority", method = RequestMethod.POST)
+    public ModelAndView modifyAuthority(@RequestParam("index") int index, @RequestParam("user_id") int editUserId,
+                                        HttpSession session, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("redirect:/user_manage");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        if ((user.getAuthority() & Authority.AUTHORITY_MANAGE_USER) == 0) { // 验证管理用户的的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        int authority = 0;
+        List<User> userList = userService.getAllUserList(userId);
+        User editUser = null;
+        for (int i = 0; i < userList.size(); i++) {
+            if (userList.get(i).getUserId() == editUserId) {
+                editUser = userList.get(i);
+                break;
+            }
+        }
+        String[] authorityStr = request.getParameterValues("authority");
+        if (editUser != null) {
+            editUser.setAuthority(0);
+            for (String str : authorityStr) {
+                logger.info(str);
+                editUser.addAuthority(Authority.authorityMap.get(str));
+            }
+            if (editUser.getUsername().equals("admin"))
+                editUser.addAuthority(Authority.AUTHORITY_MANAGE_USER);
+
+            User tmp = userService.findUserByUserId(editUserId);
+            if (tmp != null) {
+                tmp.setAuthority(editUser.getAuthority());
+            }
+            logger.info("successful: " + userService.modifyUserInfo(editUser, null));
+        }
+        return modelAndView;
+    }
+
 
     @RequestMapping(value = "/main", name = "主页")
     public ModelAndView loginSuccessfulAndTurnToMainPage(HttpSession session) {

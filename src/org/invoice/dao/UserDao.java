@@ -2,6 +2,8 @@ package org.invoice.dao;
 
 import org.invoice.model.User;
 
+import java.util.List;
+
 /**
  * Created by 李浩然 on 2017/4/11.
  */
@@ -20,6 +22,7 @@ public interface UserDao {
     public User findUserByUserId(final String userId);
     public User findUserByUserName(final String username);
     public User findUserByUsernameAndPassword(final String username, final String password);
+    public List<User> findAllUser();
     public void addUser(User user);
     public void updateUser(User user);
 }

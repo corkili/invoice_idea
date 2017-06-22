@@ -77,6 +77,106 @@
 
                 <div class="clearfix"></div>
 
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2></h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                                    <div class="well profile_view">
+                                        <div class="col-sm-12">
+                                            <h4 class="brief"><i>个人信息</i></h4>
+                                            <div class="left col-xs-7">
+                                                <h2>${user.username}</h2>
+                                                <p><strong><i class="fa fa-user"></i> 姓名: </strong>${user.name}</p>
+                                                <p><strong><i class="fa fa-credit-card"></i> 工号：</strong>${user.jobId}</p>
+                                                <p><strong><i class="fa fa-phone"></i>  手机：</strong>${user.phone}</p>
+                                                <p><strong><i class="fa fa-envelope"></i> 邮箱：</strong>${user.email}</p>
+                                                <p>
+                                                    <strong>权限：</strong><br/>
+                                                </p>
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        添加发票
+                                                        <c:choose>
+                                                            <c:when test="${auth.get('auth_add_invoice')}">
+                                                                <span class="fa fa-star"></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="fa fa-star-o"></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </li>
+                                                    <li>
+                                                        查询发票
+                                                        <c:choose>
+                                                            <c:when test="${auth.get('auth_query_invoice')}">
+                                                                <span class="fa fa-star"></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="fa fa-star-o"></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </li>
+                                                    <li>
+                                                        修改发票
+                                                        <c:choose>
+                                                            <c:when test="${auth.get('auth_edit_invoice')}">
+                                                                <span class="fa fa-star"></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="fa fa-star-o"></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </li>
+                                                    <li>
+                                                        删除发票
+                                                        <c:choose>
+                                                            <c:when test="${auth.get('auth_del_invoice')}">
+                                                                <span class="fa fa-star"></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="fa fa-star-o"></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </li>
+                                                    <li>
+                                                        查询报表
+                                                        <c:choose>
+                                                            <c:when test="${auth.get('auth_query_report')}">
+                                                                <span class="fa fa-star"></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="fa fa-star-o"></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="right col-xs-5 text-center">
+                                                <img src="images/img.jpg" alt="" class="img-circle img-responsive">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 bottom text-center">
+                                            <div class="col-xs-12 col-sm-6 emphasis right">
+                                                <button type="button" class="btn btn-primary btn-xs">
+                                                    <i class="fa fa-edit"> </i> 修改密码
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- /page content -->
