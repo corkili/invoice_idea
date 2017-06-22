@@ -60,328 +60,335 @@
 
                 </div>
 
-                <div class="clearfix"></div>
+                <c:choose>
+                    <c:when test="${has_authority}">
+                        <div class="clearfix"></div>
 
-                <!-- query form -->
+                        <!-- query form -->
 
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2>查询条件</h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link" id="drop_panel"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <form action="report" method="post" class="form-horizontal form-label-left">
-                                    <%@ include file="invoice_query_form.jspf"%>
-                                </form>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>查询条件</h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link" id="drop_panel"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <form action="report" method="post" class="form-horizontal form-label-left">
+                                            <%@ include file="invoice_query_form.jspf"%>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="clearfix"></div>
+                        <div class="clearfix"></div>
 
-                <!-- tab main panel -->
-                <div class="">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2>
-                                    <c:if test="${has_result}">${dates.get(0)}至${dates.get(dates.size()-1)}<spring:message code="text.report_title"/></c:if>
-                                </h2>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <c:choose>
-                                    <c:when test="${has_result}">
-                                        <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                                            <ul id="" class="nav nav-tabs bar_tabs" role="tablist">
-                                                <li role="presentation" class="active"><a href="#income_data_view" id="income_data_tab" role="tab" data-toggle="tab" aria-expanded="true">进项数据表</a>
-                                                </li>
-                                                <li role="presentation" class=""><a href="#income_bar_view" id="income_bar_tab" role="tab" data-toggle="tab" aria-expanded="false">进项柱状图</a>
-                                                </li>
-                                                <li role="presentation" class=""><a href="#income_line_view" id="income_line_tab" role="tab" data-toggle="tab" aria-expanded="false">进项折线图</a>
-                                                </li>
-                                                <li role="presentation" class=""><a href="#outcome_data_view" id="outcome_data_tab" role="tab" data-toggle="tab" aria-expanded="false">销项数据表</a>
-                                                </li>
-                                                <li role="presentation" class=""><a href="#outcome_bar_view" id="outcome_bar_tab" role="tab" data-toggle="tab" aria-expanded="false">销项柱状图</a>
-                                                </li>
-                                                <li role="presentation" class=""><a href="#outcome_line_view" id="outcome_line_tab" role="tab" data-toggle="tab" aria-expanded="false">销项折线图</a>
-                                                </li>
-                                                <li role="presentation" class=""><a href="#compare_data_view" id="compare_data_tab" role="tab" data-toggle="tab" aria-expanded="false">对比数据表</a>
-                                                </li>
-                                                <li role="presentation" class=""><a href="#compare_bar_view" id="compare_bar_tab" role="tab" data-toggle="tab" aria-expanded="false">对比柱状图</a>
-                                                </li>
-                                                <li role="presentation" class=""><a href="#compare_line_view" id="compare_line_tab" role="tab" data-toggle="tab" aria-expanded="false">对比折线图</a>
-                                                </li>
-                                                <li role="presentation" class=""><a href="#compare_radar_view" id="compare_radar_tab" role="tab" data-toggle="tab" aria-expanded="false">对比雷达图</a>
-                                                </li>
-                                                <li role="presentation" class=""><a href="#compare_pie_view" id="compare_pie_tab" role="tab" data-toggle="tab" aria-expanded="false">对比饼状图</a>
-                                                </li>
-                                            </ul>
-                                            <div id="myTabContent" class="tab-content">
-                                                <div role="tabpanel" class="tab-pane fade active in" id="income_data_view" aria-labelledby="income_data_tab">
-                                                    <h4 style="text-align: center">
-                                                        <spring:message code="title.table.income"/>
-                                                        <small>（单位：元）</small>
-                                                    </h4><br/>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-striped jambo_table bulk_action">
-                                                            <thead>
-                                                            <tr class="headings">
-                                                                <th class="column-title">项目\<br/>月份</th>
-                                                                <c:forEach var="n" items="${income_names}" varStatus="status" >
-                                                                    <th class="column-title" style="text-align: center">${n}</th>
-                                                                </c:forEach>
-                                                                <th class="column-title" style="text-align: center">合计</th>
-                                                            </tr>
-                                                            </thead>
+                        <!-- tab main panel -->
+                        <div class="">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>
+                                            <c:if test="${has_result}">${dates.get(0)}至${dates.get(dates.size()-1)}<spring:message code="text.report_title"/></c:if>
+                                        </h2>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <c:choose>
+                                            <c:when test="${has_result}">
+                                                <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                                    <ul id="" class="nav nav-tabs bar_tabs" role="tablist">
+                                                        <li role="presentation" class="active"><a href="#income_data_view" id="income_data_tab" role="tab" data-toggle="tab" aria-expanded="true">进项数据表</a>
+                                                        </li>
+                                                        <li role="presentation" class=""><a href="#income_bar_view" id="income_bar_tab" role="tab" data-toggle="tab" aria-expanded="false">进项柱状图</a>
+                                                        </li>
+                                                        <li role="presentation" class=""><a href="#income_line_view" id="income_line_tab" role="tab" data-toggle="tab" aria-expanded="false">进项折线图</a>
+                                                        </li>
+                                                        <li role="presentation" class=""><a href="#outcome_data_view" id="outcome_data_tab" role="tab" data-toggle="tab" aria-expanded="false">销项数据表</a>
+                                                        </li>
+                                                        <li role="presentation" class=""><a href="#outcome_bar_view" id="outcome_bar_tab" role="tab" data-toggle="tab" aria-expanded="false">销项柱状图</a>
+                                                        </li>
+                                                        <li role="presentation" class=""><a href="#outcome_line_view" id="outcome_line_tab" role="tab" data-toggle="tab" aria-expanded="false">销项折线图</a>
+                                                        </li>
+                                                        <li role="presentation" class=""><a href="#compare_data_view" id="compare_data_tab" role="tab" data-toggle="tab" aria-expanded="false">对比数据表</a>
+                                                        </li>
+                                                        <li role="presentation" class=""><a href="#compare_bar_view" id="compare_bar_tab" role="tab" data-toggle="tab" aria-expanded="false">对比柱状图</a>
+                                                        </li>
+                                                        <li role="presentation" class=""><a href="#compare_line_view" id="compare_line_tab" role="tab" data-toggle="tab" aria-expanded="false">对比折线图</a>
+                                                        </li>
+                                                        <li role="presentation" class=""><a href="#compare_radar_view" id="compare_radar_tab" role="tab" data-toggle="tab" aria-expanded="false">对比雷达图</a>
+                                                        </li>
+                                                        <li role="presentation" class=""><a href="#compare_pie_view" id="compare_pie_tab" role="tab" data-toggle="tab" aria-expanded="false">对比饼状图</a>
+                                                        </li>
+                                                    </ul>
+                                                    <div id="myTabContent" class="tab-content">
+                                                        <div role="tabpanel" class="tab-pane fade active in" id="income_data_view" aria-labelledby="income_data_tab">
+                                                            <h4 style="text-align: center">
+                                                                <spring:message code="title.table.income"/>
+                                                                <small>（单位：元）</small>
+                                                            </h4><br/>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-striped jambo_table bulk_action">
+                                                                    <thead>
+                                                                    <tr class="headings">
+                                                                        <th class="column-title">项目\<br/>月份</th>
+                                                                        <c:forEach var="n" items="${income_names}" varStatus="status" >
+                                                                            <th class="column-title" style="text-align: center">${n}</th>
+                                                                        </c:forEach>
+                                                                        <th class="column-title" style="text-align: center">合计</th>
+                                                                    </tr>
+                                                                    </thead>
 
-                                                            <tbody>
-                                                            <c:forEach var="line" items="${income_amounts}" varStatus="status">
-                                                                <c:choose>
-                                                                    <c:when test="${status.index % 2 == 0}">
-                                                                        <tr class="even pointer">
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <tr class="odd pointer">
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                                <td class=" " style="text-align: center"><b>${dates.get(status.index)}</b></td>
-                                                                <c:forEach var="price" items="${line}">
-                                                                    <td class=" " style="text-align: center">
+                                                                    <tbody>
+                                                                    <c:forEach var="line" items="${income_amounts}" varStatus="status">
                                                                         <c:choose>
-                                                                            <c:when test="${price!=0}">${price}</c:when>
-                                                                            <c:otherwise>-</c:otherwise>
+                                                                            <c:when test="${status.index % 2 == 0}">
+                                                                                <tr class="even pointer">
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <tr class="odd pointer">
+                                                                            </c:otherwise>
                                                                         </c:choose>
-                                                                    </td>
-                                                                </c:forEach>
-                                                                <td class=" " style="text-align: center">${incomes.get(status.index)}</td>
-                                                                </tr>
-                                                            </c:forEach>
+                                                                        <td class=" " style="text-align: center"><b>${dates.get(status.index)}</b></td>
+                                                                        <c:forEach var="price" items="${line}">
+                                                                            <td class=" " style="text-align: center">
+                                                                                <c:choose>
+                                                                                    <c:when test="${price!=0}">${price}</c:when>
+                                                                                    <c:otherwise>-</c:otherwise>
+                                                                                </c:choose>
+                                                                            </td>
+                                                                        </c:forEach>
+                                                                        <td class=" " style="text-align: center">${incomes.get(status.index)}</td>
+                                                                        </tr>
+                                                                    </c:forEach>
 
-                                                            <c:choose>
-                                                            <c:when test="${dates.size() % 2 == 0}">
-                                                            <tr class="even pointer">
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                            <tr class="odd pointer">
-                                                                </c:otherwise>
-                                                                </c:choose>
-
-                                                                <td class=" " style="text-align: center"><b>合计</b></td>
-                                                                <c:forEach var="total" items="${income_product_totals}">
-                                                                    <td class=" " style="text-align: center">
-                                                                        <c:choose>
-                                                                            <c:when test="${total!=0}">${total}</c:when>
-                                                                            <c:otherwise>-</c:otherwise>
-                                                                        </c:choose>
-                                                                    </td>
-                                                                </c:forEach>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div class="ln_solid"></div>
-                                                    <p>
-                                                        进项数据分析：${income_comments}
-                                                    </p>
-                                                </div>
-                                                <div role="tabpanel" class="tab-pane fade" id="income_bar_view" aria-labelledby="income_bar_tab">
-                                                    <div id="income_chart_bar" style="height:450px;"></div>
-                                                </div>
-                                                <div role="tabpanel" class="tab-pane fade" id="income_line_view" aria-labelledby="income_line_tab">
-                                                    <div id="income_chart_line" style="height:450px;"></div>
-                                                </div>
-                                                <div role="tabpanel" class="tab-pane fade" id="outcome_data_view" aria-labelledby="outcome_data_tab">
-                                                    <h4 style="text-align: center">
-                                                        <spring:message code="title.table.outcome"/>
-                                                        <small>（单位：元）</small>
-                                                    </h4><br/>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-striped jambo_table bulk_action">
-                                                            <thead>
-                                                            <tr class="headings">
-                                                                <th class="column-title">项目\<br/>月份</th>
-                                                                <c:forEach var="n" items="${outcome_names}" varStatus="status" >
-                                                                    <th class="column-title" style="text-align: center">${n}</th>
-                                                                </c:forEach>
-                                                                <th class="column-title" style="text-align: center">合计</th>
-                                                            </tr>
-                                                            </thead>
-
-                                                            <tbody>
-                                                            <c:forEach var="line" items="${outcome_amounts}" varStatus="status">
-                                                                <c:choose>
-                                                                    <c:when test="${status.index % 2 == 0}">
-                                                                        <tr class="even pointer">
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <tr class="odd pointer">
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                                <td class=" " style="text-align: center"><b>${dates.get(status.index)}</b></td>
-                                                                <c:forEach var="price" items="${line}">
-                                                                    <td class=" " style="text-align: center">
-                                                                        <c:choose>
-                                                                            <c:when test="${price!=0}">${price}</c:when>
-                                                                            <c:otherwise>-</c:otherwise>
-                                                                        </c:choose>
-                                                                    </td>
-                                                                </c:forEach>
-                                                                <td class=" " style="text-align: center">${outcomes.get(status.index)}</td>
-                                                                </tr>
-                                                            </c:forEach>
-
-                                                            <c:choose>
-                                                            <c:when test="${dates.size() % 2 == 0}">
-                                                            <tr class="even pointer">
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                            <tr class="odd pointer">
-                                                                </c:otherwise>
-                                                                </c:choose>
-
-                                                                <td class=" " style="text-align: center"><b>合计</b></td>
-                                                                <c:forEach var="total" items="${outcome_product_totals}">
-                                                                    <td class=" " style="text-align: center">
-                                                                        <c:choose>
-                                                                            <c:when test="${total!=0}">${total}</c:when>
-                                                                            <c:otherwise>-</c:otherwise>
-                                                                        </c:choose>
-                                                                    </td>
-                                                                </c:forEach>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div class="ln_solid"></div>
-                                                    <p>
-                                                        销项数据分析：${outcome_comments}
-                                                    </p>
-                                                </div>
-                                                <div role="tabpanel" class="tab-pane fade" id="outcome_bar_view" aria-labelledby="outcome_bar_tab">
-                                                    <div id="outcome_chart_bar" style="height:450px;"></div>
-                                                </div>
-                                                <div role="tabpanel" class="tab-pane fade" id="outcome_line_view" aria-labelledby="outcome_line_tab">
-                                                    <div id="outcome_chart_line" style="height:450px;"></div>
-                                                </div>
-                                                <div role="tabpanel" class="tab-pane fade" id="compare_data_view" aria-labelledby="compare_data_tab">
-                                                    <h4 style="text-align: center">
-                                                        <spring:message code="title.table.compare"/>
-                                                        <small>（单位：元）</small>
-                                                    </h4><br/>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-striped jambo_table bulk_action">
-                                                            <thead>
-                                                            <tr class="headings">
-                                                                <th class="column-title"></th>
-                                                                <c:forEach var="date" items="${dates}" varStatus="status" >
-                                                                    <th class="column-title" style="text-align: center">${date}</th>
-                                                                </c:forEach>
-                                                                <th class="column-title" style="text-align: center">合计</th>
-                                                            </tr>
-                                                            </thead>
-
-                                                            <tbody>
-                                                            <tr class="even pointer">
-                                                                <td class=" " style="text-align: center">
-                                                                    <b><spring:message code="legend.income"/></b>
-                                                                </td>
-                                                                <c:forEach var="amount" items="${incomes}">
-                                                                    <td class=" " style="text-align: center">${amount}</td>
-                                                                </c:forEach>
-                                                                <td class=" " style="text-align: center">
-                                                                        ${income_product_totals.get(income_product_totals.size() - 1)}
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="odd pointer">
-                                                                <td class=" " style="text-align: center">
-                                                                    <b><spring:message code="legend.outcome"/></b>
-                                                                </td>
-                                                                <c:forEach var="amount" items="${outcomes}">
-                                                                    <td class=" " style="text-align: center">
-                                                                        <c:choose>
-                                                                            <c:when test="${amount!=0}">${amount}</c:when>
-                                                                            <c:otherwise>-</c:otherwise>
-                                                                        </c:choose>
-                                                                    </td>
-                                                                </c:forEach>
-                                                                <td class=" " style="text-align: center">
-                                                                        ${outcome_product_totals.get(outcome_product_totals.size() - 1)}
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="even pointer">
-                                                                <td class=" " style="text-align: center">
-                                                                    <b>差额</b>
-                                                                </td>
-                                                                <c:forEach var="amount" items="${balances}">
-                                                                    <td class=" " style="text-align: center">
-                                                                            ${amount}
-                                                                    </td>
-                                                                </c:forEach>
-                                                            </tr>
-                                                            <tr class="odd pointer">
-                                                                <td class=" " style="text-align: center">
-                                                                    <b>盈亏</b>
-                                                                </td>
-                                                                <c:forEach var="amount" items="${balances}">
                                                                     <c:choose>
-                                                                        <c:when test="${amount > 0}">
-                                                                            <td class=" " style="text-align: center; color: green">
-                                                                                盈利
-                                                                            </td>
-                                                                        </c:when>
-                                                                        <c:when test="${amount < 0}">
-                                                                            <td class=" " style="text-align: center; color: red">
-                                                                                亏损
-                                                                            </td>
+                                                                    <c:when test="${dates.size() % 2 == 0}">
+                                                                    <tr class="even pointer">
                                                                         </c:when>
                                                                         <c:otherwise>
-                                                                            <td class=" " style="text-align: center; color: yellow">
-                                                                                平衡
-                                                                            </td>
+                                                                    <tr class="odd pointer">
                                                                         </c:otherwise>
-                                                                    </c:choose>
-                                                                </c:forEach>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
+                                                                        </c:choose>
+
+                                                                        <td class=" " style="text-align: center"><b>合计</b></td>
+                                                                        <c:forEach var="total" items="${income_product_totals}">
+                                                                            <td class=" " style="text-align: center">
+                                                                                <c:choose>
+                                                                                    <c:when test="${total!=0}">${total}</c:when>
+                                                                                    <c:otherwise>-</c:otherwise>
+                                                                                </c:choose>
+                                                                            </td>
+                                                                        </c:forEach>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="ln_solid"></div>
+                                                            <p>
+                                                                进项数据分析：${income_comments}
+                                                            </p>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="income_bar_view" aria-labelledby="income_bar_tab">
+                                                            <div id="income_chart_bar" style="height:450px;"></div>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="income_line_view" aria-labelledby="income_line_tab">
+                                                            <div id="income_chart_line" style="height:450px;"></div>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="outcome_data_view" aria-labelledby="outcome_data_tab">
+                                                            <h4 style="text-align: center">
+                                                                <spring:message code="title.table.outcome"/>
+                                                                <small>（单位：元）</small>
+                                                            </h4><br/>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-striped jambo_table bulk_action">
+                                                                    <thead>
+                                                                    <tr class="headings">
+                                                                        <th class="column-title">项目\<br/>月份</th>
+                                                                        <c:forEach var="n" items="${outcome_names}" varStatus="status" >
+                                                                            <th class="column-title" style="text-align: center">${n}</th>
+                                                                        </c:forEach>
+                                                                        <th class="column-title" style="text-align: center">合计</th>
+                                                                    </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+                                                                    <c:forEach var="line" items="${outcome_amounts}" varStatus="status">
+                                                                        <c:choose>
+                                                                            <c:when test="${status.index % 2 == 0}">
+                                                                                <tr class="even pointer">
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <tr class="odd pointer">
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                        <td class=" " style="text-align: center"><b>${dates.get(status.index)}</b></td>
+                                                                        <c:forEach var="price" items="${line}">
+                                                                            <td class=" " style="text-align: center">
+                                                                                <c:choose>
+                                                                                    <c:when test="${price!=0}">${price}</c:when>
+                                                                                    <c:otherwise>-</c:otherwise>
+                                                                                </c:choose>
+                                                                            </td>
+                                                                        </c:forEach>
+                                                                        <td class=" " style="text-align: center">${outcomes.get(status.index)}</td>
+                                                                        </tr>
+                                                                    </c:forEach>
+
+                                                                    <c:choose>
+                                                                    <c:when test="${dates.size() % 2 == 0}">
+                                                                    <tr class="even pointer">
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                    <tr class="odd pointer">
+                                                                        </c:otherwise>
+                                                                        </c:choose>
+
+                                                                        <td class=" " style="text-align: center"><b>合计</b></td>
+                                                                        <c:forEach var="total" items="${outcome_product_totals}">
+                                                                            <td class=" " style="text-align: center">
+                                                                                <c:choose>
+                                                                                    <c:when test="${total!=0}">${total}</c:when>
+                                                                                    <c:otherwise>-</c:otherwise>
+                                                                                </c:choose>
+                                                                            </td>
+                                                                        </c:forEach>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="ln_solid"></div>
+                                                            <p>
+                                                                销项数据分析：${outcome_comments}
+                                                            </p>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="outcome_bar_view" aria-labelledby="outcome_bar_tab">
+                                                            <div id="outcome_chart_bar" style="height:450px;"></div>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="outcome_line_view" aria-labelledby="outcome_line_tab">
+                                                            <div id="outcome_chart_line" style="height:450px;"></div>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="compare_data_view" aria-labelledby="compare_data_tab">
+                                                            <h4 style="text-align: center">
+                                                                <spring:message code="title.table.compare"/>
+                                                                <small>（单位：元）</small>
+                                                            </h4><br/>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-striped jambo_table bulk_action">
+                                                                    <thead>
+                                                                    <tr class="headings">
+                                                                        <th class="column-title"></th>
+                                                                        <c:forEach var="date" items="${dates}" varStatus="status" >
+                                                                            <th class="column-title" style="text-align: center">${date}</th>
+                                                                        </c:forEach>
+                                                                        <th class="column-title" style="text-align: center">合计</th>
+                                                                    </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+                                                                    <tr class="even pointer">
+                                                                        <td class=" " style="text-align: center">
+                                                                            <b><spring:message code="legend.income"/></b>
+                                                                        </td>
+                                                                        <c:forEach var="amount" items="${incomes}">
+                                                                            <td class=" " style="text-align: center">${amount}</td>
+                                                                        </c:forEach>
+                                                                        <td class=" " style="text-align: center">
+                                                                                ${income_product_totals.get(income_product_totals.size() - 1)}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr class="odd pointer">
+                                                                        <td class=" " style="text-align: center">
+                                                                            <b><spring:message code="legend.outcome"/></b>
+                                                                        </td>
+                                                                        <c:forEach var="amount" items="${outcomes}">
+                                                                            <td class=" " style="text-align: center">
+                                                                                <c:choose>
+                                                                                    <c:when test="${amount!=0}">${amount}</c:when>
+                                                                                    <c:otherwise>-</c:otherwise>
+                                                                                </c:choose>
+                                                                            </td>
+                                                                        </c:forEach>
+                                                                        <td class=" " style="text-align: center">
+                                                                                ${outcome_product_totals.get(outcome_product_totals.size() - 1)}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr class="even pointer">
+                                                                        <td class=" " style="text-align: center">
+                                                                            <b>差额</b>
+                                                                        </td>
+                                                                        <c:forEach var="amount" items="${balances}">
+                                                                            <td class=" " style="text-align: center">
+                                                                                    ${amount}
+                                                                            </td>
+                                                                        </c:forEach>
+                                                                    </tr>
+                                                                    <tr class="odd pointer">
+                                                                        <td class=" " style="text-align: center">
+                                                                            <b>盈亏</b>
+                                                                        </td>
+                                                                        <c:forEach var="amount" items="${balances}">
+                                                                            <c:choose>
+                                                                                <c:when test="${amount > 0}">
+                                                                                    <td class=" " style="text-align: center; color: green">
+                                                                                        盈利
+                                                                                    </td>
+                                                                                </c:when>
+                                                                                <c:when test="${amount < 0}">
+                                                                                    <td class=" " style="text-align: center; color: red">
+                                                                                        亏损
+                                                                                    </td>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <td class=" " style="text-align: center; color: yellow">
+                                                                                        平衡
+                                                                                    </td>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </c:forEach>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="ln_solid"></div>
+                                                            <p>
+                                                                进销项数据对比分析：${compare_comments}
+                                                            </p>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="compare_bar_view" aria-labelledby="compare_bar_tab">
+                                                            <div id="chart_bar" style="height:350px;"></div>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="compare_line_view" aria-labelledby="compare_line_tab">
+                                                            <div id="chart_line" style="height:350px;"></div>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="compare_radar_view" aria-labelledby="compare_radar_tab">
+                                                            <div id="chart_radar" style="height:400px;"></div>
+                                                        </div>
+                                                        <div role="tabpanel" class="tab-pane fade" id="compare_pie_view" aria-labelledby="compare_pie_tab">
+                                                            <div id="chart_pie" style="height:400px;"></div>
+                                                        </div>
                                                     </div>
-                                                    <div class="ln_solid"></div>
-                                                    <p>
-                                                        进销项数据对比分析：${compare_comments}
-                                                    </p>
                                                 </div>
-                                                <div role="tabpanel" class="tab-pane fade" id="compare_bar_view" aria-labelledby="compare_bar_tab">
-                                                    <div id="chart_bar" style="height:350px;"></div>
-                                                </div>
-                                                <div role="tabpanel" class="tab-pane fade" id="compare_line_view" aria-labelledby="compare_line_tab">
-                                                    <div id="chart_line" style="height:350px;"></div>
-                                                </div>
-                                                <div role="tabpanel" class="tab-pane fade" id="compare_radar_view" aria-labelledby="compare_radar_tab">
-                                                    <div id="chart_radar" style="height:400px;"></div>
-                                                </div>
-                                                <div role="tabpanel" class="tab-pane fade" id="compare_pie_view" aria-labelledby="compare_pie_tab">
-                                                    <div id="chart_pie" style="height:400px;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
-                                    </c:otherwise>
-                                </c:choose>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- /tab main panel -->
+                        <!-- /tab main panel -->
+                    </c:when>
+                    <c:otherwise>
+                        <%@ include file="no_authority.jspf"%>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
         <!-- /page content -->

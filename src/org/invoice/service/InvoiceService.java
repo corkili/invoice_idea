@@ -21,6 +21,7 @@ public interface InvoiceService {
     public Invoice getInvoice(int userId, int index);
     public Invoice getInvoiceFromImageFile(String fileName);
 
+    public void removeInvoiceListByUserId(int userId);
     public InvoiceList getInvoiceListByUserId(int userId);
 
     public List<Invoice> getInvoicesByNamesAndDateRange(String buyerName, String sellerName, Date startDate, Date endDate);

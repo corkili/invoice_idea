@@ -102,138 +102,145 @@
                     </div>
                 </div>
 
-                <div class="clearfix"></div>
+                <c:choose>
+                    <c:when test="${has_authority}">
+                        <div class="clearfix"></div>
 
-                <!-- query form -->
+                        <!-- query form -->
 
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2>查询条件</h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>查询条件</h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
 
-                            <div class="x_content">
-                                <form action="list_query" method="post" class="form-horizontal form-label-left">
-                                    <%@ include file="invoice_query_form.jspf"%>
-                                </form>
+                                    <div class="x_content">
+                                        <form action="list_query" method="post" class="form-horizontal form-label-left">
+                                            <%@ include file="invoice_query_form.jspf"%>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="clearfix"></div>
+                        <div class="clearfix"></div>
 
-                <c:if test="${view_invoice}">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="x_panel">
-                                <div class="x_title">
-                                    <h2><spring:message code="form.title.invoice" /></h2>
-                                    <ul class="nav navbar-right panel_toolbox">
-                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                        </li>
-                                    </ul>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content">
-
-                                    <section class="content invoice">
-                                        <!-- title row -->
-
-                                        <%@include file="invoice_element.jspf"%>
-
-                                        <div class="row no-print">
-                                            <div class="col-xs-12">
-                                                <form action="del_invoice" method="post">
-                                                    <input type="hidden" name="index" value="${index}">
-                                                    <input type="hidden" name="invoice_id" value="${invoice.invoiceId}">
-                                                    <input type="submit" value="<spring:message code="button.del" />"
-                                                           class="btn btn-round btn-danger pull-right" onclick="return confirm('确定删除发票？');">
-                                                </form>
-                                            </div>
+                        <c:if test="${view_invoice}">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h2><spring:message code="form.title.invoice" /></h2>
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                </li>
+                                            </ul>
+                                            <div class="clearfix"></div>
                                         </div>
-                                    </section>
+                                        <div class="x_content">
+
+                                            <section class="content invoice">
+                                                <!-- title row -->
+
+                                                <%@include file="invoice_element.jspf"%>
+
+                                                <div class="row no-print">
+                                                    <div class="col-xs-12">
+                                                        <form action="del_invoice" method="post">
+                                                            <input type="hidden" name="index" value="${index}">
+                                                            <input type="hidden" name="invoice_id" value="${invoice.invoiceId}">
+                                                            <input type="submit" value="<spring:message code="button.del" />"
+                                                                   class="btn btn-round btn-danger pull-right" onclick="return confirm('确定删除发票？');">
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </c:if>
+                        </c:if>
 
-                <!-- result list -->
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2>查询结果</h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
+                        <!-- result list -->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>查询结果</h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
 
-                            <div class="x_content">
+                                    <div class="x_content">
 
-                                <c:choose>
-                                    <c:when test="${has_result}">
-                                        <div class="table-responsive">
-                                            <table id="datatable" class="table table-striped jambo_table">
-                                                <thead>
-                                                <tr class="headings">
-                                                    <th class="column-title">发票号码</th>
-                                                    <th class="column-title">开票日期</th>
-                                                    <th class="column-title">购贷方</th>
-                                                    <th class="column-title">销贷方</th>
-                                                    <th class="column-title">总金额</th>
-                                                    <th class="column-title">总税额</th>
-                                                    <th class="column-title no-link last"><span class="nobr">操作</span></th>
-                                                </tr>
-                                                </thead>
+                                        <c:choose>
+                                            <c:when test="${has_result}">
+                                                <div class="table-responsive">
+                                                    <table id="datatable" class="table table-striped jambo_table">
+                                                        <thead>
+                                                        <tr class="headings">
+                                                            <th class="column-title">发票号码</th>
+                                                            <th class="column-title">开票日期</th>
+                                                            <th class="column-title">购贷方</th>
+                                                            <th class="column-title">销贷方</th>
+                                                            <th class="column-title">总金额</th>
+                                                            <th class="column-title">总税额</th>
+                                                            <th class="column-title no-link last"><span class="nobr">操作</span></th>
+                                                        </tr>
+                                                        </thead>
 
-                                                <tbody>
-                                                <c:forEach var="invoice" items="${invoice_list.invoiceList}" varStatus="status">
-                                                    <c:choose>
-                                                        <c:when test="${status.index % 2 == 0}">
-                                                            <tr class="even pointer">
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <tr class="odd pointer">
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                                <td class=" ">${invoice.invoiceId}</td>
-                                                                <td class=" ">${invoice.invoiceDate}</td>
-                                                                <td class=" ">${invoice.buyerName}</td>
-                                                                <td class=" ">${invoice.sellerName}</td>
-                                                                <td class=" ">￥${invoice.totalAmount}</td>
-                                                                <td class=" ">￥${invoice.totalTax}</td>
-                                                                <td class=" last">
-                                                                    <form action="view_invoice" method="post">
-                                                                        <input type="hidden" name="index" value="${status.index}">
-                                                                        <input type="hidden" name="invoice_id" value="${invoice.invoiceId}">
-                                                                        <input type="submit" value="<spring:message code="button.view" />"
-                                                                            class="btn btn-round btn-success">
-                                                                    </form>
-                                                                </td>
+                                                        <tbody>
+                                                        <c:forEach var="invoice" items="${invoice_list.invoiceList}" varStatus="status">
+                                                            <c:choose>
+                                                                <c:when test="${status.index % 2 == 0}">
+                                                                    <tr class="even pointer">
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <tr class="odd pointer">
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                            <td class=" ">${invoice.invoiceId}</td>
+                                                            <td class=" ">${invoice.invoiceDate}</td>
+                                                            <td class=" ">${invoice.buyerName}</td>
+                                                            <td class=" ">${invoice.sellerName}</td>
+                                                            <td class=" ">￥${invoice.totalAmount}</td>
+                                                            <td class=" ">￥${invoice.totalTax}</td>
+                                                            <td class=" last">
+                                                                <form action="view_invoice" method="post">
+                                                                    <input type="hidden" name="index" value="${status.index}">
+                                                                    <input type="hidden" name="invoice_id" value="${invoice.invoiceId}">
+                                                                    <input type="submit" value="<spring:message code="button.view" />"
+                                                                           class="btn btn-round btn-success">
+                                                                </form>
+                                                            </td>
                                                             </tr>
-                                                </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
-                                    </c:otherwise>
-                                </c:choose>
+                                                        </c:forEach>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </c:when>
+                    <c:otherwise>
+                        <%@ include file="no_authority.jspf"%>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
         <!-- /page content -->

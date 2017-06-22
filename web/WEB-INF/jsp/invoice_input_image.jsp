@@ -106,55 +106,62 @@
                         <h3><spring:message code="title.add_invoice" /></h3>
                     </div>
                 </div>
-                <div class="clearfix"></div>
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><spring:message code="form.title.invoice" /></h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <form action="add_invoice_image" method="post" enctype="multipart/form-data">
-                                    <a class="file"><spring:message code="tip.upload"/>
-                                        <input type="file" name="invoice_image" id="file_selector" class="btn btn-round"
-                                               placeholder="<spring:message code="tip.upload"/>" >
-                                    </a>
-                                    <input type="submit" value="<spring:message code="button.submit" />"
-                                           class="btn btn-round btn-success" id="upload_file">
-                                </form>
-                                <c:if test="${has_file}">
-                                    <script>
-                                        document.getElementById("upload_file").disabled = true;
-                                        document.getElementById("file_selector").disabled = true;
-                                    </script>
-                                </c:if>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <c:if test="${has_file}">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel">
-                                <div class="x_title">
-                                    <h2><spring:message code="form.title.invoice" /></h2>
-                                    <ul class="nav navbar-right panel_toolbox">
-                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                                    </ul>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content">
-                                    <%@ include file="invoice_edit_form.jspf"%>
+                <c:choose>
+                    <c:when test="${has_authority}">
+                        <div class="clearfix"></div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2><spring:message code="form.title.invoice" /></h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <form action="add_invoice_image" method="post" enctype="multipart/form-data">
+                                            <a class="file"><spring:message code="tip.upload"/>
+                                                <input type="file" name="invoice_image" id="file_selector" class="btn btn-round"
+                                                       placeholder="<spring:message code="tip.upload"/>" >
+                                            </a>
+                                            <input type="submit" value="<spring:message code="button.submit" />"
+                                                   class="btn btn-round btn-success" id="upload_file">
+                                        </form>
+                                        <c:if test="${has_file}">
+                                            <script>
+                                                document.getElementById("upload_file").disabled = true;
+                                                document.getElementById("file_selector").disabled = true;
+                                            </script>
+                                        </c:if>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </c:if>
+                        <c:if test="${has_file}">
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h2><spring:message code="form.title.invoice" /></h2>
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                            </ul>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+                                            <%@ include file="invoice_edit_form.jspf"%>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                    </c:when>
+                    <c:otherwise>
+                        <%@ include file="no_authority.jspf"%>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
         <!-- /page content -->

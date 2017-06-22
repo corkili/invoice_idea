@@ -50,6 +50,7 @@ public class InvoiceController {
         modelAndView.addObject("invoice", new Invoice());
         int detailNum = 0;
         modelAndView.addObject("detail_num", detailNum);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -58,6 +59,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("addInvoiceHandForm");
         modelAndView.addObject("invoice", new Invoice());
         modelAndView.addObject("detail_num", detailNum);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -67,6 +69,7 @@ public class InvoiceController {
         modelAndView.addObject("invoice", new Invoice());
         logger.info("detail_num: " +  detailNum);
         modelAndView.addObject("detail_num", detailNum);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -76,7 +79,9 @@ public class InvoiceController {
         for(InvoiceDetail detail : invoice.getDetails())
             detail.setInvoiceId(invoice.getInvoiceId());
         invoiceService.addInvoice(invoice);
-        return new ModelAndView("redirect:/save_result?id=" + invoice.getInvoiceId());
+        ModelAndView modelAndView = new ModelAndView("redirect:/save_result?id=" + invoice.getInvoiceId());
+        modelAndView.addObject("has_authority", true);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/save_result")
@@ -85,6 +90,7 @@ public class InvoiceController {
         ModelAndView modelAndView = new ModelAndView("invoice_save_result");
         modelAndView.addObject("invoice", invoice);
         modelAndView.addObject("save_date", dateFormat.format(new Date()));
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -97,6 +103,7 @@ public class InvoiceController {
         modelAndView.addObject("has_result", invoiceList.size() != 0);
         modelAndView.addObject("view_invoice", false);
         modelAndView.addObject("invoice", null);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -120,6 +127,7 @@ public class InvoiceController {
         modelAndView.addObject("view_invoice", false);
         modelAndView.addObject("invoice", null);
         modelAndView.addObject("index", -1);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -136,6 +144,7 @@ public class InvoiceController {
         modelAndView.addObject("view_invoice", true);
         modelAndView.addObject("invoice", invoice);
         modelAndView.addObject("index", index);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -151,6 +160,7 @@ public class InvoiceController {
         modelAndView.addObject("view_invoice", false);
         modelAndView.addObject("invoice", null);
         modelAndView.addObject("index", -1);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -160,6 +170,7 @@ public class InvoiceController {
         modelAndView.addObject("has_file", false);
         modelAndView.addObject("has_error", false);
         modelAndView.addObject("invoice", null);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -195,6 +206,7 @@ public class InvoiceController {
             modelAndView.addObject("has_file", false);
             modelAndView.addObject("has_error", true);
         }
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -221,6 +233,7 @@ public class InvoiceController {
         modelAndView.addObject("incomes", incomes);
         modelAndView.addObject("outcomes", outcomes);
         modelAndView.addObject("has_result", false);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -260,6 +273,7 @@ public class InvoiceController {
         modelAndView.addObject("incomes", incomes);
         modelAndView.addObject("outcomes", outcomes);
         modelAndView.addObject("has_result", invoiceList.size() != 0);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -276,6 +290,7 @@ public class InvoiceController {
         modelAndView.addObject("incomes", null);    // List
         modelAndView.addObject("outcomes", null);   // List
         modelAndView.addObject("has_result", false);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 
@@ -413,6 +428,7 @@ public class InvoiceController {
         modelAndView.addObject("outcome_comments", outcomeComment); // String
         modelAndView.addObject("compare_comments", compareComment.toString());  // String
         modelAndView.addObject("has_result", invoiceList.size() != 0);
+        modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
 

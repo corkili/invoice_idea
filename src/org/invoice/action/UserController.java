@@ -45,24 +45,51 @@ public class UserController {
                                            BindingResult bindingResult, HttpSession session,
                                            RedirectAttributes redirectAttributes) {
         logger.info("validate Login Information");
-        LoginValidator loginValidator = new LoginValidator(userService);
-        loginValidator.validate(user, bindingResult);
-        if (bindingResult.hasErrors()) {
+        if (!userService.login(user, bindingResult)) {
             FieldError fieldError = bindingResult.getFieldError();
             logger.info("Code:" + fieldError.getCode() + ", field" + fieldError.getField());
             return "login";
         } else {
             redirectAttributes.addFlashAttribute("message", "Login successful!");
-            redirectAttributes.addFlashAttribute("user", userService.findUserByUserNameFromDB(
-                    user.getUsername()));
-            session.setAttribute("user", user);
+            redirectAttributes.addFlashAttribute("user", userService.findUserByUserName(user.getUsername()));
+//            session.setAttribute("user", user);
             return "redirect:/main";
+        }
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public ModelAndView register(@ModelAttribute("user") User user) {
+        logger.info("input register information");
+        ModelAndView modelAndView = new ModelAndView("signin");
+        if (user == null) {
+            logger.info("user is null");
+            modelAndView.addObject("user", new User());
+        } else {
+            modelAndView.addObject("user", user);
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String register(@ModelAttribute("user") User user,
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
+        logger.info("validate register information");
+        if (!userService.register(user, bindingResult)) {
+            FieldError fieldError = bindingResult.getFieldError();
+            logger.info("Code:" + fieldError.getCode() + ", field" + fieldError.getField());
+            return "signin";
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Login successful!");
+            return "redirect:/login";
         }
     }
 
     @RequestMapping(value = "/user_manage", method = RequestMethod.GET)
     public ModelAndView userManage() {
-        return new ModelAndView("user_manage");
+        ModelAndView modelAndView = new ModelAndView("user_manage");
+        modelAndView.addObject("has_authority", false);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/main", name = "主页")

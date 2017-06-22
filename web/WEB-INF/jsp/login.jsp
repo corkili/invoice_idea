@@ -18,7 +18,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Login</title>
+    <title>登录</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,13 +35,10 @@
 
 <body class="login">
 <div>
-    <a class="hiddenanchor" id="signup"></a>
-    <a class="hiddenanchor" id="signin"></a>
-
     <div class="login_wrapper">
         <div class="animate form login_form">
             <section class="login_content">
-                <form:form commandName="user" action="login" method="post">
+                <form:form commandName="user" action="login" method="post" id="login_form" name="login_form">
                     <h1>
                         <spring:message code="login.form.title"/><br/><br/>
                         <small><spring:message code="title.app_name"/></small>
@@ -50,17 +47,20 @@
                     <form:hidden path="authority" value="0" userId="authority" name="authority" />
                     <div>
                         <form:input path="username" id="username" name="username" cssErrorClass="error"
-                                    type="text" cssClass="form-control" placeholder="Username" required=""/>
-                        <br/><form:errors path="username" />
+                                    type="text" cssClass="form-control" placeholder="Username" required="required"/>
+                        <form:errors path="username" />
                     </div>
                     <div>
                         <form:input path="password" id="password" name="password" cssErrorClass="error"
-                                    type="password" cssClass="form-control" placeholder="Password" required=""/>
-                        <br/><form:errors path="password" />
+                                    type="password" cssClass="form-control" placeholder="Password" required="required"/>
+                        <form:errors path="password" />
                     </div>
                     <div>
                         <input id="submit" type="submit" class="btn btn-default submit"
-                               value="<spring:message code="button.login" /> " tabindex="3">
+                               value="<spring:message code="button.login"/>" tabindex="3">
+                        <a id="to_register" href="register" style="display: none"></a>
+                        <input type="button" class="btn btn-default submit" value="<spring:message code="button.register"/>"
+                               onclick="document.getElementById('to_register').click();" tabindex="4">
                     </div>
                     <div class="clearfix"></div>
                     <div class="separator">

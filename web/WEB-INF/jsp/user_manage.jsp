@@ -57,25 +57,33 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2></h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <h3 style="text-align: center"><spring:message code="text.welcome"/></h3>
+                <c:choose>
+                    <c:when test="${has_authority}">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2></h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <h3 style="text-align: center"><spring:message code="text.welcome"/></h3>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="clearfix"></div>
+                        <div class="clearfix"></div>
+                    </c:when>
+                    <c:otherwise>
+                        <%@ include file="no_authority.jspf"%>
+                    </c:otherwise>
+                </c:choose>
+
             </div>
         </div>
         <!-- /page content -->

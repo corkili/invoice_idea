@@ -60,36 +60,42 @@
                     <div class="title_left">
                         <h3><spring:message code="title.invoice"/> </h3>
                     </div>
-                </div>
+                </div
+                <c:choose>
+                    <c:when test="${has_authority}">
+                        <div class="clearfix"></div>
 
-                <div class="clearfix"></div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><spring:message code="form.title.invoice" /></h2>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-
-                                <section class="content invoice">
-                                    <!-- title row -->
-
-                                    <%@include file="invoice_element.jspf"%>
-
-                                    <!-- this row will not appear when printing -->
-                                    <div class="row no-print">
-                                        <div class="col-xs-12">
-                                            <a class="btn btn-success pull-right" href="/add_invoice_hand"><i class="fa fa-credit-card"></i>继续添加</a>
-                                            <a class="btn btn-primary pull-right" href="/main" style="margin-right: 5px;"><i class="fa fa-download"></i>返回首页</a>
-                                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2><spring:message code="form.title.invoice" /></h2>
+                                        <div class="clearfix"></div>
                                     </div>
-                                </section>
+                                    <div class="x_content">
+
+                                        <section class="content invoice">
+                                            <!-- title row -->
+
+                                            <%@include file="invoice_element.jspf"%>
+
+                                            <!-- this row will not appear when printing -->
+                                            <div class="row no-print">
+                                                <div class="col-xs-12">
+                                                    <a class="btn btn-success pull-right" href="/add_invoice_hand"><i class="fa fa-credit-card"></i>继续添加</a>
+                                                    <a class="btn btn-primary pull-right" href="/main" style="margin-right: 5px;"><i class="fa fa-download"></i>返回首页</a>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </c:when>
+                    <c:otherwise>
+                        <%@ include file="no_authority.jspf"%>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
         <!-- /page content -->

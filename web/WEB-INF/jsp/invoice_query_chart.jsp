@@ -50,129 +50,134 @@
                     </div>
 
                 </div>
+                <c:choose>
+                    <c:when test="${has_authority}">
+                        <div class="clearfix"></div>
 
-                <div class="clearfix"></div>
+                        <!-- query form -->
 
-                <!-- query form -->
-
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2>查询条件</h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <form action="chart_query" method="post" class="form-horizontal form-label-left">
-                                    <%@ include file="invoice_query_form.jspf"%>
-                                </form>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>查询条件</h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <form action="chart_query" method="post" class="form-horizontal form-label-left">
+                                            <%@ include file="invoice_query_form.jspf"%>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="clearfix"></div>
+                        <div class="clearfix"></div>
 
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><spring:message code="title.chart.line"/></h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <c:choose>
-                                    <c:when test="${has_result}">
-                                        <div id="chart_line" style="height:350px;"></div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
-                                    </c:otherwise>
-                                </c:choose>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2><spring:message code="title.chart.line"/></h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <c:choose>
+                                            <c:when test="${has_result}">
+                                                <div id="chart_line" style="height:350px;"></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><spring:message code="title.chart.bar"/></h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <c:choose>
-                                    <c:when test="${has_result}">
-                                        <div id="chart_bar" style="height:350px;"></div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><spring:message code="title.chart.radar"/></h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <c:choose>
-                                    <c:when test="${has_result}">
-                                        <div id="chart_radar" style="height:400px;"></div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
-                                    </c:otherwise>
-                                </c:choose>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2><spring:message code="title.chart.bar"/></h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <c:choose>
+                                            <c:when test="${has_result}">
+                                                <div id="chart_bar" style="height:350px;"></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-sm6 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><spring:message code="title.chart.pie"/></h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2><spring:message code="title.chart.radar"/></h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <c:choose>
+                                            <c:when test="${has_result}">
+                                                <div id="chart_radar" style="height:400px;"></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="x_content">
-                                <c:choose>
-                                    <c:when test="${has_result}">
-                                        <div id="chart_pie" style="height:400px;"></div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
-                                    </c:otherwise>
-                                </c:choose>
+                            <div class="col-md-6 col-sm6 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2><spring:message code="title.chart.pie"/></h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <c:choose>
+                                            <c:when test="${has_result}">
+                                                <div id="chart_pie" style="height:400px;"></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <h3 style="text-align: center"><small><spring:message code="tip.no_result"/></small></h3>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </c:when>
+                    <c:otherwise>
+                        <%@ include file="no_authority.jspf"%>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
         <!-- /page content -->

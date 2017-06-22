@@ -84,67 +84,74 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2>发票明细数目设置</h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <form action="add_invoice_hand" method="post" class="form-horizontal form-label-left">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-2" for="detail_num">
-                                            待添加的发票的明细数目
-                                            <span class="required">*</span>
-                                        </label>
-                                        <div class="col-md-6">
-                                            <input class="form-control has-feedback-left"
-                                                   id="detail_num" name="detail_num" placeholder="必填" required="required"/>
-                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
+                <c:choose>
+                    <c:when test="${has_authority}">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>发票明细数目设置</h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
                                     </div>
-                                    <div class="ln_solid"></div>
-                                    <div class="form-group">
-                                        <div class="col-md-5 col-md-offset-3">
-                                            <input type="submit" class="btn btn-success" value="<spring:message code="button.ok" /> ">
-                                        </div>
+                                    <div class="x_content">
+                                        <form action="add_invoice_hand" method="post" class="form-horizontal form-label-left">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2" for="detail_num">
+                                                    待添加的发票的明细数目
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6">
+                                                    <input class="form-control has-feedback-left"
+                                                           id="detail_num" name="detail_num" placeholder="必填" required="required"/>
+                                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                </div>
+                                            </div>
+                                            <div class="ln_solid"></div>
+                                            <div class="form-group">
+                                                <div class="col-md-5 col-md-offset-3">
+                                                    <input type="submit" class="btn btn-success" value="<spring:message code="button.ok" /> ">
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="clearfix"></div>
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><spring:message code="form.title.invoice" /></h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <br />
-                                <c:choose>
-                                    <c:when test="${detail_num > 0}">
-                                        <%@ include file="invoice_input_form.jspf"%>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3 style="text-align: center"><small><spring:message code="tip.no_detail_num"/></small></h3>
-                                    </c:otherwise>
-                                </c:choose>
+                        <div class="clearfix"></div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2><spring:message code="form.title.invoice" /></h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <br />
+                                        <c:choose>
+                                            <c:when test="${detail_num > 0}">
+                                                <%@ include file="invoice_input_form.jspf"%>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <h3 style="text-align: center"><small><spring:message code="tip.no_detail_num"/></small></h3>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </c:when>
+                    <c:otherwise>
+                        <%@ include file="no_authority.jspf"%>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
         <!-- /page content -->

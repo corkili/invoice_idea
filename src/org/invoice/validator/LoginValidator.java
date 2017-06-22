@@ -3,9 +3,6 @@ package org.invoice.validator;
 import org.apache.log4j.Logger;
 import org.invoice.model.User;
 import org.invoice.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -45,6 +42,7 @@ public class LoginValidator implements Validator {
         }
         if(userService == null) {
             logger.info("userService is null");
+            return;
         }
         User userTest = userService.findUserByUserNameAndPasswordFromDB(user.getUsername(), user.getPassword());
         if (userTest == null) {

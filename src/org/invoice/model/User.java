@@ -4,6 +4,9 @@ import org.invoice.dao.UserDao;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.invoice.model.Authority.*;
 /**
  * Created by ran on 06/04/17.
@@ -18,8 +21,20 @@ public class User implements Serializable {
     private String username;
     @Column(name = UserDao.COL_PASSWORD)
     private String password;
+    @Column(name = UserDao.COL_SALT)
+    private String salt;
     @Column(name = UserDao.COL_AUTHORITY)
     private int authority;
+    @Column(name = UserDao.COL_NAME)
+    private String name;
+    @Column(name = UserDao.COL_JOB_ID)
+    private String jobId;
+    @Column(name = UserDao.COL_PHONE)
+    private String phone;
+    @Column(name = UserDao.COL_EMAIL)
+    private String email;
+
+    private String confirmPassword;
 
     public User() {
 
@@ -86,5 +101,64 @@ public class User implements Serializable {
         if (authority <= getAllAuthority())
             return true;
         return false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Map<String, String>  getNeedValidateUserInfo() {
+        Map<String, String> map = new HashMap<>();
+        map.put("username", username);
+        map.put("password", password);
+        map.put("name", name);
+        map.put("job_id", jobId);
+        map.put("phone", phone);
+        map.put("email", email);
+        return map;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

@@ -10,8 +10,14 @@ public interface UserDao {
     public static final String COL_USER_ID = "user_id";
     public static final String COL_USERNAME = "username";
     public static final String COL_PASSWORD = "password";
+    public static final String COL_SALT = "salt";
     public static final String COL_AUTHORITY = "authority";
+    public static final String COL_NAME = "name";
+    public static final String COL_JOB_ID = "job_id";
+    public static final String COL_PHONE = "phone";
+    public static final String COL_EMAIL = "email";
 
+    public User findUserByUserId(final String userId);
     public User findUserByUserName(final String username);
     public User findUserByUsernameAndPassword(final String username, final String password);
     public void addUser(User user);

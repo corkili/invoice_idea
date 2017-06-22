@@ -16,10 +16,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Autowired
     private InvoiceDao invoiceDao;
 
-    private Map<String, Invoice> outputInvoices;   // 出项发票列表
-    private Map<String, Invoice> incomeInvoices;    // 进项发票列表
-
-    private Map<Integer, InvoiceList> invoiceLists;
+    private Map<Integer, InvoiceList> invoiceLists; // userId->invoiceList
 
     public InvoiceServiceImpl() {
         invoiceLists = new HashMap<>();
@@ -60,6 +57,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice invoice = new Invoice();
 
         return null;
+    }
+
+    @Override
+    public void removeInvoiceListByUserId(int userId) {
+        invoiceLists.remove(userId);
     }
 
     @Override

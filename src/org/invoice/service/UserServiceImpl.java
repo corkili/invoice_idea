@@ -1,14 +1,23 @@
 package org.invoice.service;
 
+import org.apache.log4j.Logger;
 import org.invoice.dao.UserDao;
 import org.invoice.model.Authority;
 import org.invoice.model.User;
+import org.invoice.security.HashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 提供用户相关服务的实体类
@@ -20,26 +29,99 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    private List<User> allUsers;
+    @Autowired
+    private InvoiceService invoiceService;
+
+    private Map<Integer, User> loginUsers;
+
+    private Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl() {
-        allUsers = new ArrayList<>();
+        loginUsers = new HashMap<>();
+    }
+
+
+    @Override
+    public boolean register(User user, Errors errors) {
+        if (!validateUserInfo(user, errors))
+            return false;
+
+        user.setAuthority(0);
+        user.setPassword(HashUtil.generate(user.getPassword()));
+        user.setSalt(HashUtil.getSalt(user.getPassword()));
+        userDao.addUser(user);
+        return true;
     }
 
     @Override
-    public User findUserById(int userId) {
-        for (User allUser : allUsers) {
-            if (allUser.getUserId() == userId)
-                return allUser;
+    public boolean login(User user, Errors errors) {
+        if(StringUtils.isEmpty(user.getUsername())) {
+            logger.info("validate: \"username\" is empty!");
+            errors.rejectValue("username", "username.required", "用户名不能为空");
+            return false;
         }
-        return null;
+        if(StringUtils.isEmpty(user.getPassword())) {
+            logger.info("validate: \"password\" is empty!");
+            errors.rejectValue("password", "password.required", "密码不能为空");
+            return false;
+        }
+
+        User loginUser = userDao.findUserByUserName(user.getUsername());
+        if (loginUser == null || !HashUtil.verify(user.getPassword(), loginUser.getPassword())) {
+            errors.rejectValue("password", "password.error", "用户名或密码错误");
+            logger.info("用户名或密码错误，登录失败!");
+            return false;
+        }
+
+        // 添加登录信息
+        loginUser.setSalt("#");
+        loginUser.setPassword("#");
+        loginUsers.put(loginUser.getUserId(), loginUser);
+        // session处理
+        return true;
+    }
+
+    @Override
+    public void logout(int userId) {
+        loginUsers.remove(userId);
+        invoiceService.removeInvoiceListByUserId(userId);
+    }
+
+    @Override
+    public boolean modifyUserInfo(User user, Errors errors) {
+        User oldUser = userDao.findUserByUserName(user.getUsername());
+        user.setPassword(oldUser.getPassword());
+        user.setSalt(oldUser.getSalt());
+        if (!validateUserInfo(user, errors)) {
+            return false;
+        }
+        userDao.updateUser(user);
+        return true;
+    }
+
+    @Override
+    public boolean modifyUserPassword(int userId, String newPassword, Errors errors) {
+        User user = userDao.findUserByUserId(String.valueOf(userId));
+        user.setPassword(newPassword);
+        if (!validateUserInfo(user, errors)) {
+            return false;
+        }
+        user.setPassword(HashUtil.generate(newPassword));
+        user.setSalt(HashUtil.getSalt(user.getPassword()));
+        userDao.updateUser(user);
+        return true;
+    }
+
+    @Override
+    public User findUserByUserId(int userId) {
+        return loginUsers.get(userId);
     }
 
     @Override
     public User findUserByUserName(String username) {
-        for (User allUser : allUsers) {
-            if (allUser.getUsername().equals(username))
-                return allUser;
+        for (User user : loginUsers.values()) {
+            if (user.getUsername().equals(username))
+                return user;
         }
         return null;
     }
@@ -52,11 +134,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUserNameAndPasswordFromDB(String username, String password) {
         return userDao.findUserByUsernameAndPassword(username, password);
-    }
-
-    @Override
-    public List<User> getAllUsers() {
-        return allUsers;
     }
 
     @Override
@@ -87,5 +164,48 @@ public class UserServiceImpl implements UserService {
 
     private boolean isLoginInformationCorrect(String username, String password) {
         return username.equals("admin") && password.equals("admin");
+    }
+
+    private boolean validateUserInfo(User user, Errors errors) {
+        boolean hasError = true;
+        // 空值校验
+        Map<String, String> map = user.getNeedValidateUserInfo();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            if (StringUtils.isEmpty(entry.getValue()) || StringUtils.containsWhitespace(entry.getValue())) {
+                errors.rejectValue(entry.getKey(), entry.getKey() + ".required", "此项不能为空或包含空格");
+                hasError = false;
+            }
+        }
+        if (!hasError)
+            return false;
+        // 合法性校验
+        logger.info(user.getUsername());
+        if (userDao.findUserByUserName(user.getUsername()) != null) {
+            errors.rejectValue("username", "username.exists", "用户名已存在");
+            hasError = false;
+        }
+        if (user.getPassword().trim().length() < 8) {
+            errors.rejectValue("password", "password.length", "密码长度至少为8位");
+            hasError = false;
+        }
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            errors.rejectValue("confirmPassword", "password.not_equal", "两次输入的密码不一致");
+            hasError = false;
+        }
+        if (!Pattern.matches("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$", user.getPhone())) {
+            errors.rejectValue("phone", "phone.error", "无效的手机号");
+            hasError = false;
+        }
+        String check = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        Pattern regex = Pattern.compile(check);
+        Matcher matcher = regex.matcher(user.getEmail());
+        if (!matcher.matches()) {
+            errors.rejectValue("email", "email.error", "无效的邮箱");
+            hasError = false;
+        }
+        if (!hasError)
+            return false;
+
+        return true;
     }
 }
