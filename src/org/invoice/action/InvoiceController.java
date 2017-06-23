@@ -276,8 +276,16 @@ public class InvoiceController {
             Invoice invoice = new Invoice();
             List<InvoiceDetail> details = new ArrayList<>();
             Map<String, Object> result = new Recognition().recognition(path + "\\" + fileName, path);
-            invoice.setInvoiceCode(result.get("invoiceCode").toString());
-            invoice.setInvoiceId(result.get("invoiceId").toString());
+            if (result.get("invoiceCode") != null) {
+                invoice.setInvoiceCode(result.get("invoiceCode").toString());
+            } else {
+                invoice.setInvoiceCode("");
+            }
+            if (result.get("invoiceId") != null) {
+                invoice.setInvoiceCode(result.get("invoiceId").toString());
+            } else {
+                invoice.setInvoiceId("");
+            }
             List<String> quantities = (List<String>)result.get("quantities");
             List<String> unitPrices = (List<String>)result.get("unitPrices");
             List<String> taxs = (List<String>)result.get("taxs");
