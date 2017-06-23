@@ -1,4 +1,4 @@
-package org.invoice.service;
+package org.invoice.utils;
 
 import java.awt.Color;
 import java.awt.Font;

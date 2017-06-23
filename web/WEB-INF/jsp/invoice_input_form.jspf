@@ -104,7 +104,7 @@
                                 cssClass="form-control col-md-1" required="required"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].amount"  placeholder="金额"
+                    <form:input path="details[${i}].amount"  placeholder="金额" disabled="false"
                                 cssClass="form-control col-md-1" required="required"/>
                 </div>
                 <div class="col-md-1">
@@ -112,7 +112,7 @@
                                 cssClass="form-control col-md-1" required="required"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].taxSum" placeholder="税额"
+                    <form:input path="details[${i}].taxSum" placeholder="税额" disabled="false"
                                 cssClass="form-control col-md-1" required="required"/>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                 合计金额<span class="required">*</span>
             </label>
             <div class="col-md-1">
-                <form:input path="totalAmount" id="totalAmount" name="totalAmount"
+                <form:input path="totalAmount" id="totalAmount" name="totalAmount" disabled="false"
                             cssClass="form-control col-md-1" required="required"
                             value="${invoice.totalAmount}" placeholder="请输入总金额"/>
             </div>
@@ -131,7 +131,7 @@
                 合计税额<span class="required">*</span>
             </label>
             <div class="col-md-1">
-                <form:input path="totalTax" id="totalTax" name="totalTax"
+                <form:input path="totalTax" id="totalTax" name="totalTax" disabled="false"
                             cssClass="form-control col-md-1" required="required"
                             value="${invoice.totalTax}" placeholder="请输入总税额"/>
             </div>
@@ -141,7 +141,7 @@
                 税价合计<span class="required">*</span>
             </label>
             <div class="col-md-2">
-                <form:input path="total" id="total" name="total"
+                <form:input path="total" id="total" name="total" disabled="false"
                             cssClass="form-control col-md-2" required="required"
                             value="${invoice.total}" placeholder="请输入税价合计金额"/>
             </div>

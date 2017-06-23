@@ -1,14 +1,12 @@
 package org.invoice.action;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.log4j.Logger;
 import org.invoice.model.Authority;
 import org.invoice.model.User;
 import org.invoice.security.HashUtil;
-import org.invoice.service.CaptchaUtil;
+import org.invoice.utils.CaptchaUtil;
 import org.invoice.service.UserService;
 import org.invoice.session.SessionContext;
-import org.invoice.validator.LoginValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 

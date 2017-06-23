@@ -32,5 +32,6 @@
     <orderEntry type="library" exported="" name="tomcat-8.0.32" level="application" />
     <orderEntry type="library" exported="" name="commons" level="application" />
     <orderEntry type="library" exported="" name="ocr-api" level="application" />
+    <orderEntry type="library" exported="" name="poi-3.16" level="application" />
   </component>
 </module>

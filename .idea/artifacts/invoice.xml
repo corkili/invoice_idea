@@ -3,6 +3,11 @@
     <output-path>$USER_HOME$/Desktop/invoice</output-path>
     <root id="archive" name="invoice.war">
       <element id="artifact" artifact-name="invoice:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="application" name="poi-3.16" />
+        </element>
+      </element>
     </root>
   </artifact>
 </component>
