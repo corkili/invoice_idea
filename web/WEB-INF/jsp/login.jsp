@@ -55,6 +55,16 @@
                                     type="password" cssClass="form-control" placeholder="Password" required="required"/>
                         <form:errors path="password" />
                     </div>
+                    <%--<div>--%>
+                        <%--<input type="text" id="captcha" name="captcha" class="text" maxlength="10" />--%>
+                        <%--<img id="captchaImage" src="captcha"/>--%>
+                    <%--</div>--%>
+                    <%--<script>--%>
+                        <%--$('#captchaImage').click(function()--%>
+                        <%--{--%>
+                            <%--$('#captchaImage').attr("src", "captcha?timestamp=" + (new Date()).valueOf());--%>
+                        <%--});--%>
+                    <%--</script>--%>
                     <div>
                         <input id="submit" type="submit" class="btn btn-default submit"
                                value="<spring:message code="button.login"/>" tabindex="3">

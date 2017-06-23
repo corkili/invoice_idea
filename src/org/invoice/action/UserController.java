@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.invoice.model.Authority;
 import org.invoice.model.User;
 import org.invoice.security.HashUtil;
+import org.invoice.service.CaptchaUtil;
 import org.invoice.service.UserService;
 import org.invoice.session.SessionContext;
 import org.invoice.validator.LoginValidator;
@@ -11,15 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -243,5 +244,12 @@ public class UserController {
                     .addObject("edit_password", true);
         }
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/captcha", method = RequestMethod.GET)
+    @ResponseBody
+    public void captcha(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        CaptchaUtil.outputCaptcha(request, response);
     }
 }
