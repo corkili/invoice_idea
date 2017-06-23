@@ -456,9 +456,11 @@
         });
         </c:forEach>
 
+        var subTitle = '${dates.get(0)}' + '~' + '${dates.get(dates.size()-1)}';
 
         // chart_line
         var lineChart = echarts.init(document.getElementById("chart_line"), theme);
+
 
         lineChart.setOption({
             tooltip: {
@@ -496,8 +498,8 @@
                 smooth: true,
                 itemStyle: {
                     normal: {
-                        areaStyle: {
-                            type: 'default'
+                        label:{
+                            show: false
                         }
                     }
                 },
@@ -508,8 +510,8 @@
                 smooth: true,
                 itemStyle: {
                     normal: {
-                        areaStyle: {
-                            type: 'default'
+                        label:{
+                            show: false
                         }
                     }
                 },
@@ -611,6 +613,13 @@
         var  pieChart = echarts.init(document.getElementById("chart_pie"), theme);
 
         pieChart.setOption({
+            title: {
+                text: '企业进项（左图）与销项（右图）数据<spring:message code="title.chart.pie"/>',
+                subtext: subTitle,
+                x: 'center',
+                y: 'top',
+                padding: [0,5,20,5]
+            },
             tooltip : {
                 trigger: 'item',
                 formatter: "{a} <br/>{b} : {c}元 ({d}%)"

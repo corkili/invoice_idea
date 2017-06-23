@@ -172,12 +172,18 @@
                                                     </ul>
                                                     <div id="myTabContent" class="tab-content">
                                                         <div role="tabpanel" class="tab-pane fade active in" id="income_data_view" aria-labelledby="income_data_tab">
-                                                            <h4 style="text-align: center">
-                                                                <spring:message code="title.table.income"/>
-                                                                <small>（单位：元）</small>
-                                                            </h4><br/>
+                                                            <div>
+                                                                <button class="btn btn-primary pull-right" style="margin-right: 5px;"
+                                                                        onclick="table2excel('income_data_table')">
+                                                                    <i class="fa fa-download"></i>导出Excel
+                                                                </button>
+                                                                <h4 style="text-align: center">
+                                                                    <spring:message code="title.table.income"/>
+                                                                    <small>（单位：元）</small>
+                                                                </h4><br/>
+                                                            </div>
                                                             <div class="table-responsive">
-                                                                <table class="table table-striped jambo_table bulk_action" style="white-space: nowrap;">
+                                                                <table id="income_data_table" class="table table-striped jambo_table bulk_action" style="white-space: nowrap;">
                                                                     <thead>
                                                                     <tr class="headings">
                                                                         <th class="column-title">月份/项目</th>
@@ -245,12 +251,18 @@
                                                             <div id="income_chart_line" style="height:450px;"></div>
                                                         </div>
                                                         <div role="tabpanel" class="tab-pane fade" id="outcome_data_view" aria-labelledby="outcome_data_tab">
-                                                            <h4 style="text-align: center">
-                                                                <spring:message code="title.table.outcome"/>
-                                                                <small>（单位：元）</small>
-                                                            </h4><br/>
+                                                            <div>
+                                                                <button class="btn btn-primary pull-right" style="margin-right: 5px;"
+                                                                        onclick="table2excel('outcome_data_table')">
+                                                                    <i class="fa fa-download"></i>导出Excel
+                                                                </button>
+                                                                <h4 style="text-align: center">
+                                                                    <spring:message code="title.table.outcome"/>
+                                                                    <small>（单位：元）</small>
+                                                                </h4><br/>
+                                                            </div>
                                                             <div class="table-responsive">
-                                                                <table class="table table-striped jambo_table bulk_action" style="white-space: nowrap;">
+                                                                <table id="outcome_data_table" class="table table-striped jambo_table bulk_action" style="white-space: nowrap;">
                                                                     <thead>
                                                                     <tr class="headings">
                                                                         <th class="column-title">月份/项目</th>
@@ -318,12 +330,18 @@
                                                             <div id="outcome_chart_line" style="height:450px;"></div>
                                                         </div>
                                                         <div role="tabpanel" class="tab-pane fade" id="compare_data_view" aria-labelledby="compare_data_tab">
-                                                            <h4 style="text-align: center">
-                                                                <spring:message code="title.table.compare"/>
-                                                                <small>（单位：元）</small>
-                                                            </h4><br/>
+                                                            <div>
+                                                                <button class="btn btn-primary pull-right" style="margin-right: 5px;"
+                                                                        onclick="table2excel('compare_data_table')">
+                                                                    <i class="fa fa-download"></i>导出Excel
+                                                                </button>
+                                                                <h4 style="text-align: center">
+                                                                    <spring:message code="title.table.compare"/>
+                                                                    <small>（单位：元）</small>
+                                                                </h4><br/>
+                                                            </div>
                                                             <div class="table-responsive">
-                                                                <table class="table table-striped jambo_table bulk_action" style="white-space: nowrap;">
+                                                                <table id="compare_data_table" class="table table-striped jambo_table bulk_action" style="white-space: nowrap;">
                                                                     <thead>
                                                                     <tr class="headings">
                                                                         <th class="column-title"></th>
@@ -465,6 +483,8 @@
 <!-- Custom Theme Scripts -->
 <script src="../build/js/custom.min.js"></script>
 
+<!-- table2excel -->
+<script src="../js/func/table2excel.js" type="text/javascript" language="javascript"></script>
 <!-- generate charts -->
 <c:if test="${has_result}">
     <script type="text/javascript">
@@ -735,8 +755,8 @@
             smooth: true,
             itemStyle: {
                 normal: {
-                    areaStyle: {
-                        type: 'default'
+                    label:{
+                        show: false
                     }
                 }
             },
@@ -762,8 +782,8 @@
             smooth: true,
             itemStyle: {
                 normal: {
-                    areaStyle: {
-                        type: 'default'
+                    label:{
+                        show: false
                     }
                 }
             },
@@ -1025,8 +1045,8 @@
                 smooth: true,
                 itemStyle: {
                     normal: {
-                        areaStyle: {
-                            type: 'default'
+                        label:{
+                            show: false
                         }
                     }
                 },
@@ -1037,8 +1057,8 @@
                 smooth: true,
                 itemStyle: {
                     normal: {
-                        areaStyle: {
-                            type: 'default'
+                        label:{
+                            show: false
                         }
                     }
                 },
