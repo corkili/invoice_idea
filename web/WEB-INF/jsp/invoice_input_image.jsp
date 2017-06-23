@@ -18,7 +18,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
     <title><spring:message code="title.add_invoice" /></title>
 
     <!-- Bootstrap -->
@@ -87,6 +86,50 @@
             }
         })
     </script>
+
+    <script type="text/javascript">
+        //定义id选择器
+        function Id(id){
+            return document.getElementById(id);
+        }
+        //入口函数，两个参数分别为<input type='file'/>的id，还有一个就是图片的id，然后会自动根据文件id得到图片，然后把图片放到指定id的图片标签中
+        function changeToop(fileid,imgid){
+            var file = Id(fileid);
+            if(file.value==''){
+                //设置默认图片
+                Id("myimg").src='';
+            }else{
+                preImg(fileid,imgid);
+            }
+        }
+        //获取input[file]图片的url Important
+        function getFileUrl(fileId) {
+            var url;
+            var file = Id(fileId);
+            var agent = navigator.userAgent;
+            if (agent.indexOf("MSIE")>=1) {
+                url = file.value;
+            } else if(agent.indexOf("Firefox")>0) {
+                url = window.URL.createObjectURL(file.files.item(0));
+            } else if(agent.indexOf("Chrome")>0) {
+                url = window.URL.createObjectURL(file.files.item(0));
+            }
+            var extIndex = file.value.lastIndexOf(".");
+            var ext = file.value.substring(extIndex,file.value.length).toUpperCase();
+            if (ext != ".JPG") {
+                alert("只允许上传JPG格式的图片！" + ext + ":" + file.value);
+                Id('upload_file').disabled = true;
+                return "";
+            }
+            Id('upload_file').disabled = false;
+            return url;
+        }
+        //读取图片后预览
+        function preImg(fileId,imgId) {
+            var imgPre =Id(imgId);
+            imgPre.src = getFileUrl(fileId);
+        }
+    </script>
 </head>
 
 <body class="nav-md">
@@ -138,7 +181,8 @@
                                                 <div class="col-md-3 col-md-offset-2">
                                                     <a class="file"><spring:message code="tip.upload"/>
                                                         <input type="file" name="invoice_image" id="file_selector" class="btn btn-round"
-                                                               placeholder="<spring:message code="tip.upload"/>" >
+                                                               placeholder="<spring:message code="tip.upload"/>"
+                                                               accept=".jpg" onchange="changeToop('file_selector', 'imagePreview');">
                                                     </a>
                                                 </div>
                                                 <div class="col-md-3">
@@ -146,13 +190,11 @@
                                                            class="btn btn-round btn-success" id="upload_file">
                                                 </div>
                                             </div>
+                                            <div class="ln_solid"></div>
+                                            <div id="preview" class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
+                                                <img id="imagePreview" style="width: 1000px" src=''/>
+                                            </div>
                                         </form>
-                                        <c:if test="${has_file}">
-                                            <script>
-                                                document.getElementById("upload_file").disabled = true;
-                                                document.getElementById("file_selector").disabled = true;
-                                            </script>
-                                        </c:if>
                                     </div>
                                 </div>
                             </div>

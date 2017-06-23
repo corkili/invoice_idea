@@ -18,8 +18,8 @@
             </label>
             <div class="col-md-2">
                 <form:input path="invoiceCode" id="invoiceCode" name="invoiceCode"
-                            cssClass="form-control col-md-2" required="required"
-                            value="${invoice.invoiceCode}"/>
+                            cssClass="form-control col-md-2" required="required" maxlength="10"
+                            value="${invoice.invoiceCode}" placeholder="请输入10位发票代码"/>
             </div>
             <label class="control-label col-md-2" for="invoiceId">
                 <spring:message code="invoice.id" />
@@ -27,8 +27,8 @@
             </label>
             <div class="col-md-2">
                 <form:input path="invoiceId" id="invoiceId" name="invoiceId"
-                            cssClass="form-control col-md-2" required="required"
-                            value="${invoice.invoiceId}"/>
+                            cssClass="form-control col-md-2" required="required" maxlength="8"
+                            value="${invoice.invoiceId}" placeholder="请输入8位发票号码"/>
             </div>
         </div>
         <div class="form-group">
@@ -42,13 +42,8 @@
                 <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
                 <span id="inputSuccess2Status" class="sr-only"></span>
             </div>
-            <%--<div class="col-md-2">--%>
-                <%--<form:input path="invoiceDate" id="invoiceDate" name="invoiceDate"--%>
-                            <%--cssClass="form-control col-md-2" required="required"--%>
-                            <%--value="${invoice.invoiceDate}"--%>
-                            <%--placeholder="year-month-day(e.g. 2017-6-15)"/>--%>
-            <%--</div>--%>
         </div>
+        <div class="ln_solid"></div>
         <div class="form-group">
             <label class="control-label col-md-2" for="buyerName">
                 （购贷单位）名称
@@ -57,7 +52,7 @@
             <div class="col-md-6">
                 <form:input path="buyerName" id="buyerName" name="buyerName"
                             cssClass="form-control col-md-6" required="required"
-                            value="${invoice.buyerName}"/>
+                            value="${invoice.buyerName}" placeholder="请输入购贷方名称"/>
             </div>
         </div>
         <div class="form-group">
@@ -66,10 +61,11 @@
             </label>
             <div class="col-md-6">
                 <form:input path="buyerId" id="buyerId" name="buyerId"
-                            cssClass="form-control col-md-6"
+                            cssClass="form-control col-md-6" placeholder="请输入购贷方纳税人识别号（可空）"
                             value="${invoice.buyerId}"/>
             </div>
         </div>
+        <div class="ln_solid"></div>
         <div class="form-group">
             <label class="control-label col-md-1">产品名称<span class="required">*</span></label>
             <label class="control-label col-md-1">规格型号</label>
@@ -84,48 +80,48 @@
         <c:forEach var="i" begin="0" end="${detail_num-1}" step="1">
             <div class="form-group">
                 <div class="col-md-1">
-                    <form:input path="details[${i}].detailName"
+                    <form:input path="details[${i}].detailName" placeholder="产品名称"
                                 cssClass="form-control col-md-1" required="required"
                                 value="${invoice.details[i].detailName}"/>
                 </div>
                 <div class="col-md-1">
                     <form:input path="details[${i}].specification"
-                                cssClass="form-control col-md-1"
+                                cssClass="form-control col-md-1" placeholder="规格型号（可空）"
                                 value="${invoice.details[i].specification}"/>
                 </div>
                 <div class="col-md-1">
                     <form:input path="details[${i}].unitName"
-                                cssClass="form-control col-md-1"
+                                cssClass="form-control col-md-1" placeholder="单位（可空）"
                                 value="${invoice.details[i].unitName}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].quantity"
+                    <form:input path="details[${i}].quantity" placeholder="数量（整数）"
                                 cssClass="form-control col-md-1" required="required"
                                 value="${invoice.details[i].quantity}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].unitPrice"
+                    <form:input path="details[${i}].unitPrice" placeholder="单价"
                                 cssClass="form-control col-md-1" required="required"
                                 value="${invoice.details[i].unitPrice}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].amount"
+                    <form:input path="details[${i}].amount" placeholder="金额"
                                 cssClass="form-control col-md-1" required="required"
                                 value="${invoice.details[i].amount}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].taxRate"
+                    <form:input path="details[${i}].taxRate" placeholder="税率"
                                 cssClass="form-control col-md-1" required="required"
                                 value="${invoice.details[i].taxRate}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].taxSum"
+                    <form:input path="details[${i}].taxSum" placeholder="税额"
                                 cssClass="form-control col-md-1" required="required"
                                 value="${invoice.details[i].taxSum}"/>
                 </div>
             </div>
         </c:forEach>
-
+        <div class="ln_solid"></div>
         <div class="form-group">
             <label class="control-label col-md-5" for="totalAmount">
                 合计金额<span class="required">*</span>
@@ -133,7 +129,7 @@
             <div class="col-md-1">
                 <form:input path="totalAmount" id="totalAmount" name="totalAmount"
                             cssClass="form-control col-md-1" required="required"
-                            value="${invoice.totalAmount}"/>
+                            value="${invoice.totalAmount}" placeholder="请输入总金额"/>
             </div>
             <label class="control-label col-md-1" for="totalTax">
                 合计税额<span class="required">*</span>
@@ -141,7 +137,7 @@
             <div class="col-md-1">
                 <form:input path="totalTax" id="totalTax" name="totalTax"
                             cssClass="form-control col-md-1" required="required"
-                            value="${invoice.totalTax}"/>
+                            value="${invoice.totalTax}" placeholder="请输入总税额"/>
             </div>
         </div>
         <div class="form-group">
@@ -151,9 +147,10 @@
             <div class="col-md-2">
                 <form:input path="total" id="total" name="total"
                             cssClass="form-control col-md-2" required="required"
-                            value="${invoice.total}"/>
+                            value="${invoice.total}" placeholder="请输入税价合计金额"/>
             </div>
         </div>
+        <div class="ln_solid"></div>
         <div class="form-group">
             <label class="control-label col-md-2" for="sellerName">
                 （销贷单位）名称
@@ -162,7 +159,7 @@
             <div class="col-md-6">
                 <form:input path="sellerName" id="sellerName" name="sellerName"
                             cssClass="form-control col-md-6" required="required"
-                            value="${invoice.sellerName}"/>
+                            value="${invoice.sellerName}" placeholder="请输入销贷方名称"/>
             </div>
         </div>
         <div class="form-group">
@@ -171,16 +168,17 @@
             </label>
             <div class="col-md-6">
                 <form:input path="sellerId" id="sellerId" name="sellerId"
-                            cssClass="form-control col-md-6"
+                            cssClass="form-control col-md-6" placeholder="请输入销贷方纳税人识别号（可空）"
                             value="${invoice.sellerId}"/>
             </div>
         </div>
+        <div class="ln_solid"></div>
         <div class="form-group">
             <label class="control-label col-md-2" for="remark">备注</label>
             <div class="col-md-6">
                 <form:input path="remark" id="remark" name="remark"
                             cssClass="form-control col-md-6"
-                            value="${invoice.remark}"/>
+                            value="${invoice.remark}" placeholder="请输入备注（可空）"/>
             </div>
         </div>
         <div class="ln_solid"></div>

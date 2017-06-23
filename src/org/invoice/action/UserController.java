@@ -1,5 +1,6 @@
 package org.invoice.action;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.log4j.Logger;
 import org.invoice.model.Authority;
 import org.invoice.model.User;
@@ -55,18 +56,29 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", name = "登录", method = RequestMethod.POST)
-    public String validateLoginInformation(@ModelAttribute("user") User user,
-                                           BindingResult bindingResult, HttpSession session,
-                                           RedirectAttributes redirectAttributes) {
+    public ModelAndView validateLoginInformation(@ModelAttribute("user") User user,
+                                                 BindingResult bindingResult, HttpSession session,
+                                                 RedirectAttributes redirectAttributes,
+                                                 @RequestParam("captcha") String captcha) {
+        ModelAndView modelAndView = new ModelAndView();
         logger.info("validate Login Information");
+        String randomString = session.getAttribute("randomString").toString().toLowerCase();
+        if (!randomString.equals(captcha.toLowerCase())) {
+            modelAndView.setViewName("login");
+            return modelAndView.addObject("has_error", true)
+                    .addObject("error_message", "验证码错误！");
+        }
         if (!userService.login(user, bindingResult, session)) {
             FieldError fieldError = bindingResult.getFieldError();
             logger.info("Code:" + fieldError.getCode() + ", field" + fieldError.getField());
-            return "login";
+            modelAndView.setViewName("login");
+            return modelAndView.addObject("has_error", true)
+                    .addObject("error_message", "用户名或密码错误！");
         } else {
             redirectAttributes.addFlashAttribute("message", "Login successful!");
             redirectAttributes.addFlashAttribute("user", userService.findUserByUserName(user.getUsername()));
-            return "redirect:/main";
+            modelAndView.setViewName("redirect:/main");
+            return modelAndView;
         }
     }
 
@@ -90,17 +102,30 @@ public class UserController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@ModelAttribute("user") User user,
-                                 BindingResult bindingResult,
-                                 RedirectAttributes redirectAttributes) {
+    public ModelAndView register(@ModelAttribute("user") User user,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes,
+                           @RequestParam("captcha")  String captcha,
+                           HttpSession session) {
         logger.info("validate register information");
+        ModelAndView modelAndView = new ModelAndView();
+        String randomString = session.getAttribute("randomString").toString().toLowerCase();
+        if (!randomString.equals(captcha.toLowerCase())) {
+            modelAndView.setViewName("signin");
+            return modelAndView.addObject("has_error", true)
+                    .addObject("error_message", "验证码错误！");
+        }
         if (!userService.register(user, bindingResult)) {
             FieldError fieldError = bindingResult.getFieldError();
             logger.info("Code:" + fieldError.getCode() + ", field" + fieldError.getField());
-            return "signin";
+            modelAndView.setViewName("signin");
+            return modelAndView.addObject("has_error", false)
+                    .addObject("error_message", "");
         } else {
             redirectAttributes.addFlashAttribute("message", "Login successful!");
-            return "redirect:/login";
+            modelAndView.setViewName("redirect:/login");
+            return modelAndView.addObject("has_error", false)
+                    .addObject("error_message", "");
         }
     }
 

@@ -282,7 +282,7 @@ public class InvoiceController {
                 invoice.setInvoiceCode("");
             }
             if (result.get("invoiceId") != null) {
-                invoice.setInvoiceCode(result.get("invoiceId").toString());
+                invoice.setInvoiceId(result.get("invoiceId").toString());
             } else {
                 invoice.setInvoiceId("");
             }

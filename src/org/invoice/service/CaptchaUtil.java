@@ -65,7 +65,7 @@ public final class CaptchaUtil
     private static Color getReverseColor(Color c)
     {
         return new Color(255 - c.getRed(), 255 - c.getGreen(),
-                - c.getBlue());
+                255 - c.getBlue());
     }
 
     public static void outputCaptcha(HttpServletRequest request, HttpServletResponse response)

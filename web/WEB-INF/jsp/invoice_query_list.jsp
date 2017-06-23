@@ -185,7 +185,7 @@
                                         <c:choose>
                                             <c:when test="${has_result}">
                                                 <div class="table-responsive">
-                                                    <table id="datatable" class="table table-striped jambo_table">
+                                                    <table id="datatable" class="table table-striped jambo_table" style="white-space: nowrap;">
                                                         <thead>
                                                         <tr class="headings">
                                                             <th class="column-title">发票号码</th>

@@ -183,8 +183,8 @@
                                                     <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6">
-                                                    <input class="form-control has-feedback-left"  type="password"
-                                                           id="old_password" name="old_password" placeholder="" required="required"/>
+                                                    <input class="form-control has-feedback-left"  type="password" id="old_password"
+                                                           name="old_password" placeholder="Old Password" required="required"/>
                                                     <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
                                             </div>
@@ -194,8 +194,8 @@
                                                     <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6">
-                                                    <input class="form-control has-feedback-left" type="password"
-                                                           id="new_password" name="new_password" placeholder="" required="required"/>
+                                                    <input class="form-control has-feedback-left" type="password" id="new_password"
+                                                           name="new_password" placeholder="Password" required="required"/>
                                                     <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
                                             </div>
@@ -205,16 +205,36 @@
                                                     <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6">
-                                                    <input class="form-control has-feedback-left" type="password"
-                                                           id="confirm_password" name="confirm_password" placeholder="" required="required"/>
+                                                    <input class="form-control has-feedback-left" type="password" id="confirm_password"
+                                                           name="confirm_password" placeholder="Confirm Password" required="required"/>
                                                     <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2 col-sm-2 col-xs-2" for="captcha">
+                                                    验证码
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                    <input type="text" id="captcha" name="captcha" class="form-control has-feedback-left"
+                                                           maxlength="6" placeholder="Verification code" required="required"/>
+                                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                                    <img id="captchaImage" src="captcha" onclick="reImg()"/>
+                                                </div>
+                                                <script type="text/javascript">
+                                                    function reImg(){
+                                                        var img = document.getElementById("captchaImage");
+                                                        img.src = "captcha?timestamp=" + (new Date()).valueOf();
+                                                    }
+                                                </script>
+                                            </div>
                                             <div class="ln_solid"></div>
-                                            <c:if test="${has_message}">
+                                            <c:if test="${has_error}">
                                                 <div class="form-group">
                                                     <div class="col-md-8 text-center">
-                                                        ${message}
+                                                        <p style="color: red">${error_message}</p>
                                                     </div>
                                                 </div>
                                                 <div class="ln_solid"></div>

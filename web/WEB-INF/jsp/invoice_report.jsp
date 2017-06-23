@@ -103,27 +103,71 @@
                                             <c:when test="${has_result}">
                                                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                                     <ul id="" class="nav nav-tabs bar_tabs" role="tablist">
-                                                        <li role="presentation" class="active"><a href="#income_data_view" id="income_data_tab" role="tab" data-toggle="tab" aria-expanded="true">进项数据表</a>
+                                                        <li role="presentation" class="active" style="background-color: #F4F4F4">
+                                                            <a href="#income_data_view" id="income_data_tab" role="tab" data-toggle="tab"
+                                                               aria-expanded="true" style="background-color: #F4F4F4;">
+                                                                <strong>进项数据表</strong>
+                                                            </a>
                                                         </li>
-                                                        <li role="presentation" class=""><a href="#income_bar_view" id="income_bar_tab" role="tab" data-toggle="tab" aria-expanded="false">进项柱状图</a>
+                                                        <li role="presentation" class="" style="background-color: #F4F4F4">
+                                                            <a href="#income_bar_view" id="income_bar_tab" role="tab" data-toggle="tab"
+                                                               aria-expanded="false" style="background-color: #F4F4F4">
+                                                                <strong>进项柱状图</strong>
+                                                            </a>
                                                         </li>
-                                                        <li role="presentation" class=""><a href="#income_line_view" id="income_line_tab" role="tab" data-toggle="tab" aria-expanded="false">进项折线图</a>
+                                                        <li role="presentation" class="" style="background-color: #F4F4F4">
+                                                            <a href="#income_line_view" id="income_line_tab" role="tab" data-toggle="tab"
+                                                               aria-expanded="false" style="background-color: #F4F4F4">
+                                                                <strong>进项折线图</strong>
+                                                            </a>
                                                         </li>
-                                                        <li role="presentation" class=""><a href="#outcome_data_view" id="outcome_data_tab" role="tab" data-toggle="tab" aria-expanded="false">销项数据表</a>
+                                                        <li role="presentation" class="" style="background-color: #B7B7B7">
+                                                            <a href="#outcome_data_view" id="outcome_data_tab" role="tab" data-toggle="tab"
+                                                               aria-expanded="false" style="background-color: #B7B7B7; color: #4A708B;">
+                                                                <strong>销项数据表</strong>
+                                                            </a>
                                                         </li>
-                                                        <li role="presentation" class=""><a href="#outcome_bar_view" id="outcome_bar_tab" role="tab" data-toggle="tab" aria-expanded="false">销项柱状图</a>
+                                                        <li role="presentation" class="" style="background-color: #B7B7B7">
+                                                            <a href="#outcome_bar_view" id="outcome_bar_tab" role="tab" data-toggle="tab"
+                                                               aria-expanded="false" style="background-color: #B7B7B7; color: #4A708B;">
+                                                                <strong>销项柱状图</strong>
+                                                            </a>
                                                         </li>
-                                                        <li role="presentation" class=""><a href="#outcome_line_view" id="outcome_line_tab" role="tab" data-toggle="tab" aria-expanded="false">销项折线图</a>
+                                                        <li role="presentation" class="" style="background-color: #B7B7B7">
+                                                            <a href="#outcome_line_view" id="outcome_line_tab" role="tab" data-toggle="tab"
+                                                               aria-expanded="false" style="background-color: #B7B7B7; color: #4A708B;">
+                                                                <strong>销项折线图</strong>
+                                                            </a>
                                                         </li>
-                                                        <li role="presentation" class=""><a href="#compare_data_view" id="compare_data_tab" role="tab" data-toggle="tab" aria-expanded="false">对比数据表</a>
+                                                        <li role="presentation" class="" style="background-color: #8E8E8E ">
+                                                            <a href="#compare_data_view" id="compare_data_tab" role="tab" data-toggle="tab"
+                                                               aria-expanded="false" style="background-color: #8E8E8E; color: #F5F5F5;">
+                                                                <strong>对比数据表</strong>
+                                                            </a>
                                                         </li>
-                                                        <li role="presentation" class=""><a href="#compare_bar_view" id="compare_bar_tab" role="tab" data-toggle="tab" aria-expanded="false">对比柱状图</a>
+                                                        <li role="presentation" class="" style="background-color: #8E8E8E ">
+                                                            <a href="#compare_bar_view" id="compare_bar_tab" role="tab" data-toggle="tab"
+                                                               aria-expanded="false" style="background-color: #8E8E8E; color: #F5F5F5;">
+                                                                <strong>对比柱状图</strong>
+                                                            </a>
                                                         </li>
-                                                        <li role="presentation" class=""><a href="#compare_line_view" id="compare_line_tab" role="tab" data-toggle="tab" aria-expanded="false">对比折线图</a>
+                                                        <li role="presentation" class="" style="background-color: #8E8E8E ">
+                                                            <a href="#compare_line_view" id="compare_line_tab" role="tab" data-toggle="tab"
+                                                               aria-expanded="false" style="background-color: #8E8E8E; color: #F5F5F5;">
+                                                                <strong>对比折线图</strong>
+                                                            </a>
                                                         </li>
-                                                        <li role="presentation" class=""><a href="#compare_radar_view" id="compare_radar_tab" role="tab" data-toggle="tab" aria-expanded="false">对比雷达图</a>
+                                                        <li role="presentation" class="" style="background-color: #8E8E8E ">
+                                                            <a href="#compare_radar_view" id="compare_radar_tab" role="tab" data-toggle="tab"
+                                                               aria-expanded="false" style="background-color: #8E8E8E; color: #F5F5F5;">
+                                                                <strong>对比雷达图</strong>
+                                                            </a>
                                                         </li>
-                                                        <li role="presentation" class=""><a href="#compare_pie_view" id="compare_pie_tab" role="tab" data-toggle="tab" aria-expanded="false">对比饼状图</a>
+                                                        <li role="presentation" class="" style="background-color: #8E8E8E ">
+                                                            <a href="#compare_pie_view" id="compare_pie_tab" role="tab" data-toggle="tab"
+                                                               aria-expanded="false" style="background-color: #8E8E8E; color: #F5F5F5;">
+                                                                <strong>对比饼状图</strong>
+                                                            </a>
                                                         </li>
                                                     </ul>
                                                     <div id="myTabContent" class="tab-content">
@@ -133,10 +177,10 @@
                                                                 <small>（单位：元）</small>
                                                             </h4><br/>
                                                             <div class="table-responsive">
-                                                                <table class="table table-striped jambo_table bulk_action">
+                                                                <table class="table table-striped jambo_table bulk_action" style="white-space: nowrap;">
                                                                     <thead>
                                                                     <tr class="headings">
-                                                                        <th class="column-title">项目\<br/>月份</th>
+                                                                        <th class="column-title">月份/项目</th>
                                                                         <c:forEach var="n" items="${income_names}" varStatus="status" >
                                                                             <th class="column-title" style="text-align: center">${n}</th>
                                                                         </c:forEach>
@@ -206,10 +250,10 @@
                                                                 <small>（单位：元）</small>
                                                             </h4><br/>
                                                             <div class="table-responsive">
-                                                                <table class="table table-striped jambo_table bulk_action">
+                                                                <table class="table table-striped jambo_table bulk_action" style="white-space: nowrap;">
                                                                     <thead>
                                                                     <tr class="headings">
-                                                                        <th class="column-title">项目\<br/>月份</th>
+                                                                        <th class="column-title">月份/项目</th>
                                                                         <c:forEach var="n" items="${outcome_names}" varStatus="status" >
                                                                             <th class="column-title" style="text-align: center">${n}</th>
                                                                         </c:forEach>
@@ -279,7 +323,7 @@
                                                                 <small>（单位：元）</small>
                                                             </h4><br/>
                                                             <div class="table-responsive">
-                                                                <table class="table table-striped jambo_table bulk_action">
+                                                                <table class="table table-striped jambo_table bulk_action" style="white-space: nowrap;">
                                                                     <thead>
                                                                     <tr class="headings">
                                                                         <th class="column-title"></th>
