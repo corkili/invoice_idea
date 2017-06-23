@@ -19,6 +19,8 @@ public class InvoiceDetail implements Serializable {
     private long detailId;                  // 明细编号
     @Column(name = InvoiceDao.COL_INVOICE_ID)
     private String invoiceId;               // 发票号码
+    @Column(name = InvoiceDao.COL_INVOICE_CODE)
+    private String invoiceCode;             // 发票代码
     @Column(name = InvoiceDao.COL_DETAIL_NAME)
     private String detailName;              // 明细名称
     @Column(name = InvoiceDao.COL_SPECIFICATION)
@@ -114,5 +116,13 @@ public class InvoiceDetail implements Serializable {
 
     public void setDetailId(long detailId) {
         this.detailId = detailId;
+    }
+
+    public String getInvoiceCode() {
+        return invoiceCode;
+    }
+
+    public void setInvoiceCode(String invoiceCode) {
+        this.invoiceCode = invoiceCode;
     }
 }

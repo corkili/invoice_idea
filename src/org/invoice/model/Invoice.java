@@ -17,6 +17,8 @@ import java.util.List;
 @Table(name = InvoiceDao.TABLE_INVOICE)
 public class Invoice implements Serializable {
     private static final long serialVersionUID = 710397989174849013L;
+    @Column(name = InvoiceDao.COL_IDENTIFY_ID)
+    private long identifyId;                // 发票的唯一标识
     @Column(name = InvoiceDao.COL_INVOICE_ID)
     private String invoiceId;               // 发票号码
     @Column(name = InvoiceDao.COL_INVOICE_CODE)
@@ -139,5 +141,13 @@ public class Invoice implements Serializable {
 
     public void setDetails(List<InvoiceDetail> details) {
         this.details = details;
+    }
+
+    public long getIdentifyId() {
+        return identifyId;
+    }
+
+    public void setIdentifyId(long identifyId) {
+        this.identifyId = identifyId;
     }
 }

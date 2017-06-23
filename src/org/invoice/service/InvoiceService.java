@@ -17,7 +17,7 @@ public interface InvoiceService {
     public void addInvoices(List<Invoice> invoices);
 
     // 获取发票
-    public Invoice getInvoice(String invoiceId);
+    public Invoice getInvoice(String invoiceId, String invoiceCode);
     public Invoice getInvoice(int userId, int index);
     public Invoice getInvoiceFromImageFile(String fileName);
 
@@ -28,6 +28,6 @@ public interface InvoiceService {
 
     // 删除
     public void removeInvoice(int userId, int index);
-    public void removeInvoice(String invoiceId);
+    public void removeInvoice(String invoiceId, String invoiceCode);
 
 }

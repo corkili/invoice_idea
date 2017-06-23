@@ -38,8 +38,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Invoice getInvoice(String invoiceId) {
-        List<Invoice> results = invoiceDao.findInvoicesByInvoiceId(invoiceId);
+    public Invoice getInvoice(String invoiceId, String invoiceCode) {
+        List<Invoice> results = invoiceDao.findInvoicesByInvoiceIdAndCode(invoiceId, invoiceCode);
         Invoice invoice = null;
         if(results != null && results.size() > 0) {
             invoice = results.get(0);
@@ -86,8 +86,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public void removeInvoice(String invoiceId) {
-        removeInvoice(getInvoice(invoiceId));
+    public void removeInvoice(String invoiceId, String invoiceCode) {
+        removeInvoice(getInvoice(invoiceId, invoiceCode));
     }
 
     private void removeInvoice(Invoice invoice) {

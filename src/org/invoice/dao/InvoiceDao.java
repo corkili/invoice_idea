@@ -12,6 +12,7 @@ public interface InvoiceDao {
     public static final String TABLE_INVOICE = "table_invoice";
     public static final String TABLE_DETAILES = "table_details";
 
+    public static final String COL_IDENTIFY_ID = "identify_id";
     public static final String COL_INVOICE_ID = "invoice_id";
     public static final String COL_INVOICE_CODE = "invoice_code";
     public static final String COL_INVOICE_DATE = "invoice_date";
@@ -49,6 +50,7 @@ public interface InvoiceDao {
     // 查询
     public List<Invoice> findInvoicesByInvoiceId(final String invoiceId);
     public List<Invoice> findInvoicesByInvoiceCode(final String invoiceCode);
+    public List<Invoice> findInvoicesByInvoiceIdAndCode(final String invoiceId, final String invoiceCode);
     public List<Invoice> findInvoicesByDate(final Date date);
     public List<Invoice> findInvoicesByDateRange(final Date startDate, final Date endDate);
     public List<Invoice> findInvoicesByBuyerName(final String buyerName);

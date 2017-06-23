@@ -212,7 +212,9 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="x_content">
-                                            <%@ include file="invoice_edit_form.jspf"%>
+                                            <form:form commandName="invoice" action="save_invoice" method="post" cssClass="form-horizontal form-label-left">
+                                                <%@ include file="invoice_edit_form.jspf"%>
+                                            </form:form>
                                         </div>
                                     </div>
                                 </div>

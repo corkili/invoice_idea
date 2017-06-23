@@ -1,5 +1,8 @@
 package org.invoice.session;
 
+import org.invoice.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +12,9 @@ import java.util.Map;
  */
 public class SessionContext {
     public static final String ATTR_USER_ID = "userId";
+
+    @Autowired
+    private UserService userService;
 
     private static SessionContext instance;
     private Map<String, HttpSession> sessionMap;
@@ -34,6 +40,7 @@ public class SessionContext {
         if(session != null) {
             sessionMap.remove(session.getId());
             if(session.getAttribute(ATTR_USER_ID) != null) {
+                userService.logout(Integer.parseInt(session.getAttribute(ATTR_USER_ID).toString()), session);
                 sessionMap.remove(session.getAttribute(ATTR_USER_ID).toString());
                 // session.invalidate();
             }

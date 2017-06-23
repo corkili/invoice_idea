@@ -107,18 +107,23 @@ public class InvoiceController {
             modelAndView.addObject("display_name", user.getName());
             return modelAndView;
         }
-        for(InvoiceDetail detail : invoice.getDetails())
+        for(InvoiceDetail detail : invoice.getDetails()){
             detail.setInvoiceId(invoice.getInvoiceId());
+            detail.setInvoiceCode(invoice.getInvoiceCode());
+        }
         invoiceService.addInvoice(invoice);
-        ModelAndView modelAndView = new ModelAndView("redirect:/save_result?id=" + invoice.getInvoiceId());
+        ModelAndView modelAndView = new ModelAndView("redirect:/save_result?invoiceId="
+                + invoice.getInvoiceId() + "&&invoiceCode=" + invoice.getInvoiceCode());
         modelAndView.addObject("has_authority", true);
         modelAndView.addObject("display_name", user.getName());
         return modelAndView;
     }
 
     @RequestMapping(value = "/save_result")
-    public ModelAndView invoiceSaveResult(@RequestParam("id") String id, HttpSession session) {
-        Invoice invoice = invoiceService.getInvoice(id);
+    public ModelAndView invoiceSaveResult(@RequestParam("invoiceId") String invoiceId,
+                                          @RequestParam("invoiceCode") String invoiceCode,
+                                          HttpSession session) {
+        Invoice invoice = invoiceService.getInvoice(invoiceId, invoiceCode);
         ModelAndView modelAndView = new ModelAndView("invoice_save_result");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
@@ -186,7 +191,8 @@ public class InvoiceController {
 
     @RequestMapping(value = "/view_invoice", method = RequestMethod.POST)
     public ModelAndView viewInvoice(@RequestParam("index") int index, HttpSession session,
-                                    @RequestParam("invoice_id") String invoiceId) {
+                                    @RequestParam("invoice_id") String invoiceId,
+                                    @RequestParam("invoice_code") String invoiceCode) {
         ModelAndView modelAndView = new ModelAndView("invoice_query_list");
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
@@ -196,9 +202,10 @@ public class InvoiceController {
             return modelAndView;
         }
         InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
+        logger.info(invoiceList.size());
         Invoice invoice = invoiceService.getInvoice(userId, index);
-        if (!invoice.getInvoiceId().equals(invoiceId)) {
-            invoice = invoiceService.getInvoice(invoiceId);
+        if (!invoice.getInvoiceId().equals(invoiceId) || !invoice.getInvoiceCode().equals(invoiceCode)) {
+            invoice = invoiceService.getInvoice(invoiceId, invoiceCode);
         }
         modelAndView.addObject("invoice_list", invoiceList);
         modelAndView.addObject("has_result", invoiceList.size() != 0);
@@ -220,6 +227,7 @@ public class InvoiceController {
             modelAndView.addObject("has_authority", false);
             return modelAndView;
         }
+
         if (invoiceService.getInvoice(userId, index).getInvoiceId().equals(invoiceId)) {
             invoiceService.removeInvoice(userId, index);
         }
@@ -230,6 +238,58 @@ public class InvoiceController {
         modelAndView.addObject("invoice", null);
         modelAndView.addObject("index", -1);
         modelAndView.addObject("has_authority", true);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/edit_invoice", method = RequestMethod.POST)
+    public ModelAndView editInvoice(@RequestParam("index") int index, HttpSession session,
+                                    @RequestParam("invoice_id") String invoiceId,
+                                    @RequestParam("invoice_code") String invoiceCode) {
+        ModelAndView modelAndView = new ModelAndView("invoice_query_list");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
+        if ((user.getAuthority() & Authority.AUTHORITY_MODIFY_INVOICE_RECORD) == 0) { // 验证修改发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
+        logger.info(invoiceList.size());
+        Invoice invoice = invoiceService.getInvoice(userId, index);
+        if (!invoice.getInvoiceId().equals(invoiceId) || !invoice.getInvoiceCode().equals(invoiceCode)) {
+            invoice = invoiceService.getInvoice(invoiceId, invoiceCode);
+        }
+        logger.info(invoice.getInvoiceId() + " " + invoice.getInvoiceCode());
+        modelAndView.addObject("invoice_list", invoiceList);
+        modelAndView.addObject("has_result", invoiceList.size() != 0);
+        modelAndView.addObject("view_invoice", false);
+        modelAndView.addObject("invoice", invoice);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("has_authority", true);
+        modelAndView.addObject("edit_invoice", true);
+        modelAndView.addObject("detail_num", invoice.getDetails().size());
+        modelAndView.addObject("date", dateFormat.format(invoice.getInvoiceDate()));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/save_edit_invoice", method = RequestMethod.POST)
+    public ModelAndView saveEditInvoice(@ModelAttribute Invoice invoice, HttpSession session) {
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        ModelAndView modelAndView = new ModelAndView("redirect:/list_query");
+        if ((user.getAuthority() & Authority.AUTHORITY_MODIFY_INVOICE_RECORD) == 0) { // 验证修改发票的权限
+            modelAndView.addObject("has_authority", false);
+            modelAndView.addObject("display_name", user.getName());
+            return modelAndView;
+        }
+        invoiceService.removeInvoice(invoice.getInvoiceId(), invoice.getInvoiceCode());
+        for(InvoiceDetail detail : invoice.getDetails()){
+            detail.setInvoiceId(invoice.getInvoiceId());
+            detail.setInvoiceCode(invoice.getInvoiceCode());
+        }
+        invoiceService.addInvoice(invoice);
+        modelAndView.addObject("has_authority", true);
+        modelAndView.addObject("display_name", user.getName());
         return modelAndView;
     }
 
@@ -345,6 +405,7 @@ public class InvoiceController {
                 invoice.setTotal(totalAmount + totalTax);
                 modelAndView.addObject("invoice", invoice);
                 modelAndView.addObject("detail_num", detailNum);
+                modelAndView.addObject("date", "2000-01-01");
                 modelAndView.addObject("has_file", true);
                 modelAndView.addObject("has_error", false);
             } else {

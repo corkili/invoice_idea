@@ -51,9 +51,9 @@ public class InvoiceDaoImpl implements InvoiceDao {
         String invoiceSql = getDeleteFromInvoiceSql();
         String detailSql = getDeleteFromDetailSql();
         logger.info("sql: " + invoiceSql);
-        jdbcTemplate.update(invoiceSql, invoice.getInvoiceId());
+        jdbcTemplate.update(invoiceSql, invoice.getInvoiceId(), invoice.getInvoiceCode());
         logger.info("sql: " + detailSql);
-        jdbcTemplate.update(detailSql, invoice.getInvoiceId());
+        jdbcTemplate.update(detailSql, invoice.getInvoiceId(), invoice.getInvoiceCode());
     }
 
     @Override
@@ -85,6 +85,11 @@ public class InvoiceDaoImpl implements InvoiceDao {
     @Override
     public List<Invoice> findInvoicesByInvoiceCode(String invoiceCode) {
         return findInvoices(COL_INVOICE_CODE, invoiceCode);
+    }
+
+    @Override
+    public List<Invoice> findInvoicesByInvoiceIdAndCode(String invoiceId, String invoiceCode) {
+        return findInvoices(COL_INVOICE_ID, invoiceId, COL_INVOICE_CODE, invoiceCode);
     }
 
     @Override
@@ -173,14 +178,14 @@ public class InvoiceDaoImpl implements InvoiceDao {
     }
 
     private String getSelectFromInvoiceBaseSql() {
-        return "select " + COL_INVOICE_ID + "," + COL_INVOICE_CODE + "," + COL_INVOICE_DATE + ","
+        return "select " + COL_IDENTIFY_ID + "," + COL_INVOICE_ID + "," + COL_INVOICE_CODE + "," + COL_INVOICE_DATE + ","
                 + COL_BUYER_NAME + "," + COL_BUYER_ID + "," + COL_SELLER_NAME + "," + COL_SELLER_ID + ","
                 + COL_TOTAL_AMOUNT + "," + COL_TOTAL_TAX + "," + COL_TOTAL + "," + COL_REMARK
                 + " from " + TABLE_INVOICE + " ";
     }
 
     private String getSelectFromDetailBaseSql() {
-        return "select " + COL_DETAIL_ID + "," + COL_INVOICE_ID + "," + COL_DETAIL_NAME + "," + COL_SPECIFICATION + ","
+        return "select " + COL_DETAIL_ID + "," + COL_INVOICE_ID + "," + COL_INVOICE_CODE + "," + COL_DETAIL_NAME + "," + COL_SPECIFICATION + ","
                 + COL_UNIT_NAME + "," + COL_QUANTITY + "," + COL_UNIT_PRICE + "," + COL_AMOUNT + ","
                 + COL_TAX_RATE + "," + COL_TAX_SUM + " from " + TABLE_DETAILES + " ";
     }
@@ -193,29 +198,29 @@ public class InvoiceDaoImpl implements InvoiceDao {
     }
 
     private String getInsertIntoDetailSql() {
-        return "insert into " + TABLE_DETAILES + " (" + COL_INVOICE_ID + "," + COL_DETAIL_NAME + ","
+        return "insert into " + TABLE_DETAILES + " (" + COL_INVOICE_ID + "," + COL_INVOICE_CODE + "," + COL_DETAIL_NAME + ","
                 + COL_SPECIFICATION + "," + COL_UNIT_NAME + "," + COL_QUANTITY + "," + COL_UNIT_PRICE + ","
-                + COL_AMOUNT + "," + COL_TAX_RATE + "," + COL_TAX_SUM + ") values(?,?,?,?,?,?,?,?,?)";
+                + COL_AMOUNT + "," + COL_TAX_RATE + "," + COL_TAX_SUM + ") values(?,?,?,?,?,?,?,?,?,?)";
     }
 
     private String getDeleteFromInvoiceSql() {
-        return "delete from " + TABLE_INVOICE + " where " + COL_INVOICE_ID + "=?";
+        return "delete from " + TABLE_INVOICE + " where " + COL_INVOICE_ID + "=? and " + COL_INVOICE_CODE  + "=?";
     }
 
     private String getDeleteFromDetailSql() {
-        return "delete from " + TABLE_DETAILES + " where " + COL_INVOICE_ID + "=?";
+        return "delete from " + TABLE_DETAILES + " where " + COL_INVOICE_ID + "=? and " + COL_INVOICE_CODE + "=?";
     }
 
     private String getUpdateInvoiceSql() {
         return "update " + TABLE_INVOICE + " set " + COL_BUYER_NAME + "=?," + COL_BUYER_ID + "=?,"
                 + COL_SELLER_NAME + "=?," + COL_SELLER_ID + "=?," + COL_TOTAL_AMOUNT + "=?," + COL_TOTAL_TAX + "=?,"
-                + COL_TOTAL + "=?," + COL_REMARK + "=? where " + COL_INVOICE_ID + "=?";
+                + COL_TOTAL + "=?," + COL_REMARK + "=? where " + COL_INVOICE_ID + "=? and " + COL_INVOICE_CODE  + "=?";
     }
 
     private String getUpdateDetailSql() {
         return "update " + TABLE_DETAILES + " set " + COL_DETAIL_NAME + "=?," + COL_SPECIFICATION + "=?,"
                 + COL_UNIT_NAME + "=?," + COL_QUANTITY + "=?," + COL_UNIT_PRICE + "=?," + COL_AMOUNT + "=?,"
-                + COL_TAX_RATE + "=?," + COL_TAX_SUM + "=? where " + COL_INVOICE_ID + "=? and " + COL_DETAIL_ID + "=?";
+                + COL_TAX_RATE + "=?," + COL_TAX_SUM + "=? where " + COL_INVOICE_ID + "=? and " + COL_INVOICE_CODE + "=?";
     }
 
     private Object[] getInsertIntoInvoiceParams(Invoice invoice) {
@@ -226,7 +231,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
     }
 
     private Object[] getInsertIntoDetailParams(InvoiceDetail detail) {
-        return new Object[]{ detail.getInvoiceId(), detail.getDetailName(), detail.getSpecification(),
+        return new Object[]{ detail.getInvoiceId(), detail.getInvoiceCode(), detail.getDetailName(), detail.getSpecification(),
                 detail.getUnitName(), detail.getQuantity(), detail.getUnitPrice(), detail.getAmount(),
                 detail.getTaxRate(), detail.getTaxSum() };
     }
@@ -234,13 +239,13 @@ public class InvoiceDaoImpl implements InvoiceDao {
     private Object[] getUpdateInvoiceParams(Invoice invoice) {
         return new Object[]{ invoice.getBuyerName(), invoice.getBuyerId(), invoice.getSellerName(),
                 invoice.getSellerId(), invoice.getTotalAmount(), invoice.getTotalTax(), invoice.getTotal(),
-                invoice.getRemark(), invoice.getInvoiceId() };
+                invoice.getRemark(), invoice.getInvoiceId(), invoice.getInvoiceCode()};
     }
 
     private Object[] getUpdateDetailParams(InvoiceDetail detail) {
         return new Object[]{ detail.getDetailName(), detail.getSpecification(), detail.getUnitName(),
                 detail.getQuantity(), detail.getUnitPrice(), detail.getAmount(),
-                detail.getTaxRate(), detail.getTaxSum(), detail.getInvoiceId(), detail.getDetailId() };
+                detail.getTaxRate(), detail.getTaxSum(), detail.getInvoiceId(), detail.getInvoiceCode() };
     }
 
     private List<Invoice> findInvoices(String colName, String colValue) {
