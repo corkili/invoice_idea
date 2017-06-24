@@ -109,8 +109,19 @@
         }
         //读取图片后预览
         function preFileName(fileId,filePreId) {
+            var file = Id(fileId);
             var filePre = Id(filePreId);
-            filePre.value = Id(fileId).value;
+            var extIndex = file.value.lastIndexOf(".");
+            var ext = file.value.substring(extIndex,file.value.length).toUpperCase();
+            if (ext != ".XLS" && ext != ".XLSX") {
+                alert("只允许上传.XLS和.XLSX格式的文件！");
+                Id('upload_file').disabled = true;
+                filePre.value = "";
+            } else {
+                filePre.value = Id(fileId).value;
+                Id('upload_file').disabled = false;
+            }
+
         }
     </script>
 </head>
@@ -157,7 +168,7 @@
                                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                                     <a class="file"><spring:message code="tip.upload_excel"/>
                                                         <input type="file" name="invoice_excel" id="file_selector" class="btn btn-round"
-                                                               placeholder="<spring:message code="tip.upload_excel"/>" required="required"
+                                                               placeholder="<spring:message code="tip.upload_excel"/>"
                                                                accept=".xls, .xlsx" onchange="changeFile('file_selector', 'filePreview');">
                                                     </a>
                                                 </div>

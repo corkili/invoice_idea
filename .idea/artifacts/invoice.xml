@@ -6,6 +6,7 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="lib">
           <element id="library" level="application" name="poi-3.16" />
+          <element id="library" level="application" name="Dm7JdbcDriver17" />
         </element>
       </element>
     </root>

@@ -33,5 +33,6 @@
     <orderEntry type="library" exported="" name="commons" level="application" />
     <orderEntry type="library" exported="" name="ocr-api" level="application" />
     <orderEntry type="library" exported="" name="poi-3.16" level="application" />
+    <orderEntry type="library" exported="" name="Dm7JdbcDriver17" level="application" />
   </component>
 </module>

@@ -15,6 +15,7 @@
           <element id="library" level="application" name="jsp.jstl-1.2.1" />
           <element id="library" level="application" name="ocr-api" />
           <element id="library" level="application" name="poi-3.16" />
+          <element id="library" level="application" name="Dm7JdbcDriver17" />
         </element>
       </element>
     </root>
