@@ -1,3 +1,24 @@
+function resetQuantity(input) {
+    var value = input.value;
+    if (value.indexOf('.') >= 0 || isNaN(Number(value)) || Number(value) <= 0) {
+        input.value = "";
+    }
+}
+
+function resetMoney(input) {
+    var value = input.value;
+    if (isNaN(Number(value)) || Number(value) <= 0) {
+        input.value = "";
+    }
+}
+
+function resetRate(input) {
+    var value = input.value;
+    if (value.indexOf('.') >= 0 || isNaN(Number(value)) || Number(value) <= 0 || Number(value) > 1) {
+        input.value = "";
+    }
+}
+
 function checkQuantity(input) {
     var value = input.value;
     if (value.indexOf('.') >= 0 || isNaN(Number(value)) || Number(value) <= 0) {

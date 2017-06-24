@@ -110,7 +110,7 @@ public class InvoiceController {
             modelAndView.addObject("display_name", user.getName());
             return modelAndView;
         }
-        Map<String, Object> checkInvoiceResult = invoiceService.checkInvoice(invoice);
+        Map<String, Object> checkInvoiceResult = invoiceService.checkInvoice(invoice, true);
         if ((boolean)checkInvoiceResult.get("correct")) {
             for(InvoiceDetail detail : invoice.getDetails()){
                 detail.setInvoiceId(invoice.getInvoiceId());
@@ -296,7 +296,7 @@ public class InvoiceController {
             modelAndView.addObject("display_name", user.getName());
             return modelAndView;
         }
-        Map<String, Object> checkInvoiceResult = invoiceService.checkInvoice(invoice);
+        Map<String, Object> checkInvoiceResult = invoiceService.checkInvoice(invoice, false);
         InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
         if ((boolean)checkInvoiceResult.get("correct")) {
             invoiceService.removeInvoice(invoice.getInvoiceId(), invoice.getInvoiceCode());
@@ -511,7 +511,7 @@ public class InvoiceController {
         int detailSum = 0;
         if (invoices != null) {
             for (Invoice invoice : invoices) {
-                if (!(boolean)invoiceService.checkInvoice(invoice).get("correct")) {
+                if (!(boolean)invoiceService.checkInvoice(invoice, true).get("correct")) {
                     errorInvoice.add(invoice);
                 } else {
                     detailSum += invoice.getDetails().size();

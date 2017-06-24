@@ -93,14 +93,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Map<String, Object> checkInvoice(Invoice invoice) {
+    public Map<String, Object> checkInvoice(Invoice invoice, boolean checkExist) {
         final double e = 0.01;
         Map<String, Object> map = new HashMap<>();
         boolean correct = true;
         List<String> errorMessages = new ArrayList<>();
         String checkNum = "[0-9]*";
         int count = 1;
-        if (invoiceDao.findInvoicesByInvoiceIdAndCode(invoice.getInvoiceId(), invoice.getInvoiceCode()).size() != 0) {
+        if (checkExist && invoiceDao.findInvoicesByInvoiceIdAndCode(invoice.getInvoiceId(), invoice.getInvoiceCode()).size() != 0) {
             errorMessages.add("*" + count + ": 发票已经存在");
             map.put("correct", false);
             map.put("errorMessages", errorMessages);

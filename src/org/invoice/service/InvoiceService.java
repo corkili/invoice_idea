@@ -31,6 +31,6 @@ public interface InvoiceService {
     public void removeInvoice(int userId, int index);
     public void removeInvoice(String invoiceId, String invoiceCode);
 
-    public Map<String, Object> checkInvoice(Invoice invoice);
+    public Map<String, Object> checkInvoice(Invoice invoice, boolean checkExist);
 
 }
