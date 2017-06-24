@@ -100,6 +100,12 @@ public class InvoiceServiceImpl implements InvoiceService {
         List<String> errorMessages = new ArrayList<>();
         String checkNum = "[0-9]*";
         int count = 1;
+        if (invoiceDao.findInvoicesByInvoiceIdAndCode(invoice.getInvoiceId(), invoice.getInvoiceCode()).size() != 0) {
+            errorMessages.add("*" + count + ": 发票已经存在");
+            map.put("correct", false);
+            map.put("errorMessages", errorMessages);
+            return map;
+        }
         // 验证发票代码是否为10位
         if (invoice.getInvoiceCode().length() != 10) {
             errorMessages.add("*" + count + ": 发票代码必须为10位!");

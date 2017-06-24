@@ -105,8 +105,8 @@ public class UserController {
                            HttpSession session) {
         logger.info("validate register information");
         ModelAndView modelAndView = new ModelAndView();
-        String randomString = session.getAttribute("randomString").toString().toLowerCase();
-        if (!randomString.equals(captcha.toLowerCase())) {
+        if (session.getAttribute("randomString") == null ||
+                !session.getAttribute("randomString").toString().toLowerCase().equals(captcha.toLowerCase())) {
             modelAndView.setViewName("signin");
             return modelAndView.addObject("has_error", true)
                     .addObject("error_message", "验证码错误！");
@@ -240,28 +240,35 @@ public class UserController {
     public ModelAndView modifyPassword(HttpSession session,
                                        @RequestParam("old_password") String oldPassword,
                                        @RequestParam("new_password") String newPassword,
-                                       @RequestParam("confirm_password") String confirmPassword) {
+                                       @RequestParam("confirm_password") String confirmPassword,
+                                       @RequestParam("captcha") String captcha) {
         int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
         User user = userService.findUserByUserId(userId);
         ModelAndView modelAndView = new ModelAndView("main")
                 .addObject("user", user)
                 .addObject("display_name", user.getName())
                 .addObject("auth", user.getAuthorityMap())
-                .addObject("has_message", true);
+                .addObject("has_error", true);
+        if (session.getAttribute("randomString") == null ||
+                !session.getAttribute("randomString").toString().toLowerCase().equals(captcha.toLowerCase())) {
+            return modelAndView.addObject("has_error", true)
+                    .addObject("error_message", "验证码错误！")
+                    .addObject("edit_password", true);
+        }
         if (!HashUtil.verify(oldPassword, userService.findUserByUserNameFromDB(user.getUsername()).getPassword())) {
-            modelAndView.addObject("message", "原始密码错误!")
+            modelAndView.addObject("error_message", "原始密码错误!")
                     .addObject("edit_password", true);
         } else if (newPassword.length() < 8) {
-            modelAndView.addObject("message", "新密码长度必须大于8!")
+            modelAndView.addObject("error_message", "新密码长度必须大于8!")
                     .addObject("edit_password", true);
         } else if (!newPassword.equals(confirmPassword)) {
-            modelAndView.addObject("message", "两次密码输入不一致!")
+            modelAndView.addObject("error_message", "两次密码输入不一致!")
                     .addObject("edit_password", true);
         } else if (userService.modifyUserPassword(userId, newPassword, null)){
-            modelAndView.addObject("message", "修改密码成功!")
+            modelAndView.addObject("error_message", "修改密码成功!")
                     .addObject("edit_password", false);
         } else {
-            modelAndView.addObject("message", "修改密码失败!")
+            modelAndView.addObject("error_message", "修改密码失败!")
                     .addObject("edit_password", true);
         }
         return modelAndView;

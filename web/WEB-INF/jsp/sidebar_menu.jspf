@@ -12,6 +12,7 @@
                 <ul class="nav child_menu">
                     <li><a href="add_invoice_hand">手动导入</a></li>
                     <li><a href="add_invoice_image">图像导入</a></li>
+                    <li><a href="add_invoice_excel">批量导入</a></li>
                 </ul>
             </li>
             <li><a><i class="fa fa-table"></i> 数据查询 <span class="fa fa-chevron-down"></span></a>

@@ -33,6 +33,10 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
     <listener>
         <listener-class>org.invoice.session.SessionListener</listener-class>
     </listener>

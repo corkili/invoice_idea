@@ -227,6 +227,7 @@
                                                     <table id="datatable" class="table table-striped jambo_table" style="white-space: nowrap;">
                                                         <thead>
                                                         <tr class="headings">
+                                                            <th class="column-title">发票代码</th>
                                                             <th class="column-title">发票号码</th>
                                                             <th class="column-title">开票日期</th>
                                                             <th class="column-title">购贷方</th>
@@ -247,8 +248,9 @@
                                                                     <tr class="odd pointer">
                                                                 </c:otherwise>
                                                             </c:choose>
+                                                            <td class=" ">${invoice.invoiceCode}</td>
                                                             <td class=" ">${invoice.invoiceId}</td>
-                                                            <td class=" ">${invoice.invoiceDate}</td>
+                                                            <td class=" ">${invoice.displayDate}</td>
                                                             <td class=" ">${invoice.buyerName}</td>
                                                             <td class=" ">${invoice.sellerName}</td>
                                                             <td class=" ">￥${invoice.totalAmount}</td>

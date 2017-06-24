@@ -6,6 +6,7 @@ import org.invoice.ocr.Recognition;
 import org.invoice.service.InvoiceService;
 import org.invoice.service.UserService;
 import org.invoice.session.SessionContext;
+import org.invoice.utils.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -458,6 +459,77 @@ public class InvoiceController {
             modelAndView.addObject("has_file", false);
             modelAndView.addObject("has_error", true);
         }
+        modelAndView.addObject("has_authority", true);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "add_invoice_excel", method = RequestMethod.GET)
+    public ModelAndView addInvoiceByExcel(HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView("invoice_input_excel");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
+        if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        modelAndView.addObject("has_file", false);
+        modelAndView.addObject("has_error", false);
+        modelAndView.addObject("has_authority", true);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "add_invoice_excel", method = RequestMethod.POST)
+    public ModelAndView addInvoiceByExcel(HttpServletRequest request, HttpSession session,
+                                          @RequestParam(value = "invoice_excel", required = false) MultipartFile file) {
+        ModelAndView modelAndView = new ModelAndView("invoice_input_excel");
+        int userId = Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString());
+        User user = userService.findUserByUserId(userId);
+        modelAndView.addObject("display_name", user.getName());
+        if ((user.getAuthority() & Authority.AUTHORITY_ADD_INVOICE_RECORD) == 0) { // 验证添加发票的权限
+            modelAndView.addObject("has_authority", false);
+            return modelAndView;
+        }
+        String path = request.getSession().getServletContext().getRealPath("invoiceExcel");
+        String fileName = file.getOriginalFilename();
+        logger.info(path + "\\" + fileName);
+        File targetFile = new File(path, fileName);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+        try {
+            file.transferTo(targetFile);
+        } catch (IOException e) {
+
+        }
+        // import
+        ExcelUtil excelUtil  = new ExcelUtil(path + "\\" + fileName);
+        InvoiceList invoiceList = invoiceService.getInvoiceListByUserId(userId);
+        invoiceList.clear();
+        List<Invoice> invoices = excelUtil.getInvoicesFromExcel();
+        List<Invoice> errorInvoice = new ArrayList<>();
+        int detailSum = 0;
+        if (invoices != null) {
+            for (Invoice invoice : invoices) {
+                if (!(boolean)invoiceService.checkInvoice(invoice).get("correct")) {
+                    errorInvoice.add(invoice);
+                } else {
+                    detailSum += invoice.getDetails().size();
+                }
+            }
+            invoices.removeAll(errorInvoice);
+            invoiceService.addInvoices(invoices);
+            invoiceList.addAll(invoices);
+        }
+        String message = "";
+        if (invoiceList.size() == 0) {
+            message = "未导入任何发票，请检查文件类型或文件内容是否正确！";
+        } else {
+            message = "共导入了" + invoiceList.size() + "张发票，共包含" + detailSum + "条明细！";
+        }
+        modelAndView.addObject("result_message", message);
+        modelAndView.addObject("invoice_list", invoiceList);
+        modelAndView.addObject("has_file", true);
         modelAndView.addObject("has_authority", true);
         return modelAndView;
     }

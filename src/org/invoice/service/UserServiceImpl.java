@@ -57,7 +57,9 @@ public class UserServiceImpl implements UserService {
                 errors.rejectValue("username", "username.exists", "用户名已存在");
             hasError = false;
         }
-        if (user.getPhone().length() != 11) {
+        if (user.getPhone().length() != 11
+                || !Pattern.compile("^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,2,5-9])|(177))\\d{8}$")
+                .matcher(user.getPhone()).matches()) {
             if (errors != null)
                 errors.rejectValue("phone", "phone.error", "无效的手机号");
             hasError = false;

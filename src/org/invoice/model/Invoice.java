@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +43,7 @@ public class Invoice implements Serializable {
     @Column(name = InvoiceDao.COL_REMARK)
     private String remark;                  // 备注
     private List<InvoiceDetail> details;    // 发票明细
+    private String displayDate;
 
     public Invoice(){
         details = new ArrayList<>();
@@ -69,6 +71,7 @@ public class Invoice implements Serializable {
 
     public void setInvoiceDate(Date invoiceDate) {
         this.invoiceDate = invoiceDate;
+        displayDate = new SimpleDateFormat("yyyy-MM-dd").format(invoiceDate);
     }
 
     public String getBuyerName() {
@@ -149,5 +152,9 @@ public class Invoice implements Serializable {
 
     public void setIdentifyId(long identifyId) {
         this.identifyId = identifyId;
+    }
+
+    public String getDisplayDate() {
+        return displayDate;
     }
 }

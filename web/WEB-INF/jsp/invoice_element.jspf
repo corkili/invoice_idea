@@ -47,7 +47,7 @@
         <b>Invoice No.${invoice.invoiceId}</b>
         <br>
         <br>
-        <b>开票日期：${invoice.invoiceDate}</b>
+        <b>开票日期：${invoice.displayDate}</b>
         <br>
     </div>
     <!-- /.col -->

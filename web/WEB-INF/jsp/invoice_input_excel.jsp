@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 李浩然
-  Date: 2017/5/26
-  Time: 2:56
+  Date: 2017/6/24
+  Time: 14:30
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -77,13 +77,12 @@
             return document.getElementById(id);
         }
         //入口函数，两个参数分别为<input type='file'/>的id，还有一个就是图片的id，然后会自动根据文件id得到图片，然后把图片放到指定id的图片标签中
-        function changeToop(fileid,imgid){
-            var file = Id(fileid);
+        function changeFile(fileId,filePreId){
+            var file = Id(fileId);
             if(file.value==''){
-                //设置默认图片
-                Id("myimg").src='';
+
             }else{
-                preImg(fileid,imgid);
+                preFileName(fileId,filePreId);
             }
         }
         //获取input[file]图片的url Important
@@ -100,8 +99,8 @@
             }
             var extIndex = file.value.lastIndexOf(".");
             var ext = file.value.substring(extIndex,file.value.length).toUpperCase();
-            if (ext != ".JPG") {
-                alert("只允许上传JPG格式的图片！");
+            if (ext != ".XLS" && ext != ".XLSX") {
+                alert("只允许上传.XLS和.XLSX格式的文件！");
                 Id('upload_file').disabled = true;
                 return "";
             }
@@ -109,9 +108,9 @@
             return url;
         }
         //读取图片后预览
-        function preImg(fileId,imgId) {
-            var imgPre =Id(imgId);
-            imgPre.src = getFileUrl(fileId);
+        function preFileName(fileId,filePreId) {
+            var filePre = Id(filePreId);
+            filePre.value = Id(fileId).value;
         }
     </script>
 </head>
@@ -147,36 +146,33 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="x_content">
-                                        <form action="add_invoice_image" method="post"
+                                        <form action="add_invoice_excel" method="post"
                                               enctype="multipart/form-data" class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-md-2" for="detail_num">
-                                                    待添加的发票的明细数目
-                                                    <span class="required">*</span>
-                                                </label>
-                                                <div class="col-md-6">
-                                                    <input class="form-control has-feedback-left"
-                                                           id="detail_num" name="detail_num" placeholder="必填" required="required"/>
+                                                <div id="preview" class="col-md-8 col-sm-8 col-xs-8">
+                                                    <input class="form-control has-feedback-left" disabled="disabled"
+                                                           id="filePreview" name="filePreview" placeholder="尚未选择文件" required="required"/>
                                                     <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                                    <a class="file"><spring:message code="tip.upload_excel"/>
+                                                        <input type="file" name="invoice_excel" id="file_selector" class="btn btn-round"
+                                                               placeholder="<spring:message code="tip.upload_excel"/>" required="required"
+                                                               accept=".xls, .xlsx" onchange="changeFile('file_selector', 'filePreview');">
+                                                    </a>
                                                 </div>
                                             </div>
                                             <div class="ln_solid"></div>
                                             <div class="form-group">
-                                                <div class="col-md-3 col-md-offset-2">
-                                                    <a class="file"><spring:message code="tip.upload"/>
-                                                        <input type="file" name="invoice_image" id="file_selector" class="btn btn-round"
-                                                               placeholder="<spring:message code="tip.upload"/>"
-                                                               accept=".jpg" onchange="changeToop('file_selector', 'imagePreview');">
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-1 col-sm-1 col-xs-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1">
                                                     <input type="submit" value="<spring:message code="button.submit" />"
                                                            class="btn btn-round btn-success" id="upload_file">
                                                 </div>
-                                            </div>
-                                            <div class="ln_solid"></div>
-                                            <div id="preview" class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
-                                                <img id="imagePreview" style="width: 1000px" src=''/>
+                                                <div class="col-md-10 col-sm-10 col-xs-10">
+                                                    <h3>请注意，上传的Excel文件中，必须按照给定的模板填写数据，否则无法正常导入！
+                                                        <a style="color: dodgerblue;"><u>点击此处下载模板</u></a>
+                                                    </h3>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -189,17 +185,62 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="x_panel">
                                         <div class="x_title">
-                                            <h2><spring:message code="form.title.invoice" /></h2>
+                                            <h2>导入结果</h2>
                                             <ul class="nav navbar-right panel_toolbox">
                                                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                                             </ul>
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="x_content">
-                                            <form:form commandName="invoice" action="save_invoice" method="post" cssClass="form-horizontal form-label-left">
-                                                <input type="hidden" name="save_action_source" value="invoice_input_image">
-                                                <%@ include file="invoice_edit_form.jspf"%>
-                                            </form:form>
+                                            <div>
+                                                ${result_message}
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table id="datatable" class="table table-striped jambo_table" style="white-space: nowrap;">
+                                                    <thead>
+                                                    <tr class="headings">
+                                                        <th class="column-title">发票代码</th>
+                                                        <th class="column-title">发票号码</th>
+                                                        <th class="column-title">开票日期</th>
+                                                        <th class="column-title">购贷方</th>
+                                                        <th class="column-title">销贷方</th>
+                                                        <th class="column-title">总金额</th>
+                                                        <th class="column-title">总税额</th>
+                                                        <th class="column-title no-link last"><span class="nobr">操作</span></th>
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                    <c:forEach var="invoice" items="${invoice_list.invoiceList}" varStatus="status">
+                                                        <c:choose>
+                                                            <c:when test="${status.index % 2 == 0}">
+                                                                <tr class="even pointer">
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <tr class="odd pointer">
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        <td class=" ">${invoice.invoiceCode}</td>
+                                                        <td class=" ">${invoice.invoiceId}</td>
+                                                        <td class=" ">${invoice.displayDate}</td>
+                                                        <td class=" ">${invoice.buyerName}</td>
+                                                        <td class=" ">${invoice.sellerName}</td>
+                                                        <td class=" ">￥${invoice.totalAmount}</td>
+                                                        <td class=" ">￥${invoice.totalTax}</td>
+                                                        <td class=" last">
+                                                            <form action="view_invoice" method="post">
+                                                                <input type="hidden" name="index" value="${status.index}">
+                                                                <input type="hidden" name="invoice_id" value="${invoice.invoiceId}">
+                                                                <input type="hidden" name="invoice_code" value="${invoice.invoiceCode}">
+                                                                <input type="submit" value="<spring:message code="button.view" />"
+                                                                       class="btn btn-round btn-success">
+                                                            </form>
+                                                        </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -224,6 +265,8 @@
         <!-- /footer content -->
     </div>
 </div>
+
+
 
 <!-- jQuery -->
 <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -258,10 +301,28 @@
 <script src="../vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
 <!-- starrr -->
 <script src="../vendors/starrr/dist/starrr.js"></script>
+<!-- Datatables -->
+<script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+<script src="../vendors/jszip/dist/jszip.min.js"></script>
+<script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
+<script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+
 <!-- Custom Theme Scripts -->
 <script src="../build/js/custom.min.js"></script>
 
 </body>
 </html>
+
 
 
