@@ -135,6 +135,12 @@ public class InvoiceServiceImpl implements InvoiceService {
         // 验证金额和税额
         for (int i = 0; i < invoice.getDetails().size(); i++) {
             InvoiceDetail detail = invoice.getDetails().get(i);
+            // 检验数值是否大于0
+            if (detail.getAmount() < 0) {
+                errorMessages.add("*" + count + ": 第" + (i + 1) + "条明细的金额与（数量*单价）的值不符【精度误差为" + e + "】");
+                count++;
+                correct = false;
+            }
             // 验证数量乘单价是否等于金额(误差为0.01)
             if (Math.abs(detail.getAmount() - detail.getQuantity() * detail.getUnitPrice()) > e) {
                 errorMessages.add("*" + count + ": 第" + (i + 1) + "条明细的金额与（数量*单价）的值不符【精度误差为" + e + "】");
