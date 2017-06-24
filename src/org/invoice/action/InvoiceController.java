@@ -14,9 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -533,6 +533,48 @@ public class InvoiceController {
         modelAndView.addObject("has_authority", true);
         return modelAndView;
     }
+
+    @RequestMapping(value = "invoiceDataTemplate.zip", method = {RequestMethod.GET, RequestMethod.POST})
+    public void download(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("charset=UTF-8");
+        String path = request.getSession().getServletContext().getRealPath("WEB-INF") + "\\files\\";
+        File file = new File(path + "发票数据导入模板.zip");
+        response.setHeader("Content-Disposition", "attachment; filename=a");
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        OutputStream fos = null;
+        InputStream fis = null;
+        try {
+            fis = new FileInputStream(file.getAbsolutePath());
+            bis = new BufferedInputStream(fis);
+            fos = response.getOutputStream();
+            bos = new BufferedOutputStream(fos);
+            int bytesRead = 0;
+            byte[] buffer = new byte[5 * 1024];
+            while ((bytesRead = bis.read(buffer)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+            }
+            bos.flush();
+        } catch(Exception e){
+        } finally {
+            try {
+                if (bis != null) {
+                    bis.close();
+                }
+                if (bos != null) {
+                    bos.close();
+                }
+                if (fos != null) {
+                    fos.close();
+                }
+                if (fis != null) {
+                    fis.close();
+                }
+            } catch (IOException e) {
+            }
+        }
+    }
+
 
     @RequestMapping(value = "chart_query", method = RequestMethod.GET)
     public ModelAndView queryInvoiceForChart(HttpSession session) {

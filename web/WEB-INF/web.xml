@@ -44,4 +44,37 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
+    <error-page>
+        <error-code>400</error-code>
+        <location>/error/400.html</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/error/401.html</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/error/403.html</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>405</error-code>
+        <location>/error/405.html</location>
+    </error-page>
+    <error-page>
+        <error-code>406</error-code>
+        <location>/error/406.html</location>
+    </error-page>
+    <error-page>
+        <error-code>407</error-code>
+        <location>/error/407.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/500.html</location>
+    </error-page>
 </web-app>

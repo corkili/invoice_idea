@@ -152,7 +152,7 @@
                                                 <div id="preview" class="col-md-8 col-sm-8 col-xs-8">
                                                     <input class="form-control has-feedback-left" disabled="disabled"
                                                            id="filePreview" name="filePreview" placeholder="尚未选择文件" required="required"/>
-                                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                    <span class="fa fa-file-excel-o form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
                                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                                     <a class="file"><spring:message code="tip.upload_excel"/>
@@ -169,9 +169,24 @@
                                                            class="btn btn-round btn-success" id="upload_file">
                                                 </div>
                                                 <div class="col-md-10 col-sm-10 col-xs-10">
-                                                    <h3>请注意，上传的Excel文件中，必须按照给定的模板填写数据，否则无法正常导入！
-                                                        <a style="color: dodgerblue;"><u>点击此处下载模板</u></a>
-                                                    </h3>
+                                                    <h5>
+                                                        请注意，上传的Excel文件中，必须按照给定的模板填写数据，否则无法正常导入！
+                                                        <a style="color: dodgerblue;" href="javascript:downloadTemplate()"><u>点击此处下载模板</u></a>！
+                                                        若下载的文件无法打开，请直接将文件的后缀名修改为.zip
+                                                        <script>
+                                                            function downloadTemplate() {
+//                                                                window.open("invoiceDataTemplate.zip");
+                                                                try {
+                                                                    var elemIF = document.createElement("iframe");
+                                                                    elemIF.src = "invoiceDataTemplate.zip";
+                                                                    elemIF.style.display ="none";
+                                                                    document.body.appendChild(elemIF);
+                                                                } catch (e) {
+
+                                                                }
+                                                            }
+                                                        </script>
+                                                    </h5>
                                                 </div>
                                             </div>
                                         </form>

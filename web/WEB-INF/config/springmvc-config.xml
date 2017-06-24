@@ -26,10 +26,26 @@
     <mvc:resources mapping="/vendors/**" location="/WEB-INF/vendors/"/>
     <mvc:resources mapping="/build/**" location="/WEB-INF/build/"/>
     <mvc:resources mapping="/images/**" location="/WEB-INF/images/"/>
+    <mvc:resources mapping="/error/**" location="/WEB-INF/error/"/>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <map>
+                <entry key="ResourceNotFoundException" value="common/error/resourceNotFoundError" />
+                <entry key="DataAccessException" value="common/error/dataAccessError" />
+            </map>
+        </property>
+        <property name="statusCodes">
+            <map>
+                <entry key="common/error/resourceNotFoundError" value="403" />
+                <entry key="common/error/dataAccessError" value="500" />
+            </map>
+        </property>
     </bean>
 
     <mvc:interceptors>

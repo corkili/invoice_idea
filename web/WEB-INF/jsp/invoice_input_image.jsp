@@ -156,7 +156,7 @@
                                                 </label>
                                                 <div class="col-md-6">
                                                     <input class="form-control has-feedback-left"
-                                                           id="detail_num" name="detail_num" placeholder="必填" required="required"/>
+                                                           id="detail_num" name="detail_num" placeholder="发票的明细数目（请输入大于0的整数）" required="required"/>
                                                     <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
                                             </div>
@@ -171,7 +171,17 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <input type="submit" value="<spring:message code="button.submit" />"
-                                                           class="btn btn-round btn-success" id="upload_file">
+                                                           class="btn btn-round btn-success" id="upload_file" onclick="return checkInput(this.form);">
+                                                    <script>
+                                                        function checkInput(form) {
+                                                            var value = form.detail_num.value;
+                                                            if (value.indexOf('.') >= 0 || isNaN(Number(value)) || Number(value) == 0) {
+                                                                alert("明细数目：请输入大于0的整数");
+                                                                return false;
+                                                            }
+                                                            return true;
+                                                        }
+                                                    </script>
                                                 </div>
                                             </div>
                                             <div class="ln_solid"></div>
