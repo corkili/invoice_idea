@@ -145,6 +145,8 @@
                                         </div>
                                         <div class="x_content">
                                             <form:form commandName="invoice" action="save_edit_invoice" method="post" cssClass="form-horizontal form-label-left">
+                                                <input type="hidden" name="save_action_source" value="invoice_query_list">
+                                                <input type="hidden" name="index" value="${index}">
                                                 <%@ include file="invoice_edit_form.jspf"%>
                                             </form:form>
                                         </div>

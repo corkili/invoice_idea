@@ -5,6 +5,7 @@ import org.invoice.model.InvoiceList;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 李浩然 on 2017/4/12.
@@ -29,5 +30,7 @@ public interface InvoiceService {
     // 删除
     public void removeInvoice(int userId, int index);
     public void removeInvoice(String invoiceId, String invoiceCode);
+
+    public Map<String, Object> checkInvoice(Invoice invoice);
 
 }

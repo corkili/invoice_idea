@@ -10,6 +10,17 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div class="row">
+    <c:if test="${has_errors}">
+        <div class="form-group">
+            <p style="color: red;text-align: left; padding-left: 5%">
+                <strong>发票信息有误，请更改后重新提交！</strong>
+                <c:forEach var="error_message" items="${error_messages}">
+                    <br/>${error_message}
+                </c:forEach>
+            </p>
+        </div>
+        <div class="ln_solid"></div>
+    </c:if>
     <div class="form-group">
         <label class="control-label col-md-2" for="invoiceCode">
             <spring:message code="invoice.code" />

@@ -41,14 +41,13 @@ public class UserController {
 
 
     @RequestMapping(value = "/login", name = "登录", method = RequestMethod.GET)
-    public ModelAndView inputLoginInformation(@ModelAttribute("user") User user){
+    public ModelAndView inputLoginInformation(HttpSession session){
         logger.info("input Login Information");
         ModelAndView modelAndView = new ModelAndView("login");
-        if (user == null) {
-            modelAndView.addObject("user", new User());
-        } else {
-            modelAndView.addObject("user", user);
+        if (session.getAttribute(SessionContext.ATTR_USER_ID) != null) {
+            userService.logout(Integer.parseInt(session.getAttribute(SessionContext.ATTR_USER_ID).toString()), session);
         }
+        modelAndView.addObject("user", new User());
         return modelAndView;
     }
 
@@ -59,8 +58,8 @@ public class UserController {
                                                  @RequestParam("captcha") String captcha) {
         ModelAndView modelAndView = new ModelAndView();
         logger.info("validate Login Information");
-        String randomString = session.getAttribute("randomString").toString().toLowerCase();
-        if (!randomString.equals(captcha.toLowerCase())) {
+        if (session.getAttribute("randomString") == null ||
+                !session.getAttribute("randomString").toString().toLowerCase().equals(captcha.toLowerCase())) {
             modelAndView.setViewName("login");
             return modelAndView.addObject("has_error", true)
                     .addObject("error_message", "验证码错误！");

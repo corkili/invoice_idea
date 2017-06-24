@@ -213,6 +213,7 @@
                                         </div>
                                         <div class="x_content">
                                             <form:form commandName="invoice" action="save_invoice" method="post" cssClass="form-horizontal form-label-left">
+                                                <input type="hidden" name="save_action_source" value="invoice_input_image">
                                                 <%@ include file="invoice_edit_form.jspf"%>
                                             </form:form>
                                         </div>

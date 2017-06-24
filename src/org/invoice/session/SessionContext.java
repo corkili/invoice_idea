@@ -13,9 +13,6 @@ import java.util.Map;
 public class SessionContext {
     public static final String ATTR_USER_ID = "userId";
 
-    @Autowired
-    private UserService userService;
-
     private static SessionContext instance;
     private Map<String, HttpSession> sessionMap;
 
@@ -40,7 +37,6 @@ public class SessionContext {
         if(session != null) {
             sessionMap.remove(session.getId());
             if(session.getAttribute(ATTR_USER_ID) != null) {
-                userService.logout(Integer.parseInt(session.getAttribute(ATTR_USER_ID).toString()), session);
                 sessionMap.remove(session.getAttribute(ATTR_USER_ID).toString());
                 // session.invalidate();
             }
