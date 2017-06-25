@@ -14,7 +14,7 @@ function resetMoney(input) {
 
 function resetRate(input) {
     var value = input.value;
-    if (value.indexOf('.') >= 0 || isNaN(Number(value)) || Number(value) <= 0 || Number(value) > 1) {
+    if (isNaN(Number(value)) || Number(value) <= 0 || Number(value) > 1) {
         input.value = "";
     }
 }
@@ -39,9 +39,53 @@ function checkMoney(input) {
 
 function checkRate(input) {
     var value = input.value;
-    if (value.indexOf('.') >= 0 || isNaN(Number(value)) || Number(value) < 0 || Number(value) > 1) {
+    if (isNaN(Number(value)) || Number(value) < 0 || Number(value) > 1) {
         input.value = 0;
-        alert("数量：请输入区间[0-1]内的小数");
+        alert("税率：请输入区间[0,1]内的小数");
         input.focus();
     }
+}
+
+function checkSubmit(num) {
+    var quantities = [];
+    var taxRates = [];
+    var moneys = [];
+    var i;
+    for (i = 0; i < num; i++) {
+        moneys.push(document.getElementById("unitPrice_" + i));
+        moneys.push(document.getElementById("amount_" + i));
+        moneys.push(document.getElementById("taxSum_" + i));
+        taxRates.push(document.getElementById("taxRate_" + i));
+        quantities.push(document.getElementById("quantity_" + i));
+    }
+    moneys.push(document.getElementsByName("totalAmount"));
+    moneys.push(document.getElementsByName("totalTax"));
+    moneys.push(document.getElementsByName("total"));
+
+    var value = "";
+
+    for (i = 0; i < quantities.length; i++) {
+        value = quantities[i].value;
+        if (value.indexOf('.') >= 0 || isNaN(Number(value)) || Number(value) <= 0) {
+            alert("数量：请输入大于0整数");
+            return false;
+        }
+    }
+
+    for (i = 0; i < moneys.length; i++) {
+        value = moneys[i].value;
+        if (isNaN(Number(value)) || Number(value) < 0) {
+            alert("请输入正数");
+            return false;
+        }
+    }
+
+    for (i = 0; i < taxRates.length; i++) {
+        value = taxRates[i].value;
+        if (isNaN(Number(value)) || Number(value) < 0 || Number(value) > 1) {
+            alert("税率：请输入区间[0-1]内的小数");
+            return false;
+        }
+    }
+    return true;
 }

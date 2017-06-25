@@ -19,7 +19,7 @@ public class Recognition {
 		Map<String,Object> map=new HashMap<String, Object>();
     	ImageCutting imageCutting=new ImageCutting();
     	OCR test = new OCR();
-    	String string[]= {"invoiceCode","invoiceId","quantities","unitPrices","taxs"};
+    	String string[]= {"invoiceCode","invoiceId","amounts","unitPrices","taxs"};
     	imageCutting.ImageCuttingCode(image,path + "\\zzs\\test1.jpg");
 		imageCutting.ImageCuttingID(image,path + "\\zzs\\test2.jpg");
 		imageCutting.ImageCuttingCount(image,path + "\\zzs\\test3.jpg");
@@ -80,7 +80,7 @@ public class Recognition {
     	
     		System.out.println(map.get("invoiceCode"));
     		System.out.println(map.get("invoiceId"));
-    		System.out.println(map.get("quantities"));
+    		System.out.println(map.get("amounts"));
     		System.out.println(map.get("unitPrices"));
     		System.out.println(map.get("taxs"));
     	String deletedir = path + "\\zzs";

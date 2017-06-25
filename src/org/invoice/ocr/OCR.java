@@ -36,7 +36,7 @@ import net.sf.json.JSONObject;
 	        {
 	            URIBuilder builder = new URIBuilder("https://api.cognitive.azure.cn/vision/v1.0/ocr");
 
-	            builder.setParameter("language", "unk");
+	            builder.setParameter("language", "en");
 	            builder.setParameter("detectOrientation ", "true");
 
 	            URI uri = builder.build();
@@ -100,7 +100,7 @@ import net.sf.json.JSONObject;
 	        {
 	            URIBuilder builder = new URIBuilder("https://api.cognitive.azure.cn/vision/v1.0/ocr");
 
-	            builder.setParameter("language", "unk");
+	            builder.setParameter("language", "en");
 	            builder.setParameter("detectOrientation ", "true");
 
 	            URI uri = builder.build();
@@ -116,16 +116,16 @@ import net.sf.json.JSONObject;
 	            
 
 	            if (entity != null) 
-	            {
-	               // System.out.println(EntityUtils.toString(entity));//输出json
-	                
-	                JSONObject jsonObject = JSONObject.fromObject(EntityUtils.toString(entity));
+	            {	            
+	                String entityStr = EntityUtils.toString(entity);
+	                //System.out.println(entityStr);//输出json
+	                JSONObject jsonObject = JSONObject.fromObject(entityStr);
 	                StringBuilder result = new StringBuilder();
 	                String regions=jsonObject.get("regions").toString();
 	                //System.out.println(regions);
 	                JSONArray regionsarray=jsonObject.getJSONArray("regions");
 	                if(regionsarray.size()!=0){
-	                for(int i=0;i<regionsarray.size();i++){
+	                  for(int i=0;i<regionsarray.size();i++){
 	                	Object lineobject=regionsarray.get(i);
 	                	JSONObject jsonlines=JSONObject.fromObject(lineobject);
 	                	JSONArray linesarray=jsonlines.getJSONArray("lines");
@@ -138,10 +138,15 @@ import net.sf.json.JSONObject;
 			                	text = wordsarray.getJSONObject(k);
 		                        resulttext1 = text.getString("text");
 		                	}
-		                	if(resulttext1!=null)
-		                	    resulttext.add(resulttext1);
-		                	else
+		                	//System.out.println(resulttext1);
+		                	if(resulttext1!=null){
+		                		resulttext.add(resulttext1);		                		
+		                	}
+		                	    
+		                	else{
 		                		resulttext.add(zero);
+		                	}
+		                		
 		                	//System.out.println(resulttext.get(5));
 	                	}
 	                }
@@ -149,8 +154,12 @@ import net.sf.json.JSONObject;
 	                else{
 	                	resulttext.add(zero);
 	                	
+	                	
+		                	//System.out.println(resulttext.get(5));
+	                	}
+	                	
 	                }
-	            }
+	            
 	            
 	        }
 	        catch (Exception e)

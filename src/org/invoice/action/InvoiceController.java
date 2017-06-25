@@ -347,7 +347,7 @@ public class InvoiceController {
     }
 
     @RequestMapping(value = "add_invoice_image", method = RequestMethod.POST)
-    public ModelAndView addInvoiceImage(HttpServletRequest request, HttpSession session,
+    public ModelAndView addInvoiceByImage(HttpServletRequest request, HttpSession session,
                                         @RequestParam(value = "detail_num") int detailNum,
                                         @RequestParam(value = "invoice_image", required = false) MultipartFile file) {
         ModelAndView modelAndView = new ModelAndView("invoice_input_image");
@@ -382,21 +382,24 @@ public class InvoiceController {
             } else {
                 invoice.setInvoiceId("");
             }
-            List<String> quantities = (List<String>)result.get("quantities");
+            List<String> amounts = (List<String>)result.get("amounts");
+//            List<String> quantities = (List<String>)result.get("quantities");
             List<String> unitPrices = (List<String>)result.get("unitPrices");
             List<String> taxs = (List<String>)result.get("taxs");
-            logger.info(quantities.size());
+            logger.info(amounts.size());
             logger.info(unitPrices.size());
             logger.info(taxs.size());
-            if (quantities.size() == unitPrices.size() && quantities.size() == taxs.size()) {
-                int quantity = 0;
+            if (amounts.size() == unitPrices.size() && amounts.size() == taxs.size()) {
+                int quantity;
+                double amount = 0;
                 double unitPrice = 0.0;
                 double tax = 0.0;
-                for (int i = 0; i < quantities.size(); i++) {
+                double taxRate = 0.0;
+                for (int i = 0; i < amounts.size(); i++) {
                     try {
-                        quantity = Integer.parseInt(quantities.get(i));
+                        amount = Double.parseDouble(amounts.get(i));
                     } catch (NumberFormatException e) {
-                        quantity = 0;
+                        amount = 0;
                     }
                     try {
                         unitPrice = Double.parseDouble(unitPrices.get(i));
@@ -408,11 +411,23 @@ public class InvoiceController {
                     } catch (NumberFormatException e) {
                         tax = 0.0;
                     }
+                    if (unitPrice != 0) {
+                        quantity = (int)(amount / unitPrice);
+                    } else {
+                        quantity = 0;
+                    }
+                    if (amount != 0) {
+                        taxRate = new BigDecimal(tax / amount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    } else {
+                        taxRate = 0.0;
+                    }
                     InvoiceDetail invoiceDetail = new InvoiceDetail();
+                    invoiceDetail.setAmount(amount);
                     invoiceDetail.setQuantity(quantity);
                     invoiceDetail.setUnitPrice(unitPrice);
                     invoiceDetail.setTaxSum(tax);
-                    invoiceDetail.setAmount(quantity * unitPrice);
+                    invoiceDetail.setTaxRate(taxRate);
+                    logger.info(taxRate);
                     details.add(invoiceDetail);
                 }
                 double totalAmount = 0.0;

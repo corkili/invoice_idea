@@ -10,7 +10,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script src="../js/func/checkInvoice.js"></script>
-<form:form commandName="invoice" action="save_invoice" method="post" cssClass="form-horizontal form-label-left">
+<form:form commandName="invoice" action="save_invoice" method="post" cssClass="form-horizontal form-label-left" onsubmit="return checkSubmit(${detail_num});">
     <div class="row">
         <c:if test="${has_errors}">
             <div class="form-group">
@@ -108,24 +108,24 @@
                                 cssClass="form-control col-md-1"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].quantity" placeholder="数量（整数）"
-                                cssClass="form-control col-md-1" required="required" onblur="checkQuantity(this)"/>
+                    <form:input path="details[${i}].quantity" placeholder="数量（整数）" name="quantity" id="quantity_${i}"
+                                cssClass="form-control col-md-1" required="required" onblur="return checkQuantity(this);"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].unitPrice" placeholder="单价" onblur="checkMoney(this)"
-                                cssClass="form-control col-md-1" required="required"/>
+                    <form:input path="details[${i}].unitPrice" placeholder="单价" onblur="return checkMoney(this);" name="unitPrice"
+                                cssClass="form-control col-md-1" required="required" id="unitPrice_${i}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].amount"  placeholder="金额" disabled="false"
-                                cssClass="form-control col-md-1" required="required" onblur="checkMoney(this)"/>
+                    <form:input path="details[${i}].amount"  placeholder="金额" disabled="false" name="amount" id="amount_${i}"
+                                cssClass="form-control col-md-1" required="required" onblur="return checkMoney(this);"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].taxRate" placeholder="税率" onblur="checkRate(this)"
-                                cssClass="form-control col-md-1" required="required"/>
+                    <form:input path="details[${i}].taxRate" placeholder="税率" onblur="return checkRate(this);" name="taxRate"
+                                cssClass="form-control col-md-1" required="required" id="taxRate_${i}"/>
                 </div>
                 <div class="col-md-1">
-                    <form:input path="details[${i}].taxSum" placeholder="税额" disabled="false"
-                                cssClass="form-control col-md-1" required="required" onblur="checkMoney(this)"/>
+                    <form:input path="details[${i}].taxSum" placeholder="税额" disabled="false" name="taxSum" id="taxSum_${i}"
+                                cssClass="form-control col-md-1" required="required" onblur="return checkMoney(this);"/>
                 </div>
             </div>
         </c:forEach>
@@ -136,7 +136,7 @@
             </label>
             <div class="col-md-1">
                 <form:input path="totalAmount" id="totalAmount" name="totalAmount" disabled="false"
-                            cssClass="form-control col-md-1" required="required" onblur="checkMoney(this)"
+                            cssClass="form-control col-md-1" required="required" onblur="return checkMoney(this);"
                             value="${invoice.totalAmount}" placeholder="请输入总金额"/>
             </div>
             <label class="control-label col-md-1" for="totalTax">
@@ -144,7 +144,7 @@
             </label>
             <div class="col-md-1">
                 <form:input path="totalTax" id="totalTax" name="totalTax" disabled="false"
-                            cssClass="form-control col-md-1" required="required" onblur="checkMoney(this)"
+                            cssClass="form-control col-md-1" required="required" onblur="return checkMoney(this);"
                             value="${invoice.totalTax}" placeholder="请输入总税额"/>
             </div>
         </div>
@@ -154,7 +154,7 @@
             </label>
             <div class="col-md-2">
                 <form:input path="total" id="total" name="total" disabled="false"
-                            cssClass="form-control col-md-2" required="required" onblur="checkMoney(this)"
+                            cssClass="form-control col-md-2" required="required" onblur="return checkMoney(this);"
                             value="${invoice.total}" placeholder="请输入税价合计金额"/>
             </div>
         </div>

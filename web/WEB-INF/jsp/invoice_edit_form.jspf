@@ -107,26 +107,26 @@
             </div>
             <div class="col-md-1">
                 <form:input path="details[${i}].quantity" placeholder="数量（整数）"
-                            cssClass="form-control col-md-1" required="required"
+                            cssClass="form-control col-md-1" required="required" name="quantity"
                             value="${invoice.details[i].quantity}" onblur="checkQuantity(this)"/>
             </div>
             <div class="col-md-1">
-                <form:input path="details[${i}].unitPrice" placeholder="单价"
+                <form:input path="details[${i}].unitPrice" placeholder="单价" name="unitPrice"
                             cssClass="form-control col-md-1" required="required"
                             value="${invoice.details[i].unitPrice}" onblur="checkMoney(this)"/>
             </div>
             <div class="col-md-1">
-                <form:input path="details[${i}].amount" placeholder="金额"
+                <form:input path="details[${i}].amount" placeholder="金额" name="amount"
                             cssClass="form-control col-md-1" required="required"
                             value="${invoice.details[i].amount}" onblur="checkMoney(this)"/>
             </div>
             <div class="col-md-1">
-                <form:input path="details[${i}].taxRate" placeholder="税率"
+                <form:input path="details[${i}].taxRate" placeholder="税率" name="taxRate"
                             cssClass="form-control col-md-1" required="required"
                             value="${invoice.details[i].taxRate}" onblur="checkRate(this)"/>
             </div>
             <div class="col-md-1">
-                <form:input path="details[${i}].taxSum" placeholder="税额"
+                <form:input path="details[${i}].taxSum" placeholder="税额" name="taxSum"
                             cssClass="form-control col-md-1" required="required"
                             value="${invoice.details[i].taxSum}" onblur="checkMoney(this)"/>
             </div>

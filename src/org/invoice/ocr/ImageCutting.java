@@ -25,7 +25,7 @@ public class ImageCutting {
 		File imageFile=new File(inputimage);
 		File outImageFile=new File(outputimage);
 		BufferedImage img=ImageIO.read(imageFile);
-		BufferedImage outImg=img.getSubimage((int)(0.46*img.getWidth()), (int)(0.4081*img.getHeight()), (int)(0.0762*img.getWidth()), (int)(0.2246*img.getHeight()));
+		BufferedImage outImg=img.getSubimage((int)(0.6371*img.getWidth()), (int)(0.4081*img.getHeight()), (int)(0.1033*img.getWidth()), (int)(0.2246*img.getHeight()));
 		ImageIO.write(outImg, "jpg", outImageFile);
 	}
 	public void ImageCuttingUnitPrice(String inputimage,String outputimage) throws IOException{
