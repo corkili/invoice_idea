@@ -240,9 +240,9 @@
                                                                 </table>
                                                             </div>
                                                             <div class="ln_solid"></div>
-                                                            <p>
-                                                                进项数据分析：${income_comments}
-                                                            </p>
+                                                            <%--<p>--%>
+                                                                <%--进项数据分析：${income_comments}--%>
+                                                            <%--</p>--%>
                                                         </div>
                                                         <div role="tabpanel" class="tab-pane fade" id="income_bar_view" aria-labelledby="income_bar_tab">
                                                             <div id="income_chart_bar" style="height:450px;"></div>
@@ -319,9 +319,9 @@
                                                                 </table>
                                                             </div>
                                                             <div class="ln_solid"></div>
-                                                            <p>
-                                                                销项数据分析：${outcome_comments}
-                                                            </p>
+                                                            <%--<p>--%>
+                                                                <%--销项数据分析：${outcome_comments}--%>
+                                                            <%--</p>--%>
                                                         </div>
                                                         <div role="tabpanel" class="tab-pane fade" id="outcome_bar_view" aria-labelledby="outcome_bar_tab">
                                                             <div id="outcome_chart_bar" style="height:450px;"></div>

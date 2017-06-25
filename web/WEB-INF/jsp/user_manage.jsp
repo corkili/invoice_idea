@@ -155,7 +155,7 @@
                                                         </ul>
                                                     </div>
                                                     <div class="right col-xs-5 text-center">
-                                                        <img src="images/img.jpg" alt="" class="img-circle img-responsive">
+                                                        <img src="images/se.png" alt="" class="img-circle img-responsive">
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-12 bottom text-center">
