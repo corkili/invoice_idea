@@ -51,6 +51,7 @@ public abstract class Authority{
         authorityMap.put("auth_edit_invoice", AUTHORITY_MODIFY_INVOICE_RECORD);
         authorityMap.put("auth_query_report", AUTHORITY_QUERY_INVOICE_ANALYSIS_RESULT);
         authorityMap.put("auth_manage_user", AUTHORITY_MANAGE_USER);
+        authorityMap.put("auth_none", 0);
     }
 
     public static int getAllAuthority() {

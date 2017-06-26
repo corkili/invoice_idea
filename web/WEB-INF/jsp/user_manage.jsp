@@ -162,6 +162,8 @@
                                                     <div class="col-xs-12 col-sm-6 emphasis right">
                                                         <input type="hidden" name="index" value="${index}">
                                                         <input type="hidden" name="user_id" value="${user.userId}">
+                                                        <input type="checkbox" name="authority" value="auth_none"
+                                                               style="display: none" checked="checked">
                                                         <input type="submit" value="<spring:message code="button.ok" />"
                                                                class="btn btn-round btn-danger pull-right" onclick="return confirm('确定保存修改？');">
                                                     </div>

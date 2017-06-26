@@ -73,7 +73,7 @@ public class HashUtil {
     }
 
     public static void main(String[] args) {
-        String password = generate("admin");
+        String password = generate("45678901");
         System.out.println(password);
         System.out.println(password.length());
         System.out.println(getSalt(password));
